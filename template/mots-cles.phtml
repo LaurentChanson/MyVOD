@@ -1,0 +1,88 @@
+<?php
+require_once 'header.php';
+?>
+
+<br>
+<form class="form-horizontal" method="post">
+    <fieldset>
+        <legend>
+            Liste de mots-clés à ignorer lors d'une recherche via Allociné ou DvdFr
+        </legend>
+        <br>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" >ajouter un mot :</label> 
+            <div class="col-sm-6">
+                <input id="mot" name="mot"  
+                       class="form-control input-sm" required="" type="text"
+                       value="" >
+                <br>
+                <button id="action" 
+                        name="action" class="btn btn-primary" 
+                        type="submit"
+                        value="<?= ACTION_AJOUTER; ?>">
+                    Ajouter
+                </button>
+
+            </div>
+        </div>
+
+    </fieldset>
+    
+    <!--liste des mots clés existants-->
+    
+    <fieldset>
+        <legend>
+            Liste des mots existants :
+            <span class="badge"><?= count($lst_mots_cle); ?></span>
+        </legend>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-12">
+                
+                <?php
+                $count = count($lst_mots_cle);
+
+                $m = new mot_cle(); //pour autocompletion
+                $m_prec = new mot_cle(); //pour autocompletion
+                //
+                //liste des mots clés
+                $i=0;
+                foreach ($lst_mots_cle as $m) {
+                    $i++;
+                    //retour à la ligne si la 1ère lettre du mot change (meilleure visibilité)
+                    if( strlen($m_prec->mot) >0 &&  substr($m->mot,0,1) != substr($m_prec->mot,0,1)){
+                        echo('<br>');
+                    }
+                    
+                    ?>
+                
+                    
+                    <?= $m->mot; ?> 
+                    <a href="?action=<?= ACTION_ENLEVER . '&id=' . $m->id; ?> " 
+                       class="text-primary"
+                       title="Enlever '<?=$m->mot?>' du dictionnaire"
+                       ><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+                    <?=($i<$count)?',':'';?> 
+                    
+                   
+                    &nbsp;
+                    <?php
+
+                    $m_prec=$m;
+                }
+                //affichage 'aucun résultat'
+                if ($count == 0) {
+                    ?>
+                    Aucun résultat
+                    <?php
+                }
+                ?>
+                    
+            </div>
+        </div>
+    </fieldset>
+
+</form>
+
+<?php
+require_once 'footer.php';

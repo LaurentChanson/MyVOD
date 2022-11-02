@@ -1,0 +1,283 @@
+<?php
+
+/**
+ * 
+ * L'image de fond
+ * 
+ */
+function render_image_fond($url_afiche) {
+    ?>
+
+    <!--image de fond-->
+
+    <div class=" img_fond_detail"></div>
+
+    <style>
+        .img_fond_detail { 
+            background: url('<?= $url_afiche; ?>') no-repeat center fixed; 
+            -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+            background-size: cover; /* version standardisée */
+        }
+    </style>
+
+    <?php
+}
+
+function render_image_fond_old($url_afiche) {
+    ?>
+
+    <!--image de fond-->
+    <div >
+        <img id="img_background" 
+             style="visibility: visible; opacity:0.1; "
+             src="<?= $url_afiche; ?>"/>
+    </div>
+
+    <?php
+}
+
+/*
+ * 
+ * Le zoom des affiches
+ * 
+ */
+
+function render_affiche_full_width($url_afiche) {
+    ?>
+    <!--version zoom 100% en largeur-->
+    <div id="overlay_non_fixed" class="overlay-non-fixed" onclick="overlay_ferme();"
+         >
+        <img id= "overlay_non_fixed_img" 
+             class="overlay_img img-responsive img-thumbnail center" 
+             src="<?= $url_afiche; ?>" 
+             onclick="img_click(event)"> 
+    </div>
+    <?php
+}
+
+function render_affiche($url_afiche, $render_full_width = true) {
+    //affiche normal
+    //voir https://css.developpez.com/tutoriels/icone-chargement-pour-images/
+    //pour préchargement d'images
+    //var_dump($url_afiche);
+
+    global $url_afiche_miniature;
+    $style_background = '';
+    //si la miniature est déclarée, on construit le fond en 1er car miniature en cache
+    if ($url_afiche_miniature != null) {
+        $style_background = "background:url('$url_afiche_miniature') no-repeat center;";
+    }
+    //var_dump($url_afiche_miniature);
+    ?>
+
+
+    <div class="col-xxs-12 col-xxs-offset-0 col-xs-10 col-xs-offset-1 col-sm-offset-0 col-xl-4 col-sm-6 col-lg-5" align="center"   >
+        <div class="img-thumbnail center" style="width:100%; margin-bottom: 10px;" >
+            <div class="" style=" <?= $style_background ?>;min-width:90%; width:100%; min-height:200px" >
+
+                <img class="" 
+                     src="<?= $url_afiche; ?>" 
+                     style="min-width: 90%; width:100%;"
+                     alt="Affiche du film"
+                     onclick="overlay();"/>
+            </div>
+
+        </div>
+        <br>
+
+    </div>
+
+    <!--affiche en gros plan quand on clique dessus-->
+    <!--version fixed-->
+
+    <div id="overlay_fixed" class="overlay-fixed"
+         onclick="overlay_ferme();"
+         >
+
+        <img id= "overlay_fixed_img" 
+             class="overlay_img img-responsive img-thumbnail center" 
+             src="<?= $url_afiche; ?>" 
+             onclick="img_click(event)"
+             > 
+    </div>
+
+    <?php
+    if ($render_full_width) {
+        render_affiche_full_width($url_afiche);
+    }
+    ?>
+
+
+    <script src="lib/js/detail-commun.js"></script>
+
+
+    <?php
+}
+
+/*
+ * 
+ * La liste des bandes annonces
+ * 
+ */
+
+function render_bandes_annonces(array $bandes_annonces) {
+    //var_dump('render_bandes_annonces');
+    ?>
+    <div id="debut_liste_bande_annonce">
+    </div>
+
+    <?php
+    if (count($bandes_annonces) == 0)
+        return;
+    ?>
+    <div>
+        <div class=" panel-group">
+            <br>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Bande annonces <span class="badge "><?= count($bandes_annonces); ?></span></h3>
+                </div>
+                <div class="panel-body row">
+
+                    <?php
+                    _render_liste_bandes_annonces($bandes_annonces);
+                    ?>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <?php
+}
+
+function render_bandes_annonces_modif(array $bandes_annonces) {
+    //var_dump('render_bandes_annonces_modif');
+    ?>
+    <div id="debut_liste_bande_annonce">
+    </div>
+
+    <?php
+    if (count($bandes_annonces) == 0) {
+        return;
+    }
+    ?> 
+    <div>
+        <legend>Les autres bandes annonces (<?= count($bandes_annonces); ?>)</legend>
+        <div class="form-group">
+            <div class="row-fluid">
+                <?php
+                _render_liste_bandes_annonces($bandes_annonces, true);
+                ?>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
+function _render_liste_bandes_annonces(array $bandes_annonces, $mode_modif = false) {
+
+    //id="debut_liste_bande_annonce"
+    ?>
+
+    <div class="col-xxs-12">
+        <?php
+        $ba = new BandeAnnonce();
+        $type_ba_prec = "---";
+        foreach ($bandes_annonces as $ba) {
+
+            if ($type_ba_prec != $ba->GetTypeAvecLangue()) {
+
+                //var_dump($ba->GetTypeAvecLangue());
+                //on ferme la div car on change de catégorie de langue (VF à VO par exemple)
+                ?>
+            </div>
+
+            <div class="col-xxs-12">
+                <label><?= $ba->GetTypeAvecLangue(); ?></label>
+                <?= $mode_modif == false ? '<hr>' : ''; ?>
+            </div>
+
+
+            <div class="row col-xxs-12">
+
+
+                <?php
+            }
+            ?>
+            <div class="col-sm-6  col-md-6 col-lg-6 col-xl-4  " style ="padding-bottom: 15px;" >
+                <div id="titre_ba_<?= $ba->id ?>"><?= $ba->titre ?></div>
+                <div class="   embed-responsive embed-responsive-16by9">
+                    <div class="embed-responsive-item" >
+                        <?= $ba->GetEmbedHTML(); ?>
+                    </div>
+
+                </div>
+                <?php
+                if ($mode_modif && strlen($ba->id) > 0) {
+                    ?>
+                    <div align="right">
+                        <button type="submit" 
+                                id="supprime_ba_<?= $ba->id ?>"
+                                name="action" 
+                                value="supprimer_bande_annonce" 
+                                style="visibility: hidden"
+                                >submit
+                        </button>
+
+                        <a href="#debut_liste_bande_annonce" 
+                           onclick="javascript:a_confirmer_suppression(<?= $ba->id; ?>);
+                             return false;">
+                            <i class="fa fa-trash" aria-hidden="true"></i> supprimer
+                        </a>
+
+
+
+                    </div>
+
+                    <?php
+                }
+                ?> 
+            </div>
+            <?php
+            $type_ba_prec = $ba->GetTypeAvecLangue();
+        }
+        ?>
+    </div>
+    <input type="hidden" name="id_bande_annonce_a_supprimer" id="id_bande_annonce_a_supprimer" value="0">
+    <script>
+
+        /*
+         Utilisé pour la suppression des bandes annonces en +.
+         */
+        function suppression_ok() {
+            //alert('test');
+            var id = document.getElementById("id_bande_annonce_a_supprimer").value;
+            if (id >= 1) {
+                //window.alert("ok + "+document.getElementById("id_bande_annonce_a_supprimer").value);
+                document.getElementById("supprime_ba_" + id).click();
+            } else {
+                window.alert("Impossible de supprimer cette bande annonce car elle n'a pas d'ID.");
+            }
+        }
+
+        function a_confirmer_suppression(id) {
+            //met à jour le champ caché "id_bande_annonce_a_supprimer"
+            document.getElementById("id_bande_annonce_a_supprimer").value = id;
+            var titre_ba = document.getElementById("titre_ba_" + id).innerHTML;
+            var question = "Voulez-vous supprimer la bande annonce \"" + titre_ba + "\" ?";
+            //window.confirm(question, null, suppression_ok);
+
+            var clbk = function () {
+                suppression_ok();
+            };
+            confirm(question, clbk);
+
+
+        }
+
+    </script>
+
+    <?php
+}

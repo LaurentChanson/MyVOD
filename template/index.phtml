@@ -1,0 +1,1084 @@
+<?php
+//entêtes HTML
+require_once 'header.php';
+?>
+
+<script src="lib/js/index.js"></script>
+
+
+<!--image de fond-->
+<img id="img_background"
+     src=""/>
+
+<div class="row" >
+    <!--Sidebar content-->
+    <div id="side_bar_parent" class="col-lg-4 col-xl-3">
+        <div id="side_bar"  >
+            <form   method="post" name="frmaction" >
+
+                <!--recherche par -->
+
+                <div class="panel-group" id="accordionRecherche" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default navbar " style="z-index: 99;">
+                        <div class=" panel-heading" role="tab" id="headingZero">
+                            <div  class="row  panel-title  ">
+
+                                <a  data-toggle="collapse" 
+                                    data-parent="#accordionRecherche" 
+                                    href="#collapse0" aria-expanded="false" 
+                                    class="row-fluid"
+                                    aria-controls="collapse0" 
+                                    onclick="MAJ_recherche_deplie();">
+                                        <?php
+                                        render_bouton_collapse('bt_collapse0', $recherche_deplie, '(Dé)plier le panel de recherche');
+                                        ?>
+
+                                    <div class=" col-sm-3 col-xs-8 col-xxs-7"  >
+                                        <h4 >
+                                            <div>Rechercher</div>
+                                        </h4>
+                                    </div>
+
+
+                                </a>
+
+                                <input type="hidden" id="recherche_deplie" name="recherche_deplie" value="<?= $recherche_deplie; ?>" />
+
+                                <!--bouton pour les petits écrans (cache ou non les autres panels)-->
+                                <input type="hidden" name="filtre_recherche_parental" value="0" />
+                                <button class="btn btn-default  pull-right hidden-lg" type="button"  value=""
+                                        style="margin-right:   5px;"
+                                        data-toggle="collapse"
+                                        data-target="#autres_panels"
+                                        title ="(Dé)plier les autres panels pour affiner le recherche"
+                                        onclick="">
+                                    <span class="glyphicon  glyphicon-menu-hamburger  " aria-hidden="true"></span>
+                                </button>
+
+
+
+                                <!--champ de recherche-->
+                                <div class=" input-group col-sm-7 col-lg-11 col-xs-11 col-xs-offset-1" 
+                                     style="margin-left:16px;">
+
+
+                                    <input type="text" class="form-control" 
+                                           list="liste_titres"
+                                           id="search_query" name="search_query" 
+                                           value="<?= $recherche; ?>" 
+                                           placeholder="Utilisez ' * ' comme joker"
+                                           autocomplete="<?= Helper_system::user_agent_contient('Presto') ? 'on' : 'off'; ?>"
+                                           <?=
+                                           (Helper_system::user_agent_contient('Presto')) || ($nb_derniers_ajouts_prec != count($derniers_ajouts) || ($nb_derniers_lus_prec != count($derniers_lus))) ? '' : 'autofocus';
+                                           ?>
+
+                                           onchange="search_query_onchange();"
+                                           onkeyup="search_query_onkeyup(event);"
+                                           ondblclick="search_query_dblclick();"
+                                           <?= Helper_system::user_agent_contient('Presto') ? '' : 'oninput="search_query_input();"'; ?>
+
+                                           >
+                                    <!--les 2 boutons-->
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"  value="clear_recherche"
+                                                title ="Ré-initialiser les filtres de recherche"
+                                                onclick="raz_champ_recherche();">
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="btn btn-default" type="submit" 
+                                                title="Rechercher"
+                                                name ="action" id ="action" value="Recherche">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+
+                                </div><!-- /input-group -->
+
+
+
+
+
+                                <datalist id="liste_titres">
+                                    <?php
+                                    foreach ($liste_titre as $s) {
+                                        $s = str_replace('"', ' ', $s);
+                                        echo('<option value="' . $s . '">' . $s . '</option>');
+                                    }
+                                    ?>
+
+                                </datalist>
+
+                            </div>
+                        </div> 
+
+                        <!--panel recherche détaillé-->
+
+
+                        <div id="collapse0" class="panel-collapse collapse<?= $recherche_deplie ? ' in' : ''; ?>" 
+                             role="tabpanel" aria-labelledby="headingZero" >
+                            <div class="panel-body">
+
+
+
+                                <!--filtre sur...-->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        Filtre sur : 
+                                    </div>
+                                    <div class="checkbox col-xs-offset-1">
+
+
+                                        <div class="col-xs-6 col-sm-4">
+                                            <input type="hidden" name="rech_titre" value="0" />
+                                            <label>
+                                            <INPUT type= "CHECKBOX" id="rech_titre" name="rech_titre" value=1 
+                                                   <?= $rech_titre ? ' checked' : ''; ?>> le titre</label>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-4">
+                                            <input type="hidden" name="rech_synopsis" value="0" />
+                                            <label>
+                                            <INPUT type= "CHECKBOX" id="rech_synopsis" name="rech_synopsis" value=1 
+                                                   <?= $rech_synopsis ? ' checked' : ''; ?>> le synopsis</label>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-4">
+                                            <input type="hidden" name="rech_acteurs" value="0" />
+                                            <label>
+                                            <INPUT type= "CHECKBOX" id="rech_acteurs" name="rech_acteurs" value=1 
+                                                   <?= $rech_acteurs ? ' checked' : ''; ?>> les acteurs</label>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-4 col-md-8">
+                                            <input type="hidden" name="rech_nom_fichier" value="0" />
+                                            <label>
+                                            <INPUT type= "CHECKBOX" id="rech_nom_fichier" name="rech_nom_fichier" value=1 
+                                                   <?= $rech_nom_fichier ? ' checked' : ''; ?>> nom du fichier</label>
+                                        </div>
+
+
+                                    </div><!-- /input-group -->
+                                </div>   
+
+                                <!--option de qualité-->
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        Qualité : 
+                                    </div>
+                                    <?php
+                                    //var_dump($filtre_qualite);
+                                    ?>
+                                    <div class="radio col-xs-offset-1">
+
+
+                                        <div class="col-xs-6 col-sm-4">
+                                            <label>
+                                            <INPUT type= "radio" name="qualite" id="qualite_tous" 
+                                                   value=0 <?= $filtre_qualite == FILTRE_QUALITE_TOUS ? 'checked' : ''; ?> 
+                                                   onclick="ValiderFormulaireSiCriteresNonRaz();"
+                                                   />
+                                            Tous</label>
+                                        </div>
+
+                                        <div class="col-xs-6 col-sm-4">
+                                            <label>
+                                            <INPUT type= "radio" name="qualite" 
+                                                   value=1 <?= $filtre_qualite == FILTRE_QUALITE_SD ? 'checked' : ''; ?> 
+                                                   onclick="ValiderFormulaireSiCriteresNonRaz();"
+                                                   />
+                                            SD</label>
+                                        </div>                 
+                                        <div class="col-xs-6 col-sm-4">
+                                            <label>
+                                            <INPUT type= "radio" name="qualite" 
+                                                   value=2 <?= $filtre_qualite == FILTRE_QUALITE_HD ? 'checked' : ''; ?> 
+                                                   onclick="ValiderFormulaireSiCriteresNonRaz();"
+                                                   />
+                                            HD</label>
+                                            
+                                        </div> 
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        Divers : 
+                                    </div>
+
+
+
+
+                                    <div class="col-xs-11 col-xs-offset-1">
+
+                                        <div class="checkbox ">
+                                            <input type="hidden"  name="filtre_jamais_vu" value="0" />
+                                            <label>
+                                                <input type="checkbox" id="filtre_jamais_vu" name="filtre_jamais_vu" 
+                                                       value="1" <?= $filtre_jamais_vu ? 'checked' : ''; ?>
+                                                       onclick="ValiderFormulaire();"/>
+                                                Filtrer uniquement les films que j'ai jamais vu.
+                                            </label>
+                                        </div>
+                                    </div>    
+                                </div>
+
+
+
+
+
+                                <?php
+                                if ($controle_parental_actif == false) {
+                                    ?>
+
+                                    <!--option de filtrage parental-->
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            Filtrage parental autorisé : 
+                                        </div>
+                                        <?php
+                                        //var_dump($filtre_qualite);
+                                        ?>
+                                        <div class="radio col-xs-offset-1">
+
+
+                                            <div class="col-xs-6 col-sm-4">
+                                                <label>
+                                                    <INPUT type= "radio" name="filtre_recherche_parental" id="filtre_recherche_parental_tous" 
+                                                           value=0 <?= $filtre_recherche_parental == FILTRE_RECHERCHE_PARENTAL_TOUS ? 'checked' : ''; ?> 
+                                                           onclick="ValiderFormulaire();"
+                                                           />
+                                                    Tous
+                                                </label>
+                                            </div>
+
+                                            <div class="col-xs-6 col-sm-4">
+                                                <label>
+                                                    <INPUT type= "radio" name="filtre_recherche_parental" 
+                                                           value=1 <?= $filtre_recherche_parental == FILTRE_RECHERCHE_PARENTAL_NON ? 'checked' : ''; ?> 
+                                                           onclick="ValiderFormulaire();"
+                                                           />
+                                                    Non
+                                                </label>
+                                            </div>                 
+                                            <div class="col-xs-6 col-sm-4">
+                                                <label>
+                                                    <INPUT type= "radio" name="filtre_recherche_parental" 
+                                                           value=2 <?= $filtre_recherche_parental == FILTRE_RECHERCHE_PARENTAL_OUI ? 'checked' : ''; ?> 
+                                                           onclick="ValiderFormulaire();"
+                                                           />
+                                                    Oui
+                                                </label>
+                                            </div> 
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <?php
+                                } else {
+                                    ?>
+                                    <input type="hidden" name="filtre_recherche_parental" value="0" />
+                                    <?php
+                                }
+                                ?>
+
+
+                                <?php
+                                render_options_tri();
+                                ?>
+
+
+
+
+                                <!--affichage gallerie ou liste (1.x)-->
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        Type d'affichage : 
+                                    </div>
+
+                                    <div class="radio col-xs-offset-1"> 
+
+                                        <div class="full_320 col-xs-6 col-sm-4">
+                                            <label>
+                                                <INPUT type= "radio" name="type_affichage" 
+                                                       value=1 <?= $affichage_gallerie == 1 ? 'checked' : ''; ?> 
+                                                       onclick="javascript:window.location.href = 'index.php?type_affichage=1#menu';"
+                                                       />
+                                                <!--onclick="ValiderFormulaire();"-->
+                                                Galerie
+                                            </label>
+                                        </div>
+                                        <div class="full_320 col-xs-6 col-sm-8">
+                                            <label>
+                                                <INPUT type= "radio" name="type_affichage" 
+                                                       value=0 <?= $affichage_gallerie == 0 ? 'checked' : ''; ?> 
+                                                       onclick="javascript:window.location.href = 'index.php?type_affichage=0#menu';"
+                                                       />
+                                                <!--onclick="ValiderFormulaire();"-->
+                                                Liste (comme la version 1.x) 
+                                            </label>
+                                        </div>
+
+
+
+                                    </div><!-- /input-group -->
+                                </div>
+
+                            </div>
+                        </div>     
+
+                    </div>
+                </div>
+
+
+                <div id="autres_panels" class=" collapse <?= $panels_deplie ? 'in' : ''; ?>" >
+
+
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-12 genres"> 
+                            <?php
+                            //affichage des genres & années
+                            require_once 'index-genres.phtml';
+                            ?>
+
+                        </div>
+                        <div class="col-sm-6 col-lg-12"> 
+
+
+                            <?php
+                            //affichage des types de publique
+                            require_once 'index-type-publiques.phtml';
+                            ?>
+                        </div>
+                    </div>
+                    <?php
+                    //affichage des années de production
+                    require_once 'index-annees.phtml';
+
+                    //affichage des années de production
+                    require_once 'index-nationalites.phtml';
+
+                    //affichage du panel de la taille
+                    require_once 'index-avance.phtml';
+
+                    //affichage du panel des exports
+                    require_once 'index-export.phtml';
+                    ?>
+            </form>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<!--Body content-->
+<div id="body_content" class="col-lg-8 col-xl-9" >
+    <?php
+//var_dump($description_filtre);
+    if ($nombre_films_trouves >= 0) {
+        if ($description_filtre == '')
+            $description_filtre = 'il y a <b>aucun filtre</b>';
+//affichage du nombre de résultat
+        if ($nombre_films_trouves == 0) {
+            html_bootstrap_alert_danger("Aucun résultat dont $description_filtre ");
+        } else {
+            html_bootstrap_alert_success("Résultat de la recherche dont $description_filtre : " . '<b>' . $nombre_films_trouves . '</b><br>' . get_options_tri());
+        }
+
+        if ($affichage_gallerie) {
+            if (count($result) > 0) {
+                AfficherResultatsGalerie($result);
+            }
+        } else {
+            AfficherResultats($result);
+        }
+    }
+
+
+
+    //affiche des derniers lus
+    if (count($derniers_lus) > 0 && config::affichage_visionnes_apres_ajouts() == false) {
+        render_dernier_lus();
+    }
+    if ($nb_derniers_ajouts > 0) {
+        //affiche les derniers rentrés
+        ?>
+        <!-- Last added movies -->
+        <div id="last_added_movies">
+            <script>
+                goto_ancre('#last_added_movies');
+            </script>
+            <div id="derniers_films_ajoutes" class="alert alert-info alert-block">  
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Les <?= $nb_derniers_ajouts; ?> derniers films ajoutés
+                            <a href="index.php?nb_derniers_ajouts=<?= ($nb_derniers_ajouts + 25); ?>#last_added_movies"> + de résultats</a>
+
+                            <select style="color: black;" name="forma" onchange="location = this.options[this.selectedIndex].value;">
+
+                                <?php
+                                //http://stackoverflow.com/questions/2000656/using-href-links-inside-option-tag
+                                for ($index = 0; $index < 33; $index++) {
+                                    ?>
+                                    <option value="?nb_derniers_ajouts=<?= $nb_derniers_ajouts + $index * 10; ?>#last_added_movies"><?= $index != 0 ? $index * 10 : ''; ?></option>
+                                    <?php
+                                    //pour les grands nombre on change le pas
+                                    if ($index >= 10) {
+                                        $index++;
+                                        if ($index >= 20) {
+                                            $index++;
+                                            $index++;
+                                        }
+                                    }
+                                }
+                                ?>
+
+                            </select>
+                            <?php
+                            if (config::nb_visu_ajouts() < count($derniers_ajouts)) {
+                                ?>
+                                <a class="btn btn-info btn-sm pull-right"
+                                   href="?nb_derniers_ajouts=<?= config::nb_visu_ajouts(); ?>#last_added_movies"
+                                   title="Remettre à la valeur d'origine ( <?= config::nb_visu_ajouts(); ?> derniers ajoutés)">
+                                    <span class="glyphicon glyphicon-repeat icon-flipped" aria-hidden="true"></span>
+                                    <span class="">RAZ (<?= config::nb_visu_ajouts(); ?>)</span>
+                                </a>
+
+                                <?php
+                            }
+                            ?>
+                        </h4>
+                    </div>
+                </div>
+
+                <?php
+                if ($nb_derniers_ajouts_prec > count($derniers_ajouts))
+                    $nb_derniers_ajouts_prec = count($derniers_ajouts);
+                if ($affichage_gallerie) {
+                    AfficherResultatsGalerie($derniers_ajouts, true);
+                } else {
+                    AfficherResultatsListe($derniers_ajouts);
+                }
+                ?>
+
+                <!--<br>-->
+                <p>
+                <h5>
+                    <a href="index.php?nb_derniers_ajouts=<?= ($nb_derniers_ajouts + 25); ?>#last_added_movies_suite">afficher 25 ajouts supplémentaires</a>
+                </h5> 
+                </p>
+            </div>  
+        </div>
+
+        <?php
+    }
+
+    //affiche des derniers lus
+    if (count($derniers_lus) > 0 && config::affichage_visionnes_apres_ajouts() == true) {
+        render_dernier_lus();
+    }
+    ?>
+</div>
+</div>
+
+<script>
+    //pour la side bar
+    active_fixed_side_bar_hd();
+
+    //actualisation des quantités
+    var nbgenres =<?= $nb_genres ?>;
+    var nbannees =<?= $nb_annees ?>;
+    var nbpublics =<?= $nb_publics; ?>;
+    var nbnationalites =<?= $nb_nationalites; ?>;
+
+    RaffraichitNbGenresCoches();
+    RaffraichitNbAnneesCoches();
+    RaffraichitNbPublicCoches();
+    RaffraichitNbNationalitesCoches();
+
+</script>
+
+<?php
+html_centre($nb_films . " films enregistrés dans la base de données");
+
+
+//fin de la page
+require_once 'footer.php';
+
+//
+//              FIN DE LA PAGE
+//
+
+function get_options_tri() {
+    global $type_tri;
+
+    //dans tpl.phtml
+    return get_options_tri_str('tri2', $type_tri, 'full_320 col-xs-6 col-sm-4 col-md-3 col-xl-2', 'ValiderFormulaire2();', 'Trié par :');
+}
+
+//celui dans le sidebar
+function render_options_tri() {
+    global $type_tri;
+    ?>
+    <!--résultats trié par-->
+    <div class="row">
+        <div class="col-xs-12">
+            Résultats trié par :
+        </div>
+        <div class="radio col-xs-offset-1"> 
+            <!--full_320 col-xs-6 col-sm-4-->
+            <!--col-sm-4 col-lg-12-->
+            <div class="full_320 col-xs-6 col-sm-4 col-lg-12">
+                <label>
+                    <INPUT type= "radio" name="tri"
+                           value=<?= TYPE_TRI_TITRE ?> <?= $type_tri == TYPE_TRI_TITRE ? 'checked' : ''; ?> 
+                           onclick="ValiderFormulaireSiCriteresNonRaz();"
+                           />
+                    Titre (ordre alphabétique)
+                </label>
+            </div>
+            <div class="full_320 col-xs-6 col-sm-4  col-lg-12">
+                <label>
+                    <INPUT type= "radio" name="tri" 
+                           value=<?= TYPE_TRI_D_AJOUT ?> <?= $type_tri == TYPE_TRI_D_AJOUT ? 'checked' : ''; ?> 
+                           onclick="ValiderFormulaireSiCriteresNonRaz();"
+                           />
+                    Derniers ajouts en 1er
+                </label>
+            </div>
+
+            <div class="full_320 col-xs-6 col-sm-4  col-lg-12">
+                <label>
+                    <INPUT type= "radio" name="tri" 
+                           value=<?= TYPE_TRI_D_SORTIE ?> <?= $type_tri == TYPE_TRI_D_SORTIE ? 'checked' : ''; ?> 
+                           onclick="ValiderFormulaireSiCriteresNonRaz();"
+                           />
+                    Dernières sorties en 1er
+                </label>
+            </div>
+
+            <div class="full_320 col-xs-6 col-sm-4  col-lg-12">
+                <label>
+                    <INPUT type= "radio" name="tri" 
+                           value=<?= TYPE_TRI_D_SORTIE_ASC ?> <?= $type_tri == TYPE_TRI_D_SORTIE_ASC ? 'checked' : ''; ?> 
+                           onclick="ValiderFormulaireSiCriteresNonRaz();"
+                           />
+                    Plus ancien au plus récent
+                </label>
+            </div> 
+
+            <div class="full_320 col-xs-6 col-sm-4  col-lg-12">
+                <label>
+                    <INPUT type= "radio" name="tri" 
+                           value=<?= TYPE_TRI_NOTATION ?> <?= $type_tri == TYPE_TRI_NOTATION ? 'checked' : ''; ?> 
+                           onclick="ValiderFormulaireSiCriteresNonRaz();"
+                           />
+                    Meilleurs notes en 1er
+                </label>
+            </div>
+
+            <div class="full_320 col-xs-6 col-sm-4  col-lg-12">
+                <label>
+                    <INPUT type= "radio" name="tri" 
+                           value=<?= TYPE_TRI_DUREE ?> <?= $type_tri == TYPE_TRI_DUREE ? 'checked' : ''; ?> 
+                           onclick="ValiderFormulaireSiCriteresNonRaz();"
+                           />
+                    Durée (du + court au + long)
+                </label>
+            </div>  
+
+
+        </div><!-- /input-group -->
+
+    </div>
+    <?php
+}
+
+function render_dernier_lus() {
+    global $derniers_lus;
+    global $affichage_gallerie;
+    ?>
+    <div id="last_visionnes">
+        <script>
+            //permet d'aller + vite à l'ancre concerné
+            goto_ancre('#last_visionnes');
+        </script>
+
+
+
+        <div id="derniers_films_visionnes" class="alert alert-warning text-warning "> 
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4 class="row col-xs-12">Derniers films visionnés 
+                        <?php
+                        if (config::nb_visu_histo() < count($derniers_lus)) {
+                            ?>
+                            <a class="btn btn-warning btn-sm pull-right"
+                               style="margin-right: -30px;"
+                               href="?nb_derniers_lus=<?= config::nb_visu_histo(); ?>#last_visionnes"
+                               title="Remettre à la valeur d'origine ( <?= config::nb_visu_histo(); ?> derniers lus)">
+                                <span class="glyphicon glyphicon-repeat icon-flipped" aria-hidden="true"></span>
+                                <span class="">RAZ (<?= config::nb_visu_histo(); ?>)</span>
+                            </a>
+                            <?php
+                        }
+                        ?>
+                    </h4>
+                </div>
+            </div>
+            <?php
+            if ($affichage_gallerie) {
+                AfficherResultatsGalerie($derniers_lus);
+            } else {
+                //remet la couleur du texte par défaut
+                ?>
+                <div class="text-default">    
+                    <?php
+                    AfficherResultatsListe($derniers_lus, false);
+                    ?>
+                </div>
+                <?php
+            }
+            ?>
+            <p>
+            <h5>
+                <a href="index.php?nb_derniers_lus=<?= count($derniers_lus) + config::nb_visu_histo(); ?>#last_visionnes">afficher <?= config::nb_visu_histo(); ?> supplémentaires</a>
+            </h5>
+            </p>
+        </div>
+    </div>
+
+    <?php
+}
+
+function render_bouton_collapse($id_bouton, $flag_deplie, $info_bulle = '') {
+    ?>
+    <div class="col-xs-1" style="width: 50px;">
+        <button type="button"
+                class="btn btn-default  "  
+                <?= strlen($info_bulle) > 0 ? 'title="' . $info_bulle . '"' : '' ?>
+                id ="<?= $id_bouton; ?>" >
+            <div id="<?= $id_bouton; ?>_chevron-down" 
+                 style="display:   <?= $flag_deplie ? 'inline' : 'none'; ?>">
+                <span class="glyphicon glyphicon-chevron-down" ></span>
+            </div>
+            <div id="<?= $id_bouton; ?>_chevron-left" 
+                 style="display:  <?= $flag_deplie ? 'none' : 'inline'; ?>">
+                <span class="glyphicon glyphicon-chevron-right"  ></span>
+            </div>
+
+        </button>
+    </div>
+
+    <?php
+}
+
+function AfficherResultatsListe($derniers_ajouts, $flag_derniers_ajouts = true) {
+    ?>
+    <div>
+        <?php
+        global $nb_derniers_ajouts_prec;
+        //flag derniers ajouts (ca sert pour les boutons prec et suivant)
+        if ($flag_derniers_ajouts != false) {
+            $flag_ordre_derniers_ajouts = '&ordreajout=1';
+        } else {
+            $flag_ordre_derniers_ajouts = '';
+        }
+
+
+
+        $film = new MyVOD_Details();
+        $i = 0;
+
+        foreach ($derniers_ajouts as $film) {
+
+            $i++;
+
+            if ($i == $nb_derniers_ajouts_prec) {
+                ?>
+                <div id="last_added_movies_suite"></div>
+                <?php
+            }
+            ?>
+
+            <div class="row col-xxs-12">
+                <center>
+                    <h4>
+                        <?php
+                        RenderTitreFicheAvecLiens($film, $flag_ordre_derniers_ajouts);
+                        ?>
+                    </h4>
+                </center>
+            </div>    
+
+
+            <div class="row vertical-align-md">
+
+                <div class = "col-md-4 col-xl-3"> 
+                    <center>
+                        <a href="detail.php?file=<?= $film->ID . $flag_ordre_derniers_ajouts; ?>">
+                            <img class="img-thumbnail" style="width:75%; max-width: 240px"    src="
+                            <?=
+                            MyVOD::affiche_to_url_miniature($film->Affiche);
+                            ?>" alt="Affiche du film"/>
+                        </a>
+                    </center>
+                </div>
+
+
+                <div style = "" class = "col-md-8 col-xl-9 text-justify">
+
+                    <?php
+                    AfficherDetailsFiche($film, $flag_ordre_derniers_ajouts);
+                    ?>
+
+
+                </div>
+
+            </div>
+            <hr>
+            <?php
+        }
+        ?>
+    </div>
+    <?php
+}
+
+//<div id="last_added_movies">
+
+function AfficherResultatsGalerie($result, $flag_derniers_ajouts = false) {
+    global $paths;
+    global $nb_derniers_ajouts_prec;
+
+
+    //flag derniers ajouts (ca sert pour les boutons prec et suivant)
+    if ($flag_derniers_ajouts != false) {
+        $flag_ordre_derniers_ajouts = '&ordreajout=1';
+    } else {
+        $flag_ordre_derniers_ajouts = '';
+    }
+    //var_dump($flag_ordre_derniers_ajouts);
+    if ($result != null) {
+        ?>
+
+
+        <div class="container-fluid">
+
+            <?php
+            $i = -1;
+            ?>
+            <div class="row">
+
+                <?php
+                $cpt = 0;
+
+                //on boucle sur les résultats
+                foreach ($result as $film) {
+
+                    $i++;
+
+                    //fermeture et réouverture de la div ligne de 6 images
+                    if ($i == 6 * 4) {
+                        $i = 0;
+                        ?>
+                    </div>
+                    <div class="row" >
+                        <?php
+                    }
+                    ?>
+
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 col-xl-2 full_320">
+
+                        <?php
+                        //ancrage "last_added_movies_suite"
+                        $cpt++;
+
+                        //echo($cpt);
+                        if ($cpt == $nb_derniers_ajouts_prec && $flag_derniers_ajouts == true) {
+                            //echo('-----'.$nb_derniers_ajouts_prec);
+                            ?>
+                            <div id="last_added_movies_suite" ></div>
+
+                            <script>
+                                goto_ancre('#last_added_movies_suite');
+                            </script>
+
+
+                            <?php
+                        }
+                        /* onmouseover="souris_rentre_img_gallerie('<?= MyVOD::affiche_to_url_miniature($film->Affiche); ?>')"
+                          onmouseout="souris_sort_img_gallerie()" */
+                        //https://javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave
+                        ?>
+
+
+                        <div class="gallerie" id="film_<?= $film->ID; ?>"
+                             onmouseenter="souris_rentre_img_gallerie('<?= MyVOD::affiche_to_url_miniature($film->Affiche); ?>')"
+                             onmouseleave="souris_sort_img_gallerie()"
+                             >
+
+                            <div class="legende">
+
+                                <?php
+                                //var_dump($flag_ordre_derniers_ajouts);
+                                AfficherDetailsFiche($film, $flag_ordre_derniers_ajouts);
+                                ?>
+
+                            </div>
+
+
+                            <div class="calage"></div>
+
+                            <img class="img-thumbnail affiche_gallerie "  id="miniature_<?= $film->ID ?>"
+                                 src="<?= MyVOD::affiche_to_url_miniature($film->Affiche); ?>" alt="<?= $film->Titre ?>">
+                                 <?php
+                                 if (strlen($film->Affiche) == 0) {
+                                     ?>
+                                <div class="titre-sans-affiche" >
+                                    <?= $film->Titre; ?>
+                                </div>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                    <?php
+                }
+                //fin du tableau principal
+                ?>
+            </div>
+        </div>
+
+        <?php
+    }
+}
+
+function RenderTitreFicheAvecLiens($film, $flag_ordre_derniers_ajouts) {
+
+    //affiche un petit logo pour les films filtré (quand on est en admin)
+    if (controle_parental::config_actif() && (controle_parental::filtrage_actif() == false)) {
+        render_logo_filtre($film->Autorise);
+    }
+    render_logo_has_message($film);
+    ?>
+
+    <strong>
+        <?php render_logo_deja_vu($film); ?>
+        <a id="titre_<?= $film->ID ?>" 
+           href="detail.php?file=<?= $film->ID . $flag_ordre_derniers_ajouts; ?>" 
+           title="Plus d'informations sur &QUOT;<?=
+           $film->Titre .
+           ($film->Titre != $film->TitreOriginal ? ' (' . $film->TitreOriginal . ')' : '' );
+           ?>&QUOT;">
+
+            <?= $film->Titre; ?>
+        </a>
+
+    </strong>
+
+    <?php
+}
+
+function AfficherDetailsFiche($film, $flag_ordre_derniers_ajouts) {
+    global $paths;
+    global $affichage_gallerie;
+    $small = $affichage_gallerie ? 'small' : 'div';
+
+    $has_logo = false; //vrai si au moins 1 logo (MKV, HD, ou truefrench utilisé)
+    ?>
+
+    <center>
+        <h4 style="margin-top: 2px; margin-bottom:  8px;">
+
+            <?php
+            if ($affichage_gallerie) {
+                //titre et logo déjà vu
+                RenderTitreFicheAvecLiens($film, $flag_ordre_derniers_ajouts);
+            }
+            //ajoute une nouvelle ligne pour avoir les logos HD et VFF sur la même ligne
+            if ($film->is_hd() || $film->is_vff() || $film->is_mkv()) {
+                $has_logo = true;
+                ?>
+                <div style="height: 5px;" class="popup-invisible"></div>
+                <?php
+            }
+
+
+            if ($film->is_hd()) {
+                ?>
+
+                <span class="label label-quality">HD</span>
+
+                <?php
+                if ($film->HD720) {
+                    ?>
+                    <span class="label label-quality">720p</span>
+                    <?php
+                } else {
+                    ?>
+
+                    <span class="label label-quality">1080p</span>
+                    <?php
+                }
+            }
+
+            if ($film->is_vff()) {
+                ?>
+                <span class="label label-quality">VFF</span>
+                <?php
+            }
+
+
+            if ($film->is_mkv()) {
+                ?>
+                <span class="label label-quality">MKV</span>
+                <?php
+            }
+
+            //ajoute une nouvelle ligne visible uniquement dans la popup
+            if ($has_logo) {
+                ?>
+                <div style="height: 8px;" class="popup-visible"></div>
+                <?php
+            }
+            ?>
+
+        </h4>     
+
+    </center>
+
+    <?php
+    //if(!$affichage_gallerie){echo '<big>';}
+    ?>
+
+    <<?= $small ?>>
+    <div onclick="popup_details(<?= $film->ID ?>)">
+
+        <center>
+            <strong>
+                <?= $film->AnneeSortie . ' - ' . $film->Duree(); ?>
+
+                <br>
+            </strong>
+            <div>
+                <?= $film->Genres() . ' / ' . $film->TypePublic; ?>
+                <?= $film->Nationalite == '' ? '' : '<span class="popup-visible"> </span> <i>(' . $film->Nationalite . ')</i>'; ?>
+            </div>
+        </center>
+
+
+
+        <!--notation (étoiles)-->
+        <h4 style="margin-bottom: 5px;">
+            <center>
+                <?php
+                $ratio = $film->NoteMoyenne();
+                stars_rating::render($ratio, $film->NoteMoyenneTexte());
+                ?>
+            </center>
+        </h4>
+    </div>
+
+
+
+
+    <?php
+    //test avec bouton "lire video"
+    $link_m3u = false;
+
+    if (isset($paths[mb_strtolower($film->Filename, 'UTF-8')]->full_path)) {
+        //version V.2.2.1 (LC 08/06/2016) on enlève le test de l'existance du fichier
+        //pour de meilleurs performances et autre test est fait à l'appel du m3u
+        //if (file_exists_utf8($paths[mb_strtolower($film->Filename, 'UTF-8')]->full_path)) {
+        require_once 'lib/m3u-gen.php';
+        $link_m3u = m3u_get_url_from_MyVOD_Details($film);
+        //var_dump($link_m3u);
+        //}
+    }
+    //si lien m3u ok, on affiche le bouton "Lire la vidéo" 
+    ?>
+
+    <center>
+        <?php
+        if ($link_m3u != false) {
+            ?>
+
+            <a href="<?= $link_m3u ?>" 
+               class="btn btn-success "  type="audio/x-mpegurl" 
+               target="_blank">
+                <!--<small>-->
+                <!--class egalement 'btn-xs' pour être + petit-->
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  <span class="lire_video_in_galerie">Lire la vidéo</span>
+                <!--</small>-->
+            </a>
+            <?php
+        }
+        /* Lien recherche Google */
+        render_bt_recherche_google($film, '<i class="fa fa-google" aria-hidden="true"></i>');
+
+        /* Modifier la fiche */
+        if (Gestion_admin::est_connecte()) {
+            $txt_bt_modifier = '';
+            if ($link_m3u == false) {
+                $txt_bt_modifier = '<span class="lire_video_in_galerie">&nbsp;&nbsp;Modifier</span>';
+            }
+            ?>
+            <a href="detail-modif.php?file=<?= $film->ID; ?>"
+               class="btn btn-danger" 
+               title="Modifier la fiche du film">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><?= $txt_bt_modifier; ?>
+            </a>
+            <?php
+        }
+        ?>
+    </center>
+    <div style="margin-top: 4px" >
+        <<?= $small ?> onclick="popup_details(<?= $film->ID ?>)">
+
+        <div class="<?= $affichage_gallerie ? 'text-cache-galerie' : ''; ?>">
+            <strong>Réalisateurs : </strong><?= $film->Realisateur; ?><br/>
+            <strong>Acteurs : </strong><?= $film->Acteurs; ?><br/>
+        </div>
+        <?= $affichage_gallerie ? '' : '<br/>'; ?>
+        <strong>Résumé : </strong><?= $affichage_gallerie ? '' : '<br/>'; ?><?= $film->Synopsis ?>
+        </<?= $small ?>>
+    </div>
+    </<?= $small ?>>
+
+    <?php
+    //if(!$affichage_gallerie){echo '</big>';}
+    ?>
+
+    <?php
+}
+
+function AfficherResultats($result) {
+    if (count($result) == 0) {
+        return;
+    }
+
+    //-- en test
+
+    echo '<div class="resultats-liste alert list-group-item">';
+
+    AfficherResultatsListe($result, false);
+
+    $pluriel = count($result) > 1 ? 's' : '';
+    echo count($result) . ' élément' . $pluriel . ' trouvé' . $pluriel;
+    echo '</div><br>';
+}
+
+$film = new MyVOD_Details;
+?>
+

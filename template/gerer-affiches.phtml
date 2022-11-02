@@ -1,0 +1,221 @@
+<?php
+//entête
+require_once 'header.php';
+
+
+//construction formulaire
+//http://bootsnipp.com/forms
+?>
+
+
+<br>
+
+
+<!--menu dynamique (tabs)-->
+<!--exemple sur : https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_tabs_dynamic&stacked=h-->
+
+<ul class="nav nav-tabs onglets">
+    <!--attention, l'ordre des onglets a été inversé par rapport à la génération de la page-->
+    <li class="<?= onglets_get_class_ul_li_active('tab1') ?>">
+        <a data-toggle="tab" href="#tab1">
+            Affiches à factoriser <?php
+            render_badge($nb_factorisations, 'badge-success', 'badge-warning');
+            ?>
+        </a>
+    </li>
+
+
+    <!--<li class="active"><a data-toggle="tab" href="#home">Nouveaux fichiers détectés</a></li>-->
+    <li class="<?= onglets_get_class_ul_li_active('tab2') ?>">
+        <a data-toggle="tab" href="#tab2">
+            Affiches orphelines <?php
+            render_badge($nb_fichiers, 'badge-success', 'badge-warning');
+            ?>
+        </a>
+    </li>
+
+</ul>
+
+
+<?php
+onglets_render_code_js_persistant_tabs();
+?>
+
+
+<div class="tab-content">
+    <div id="tab2" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab2') ?>">
+
+        <p>
+            <?php
+            if ($nb_fichiers > 0) {
+                ?>
+            <legend>
+                <?= $nb_fichiers; ?> affiches peuvent être supprimées car elle ne correspondent pas à des fiches dans la base de données
+            </legend>
+            <!--affaichage des détails des affiches orphelines-->
+
+            <table class="table table-hover table-striped table-condensed">
+
+                <tbody>
+                    <?php
+                    $f = new info_img(); //pour autocompletion
+                    $i = 0;
+                    foreach ($fichiers_images as $f) {
+                        if ($f->pointe == 0) {
+                            $i++;
+                            ?>
+
+                            <tr>
+                                <td>
+                                    <?php
+                                    render_affiche_miniature($f->nom);
+                                    ?>
+                                    &nbsp;&nbsp;
+                                    <?= $i . ' :    ' . $f->nom . ' ( taille : ' . $f->taille . ' o)' ?>
+
+                                </td>
+                            </tr>
+
+                            <?php
+                        }
+                    }
+                    ?>
+
+                </tbody>
+            </table>     
+
+            <?= taille_fichier_en_texte($taille_totale) ?> de gagné
+            <center>
+                <a class="btn btn-primary" href="gerer-affiches.php?action=<?= ACTION_SUPPRIMER_AFFICHES; ?>">
+                    Supprimer
+                </a>
+            </center>
+            <?php
+        } else {
+            ?>
+            <legend style="border: 0; padding-top: 48px; padding-bottom: 48px;">
+                Il n'y a pas d'affiche orpheline.
+            </legend>
+            <?php
+        }
+        ?>
+
+        </p>
+
+
+    </div>
+    <div id="tab1" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab1') ?>">
+
+
+        <p>
+
+            <?php
+            if ($nb_factorisations > 0) {
+                ?>
+            <legend>
+                <?= $nb_factorisations; ?> affiches peuvent être factorisées car elles sont en doubles pour les films en plusieurs fichiers<br>
+            </legend>
+            <!--affichage des détails de la factorisation-->
+            <table class="table table-hover table-striped table-condensed">
+                <tbody>
+
+                    <?php
+                    $i = 0;
+                    foreach ($affiches_triees as $k => $d) {
+                        $nouvelle = new MyVOD_Details(); //pour l'autocompletion
+                        //on parcourt les sous tableaux (qui sont triés par fiche films)
+
+                        foreach ($d as $nouvelle) {
+
+                            if ($affiches_a_conserver[$k] != $nouvelle->Affiche) {
+                                $i++;
+                                $old_affiche = $nouvelle->Affiche;
+                                $new_affiche = $affiches_a_conserver[$k];
+                                ?>
+
+
+                                <tr>
+                                    <td>
+
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<?= $i . ' (' . $k . ')' ?> : <br><br>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-sm-6">
+                                                <?php
+                                                render_affiche_miniature($old_affiche);
+                                                ?>
+                                                &nbsp;&nbsp;
+                                                ancien : <?= $old_affiche; ?> 
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <?php
+                                                render_affiche_miniature($new_affiche);
+                                                ?> 
+                                                &nbsp;&nbsp;
+                                                nouvelle affiche : <?= $new_affiche; ?> 
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </td>
+                                </tr>
+
+
+
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
+
+
+                </tbody>
+            </table>   
+
+            <?= taille_fichier_en_texte($taille_totale_factorise) ?> de gagné
+            <center>
+                <a class="btn btn-primary" href="gerer-affiches.php?action=<?= ACTION_FACTORISER_AFFICHES; ?>">
+                    Factoriser
+                </a>
+            </center>
+            <?php
+        } else {
+            ?>
+            <legend style="border: 0; padding-top: 48px; padding-bottom: 48px;">
+                Il n'y a pas d'affiche à factoriser.
+            </legend>
+            <?php
+        }
+        ?>
+        </p>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+<?php
+require_once 'footer.php';
+
+/**
+ * 
+ * FIN DE LA PAGE
+ * 
+ */
+function render_affiche_miniature($affiche) {
+    ?>
+    <img class="img-thumbnail2 " style="max-height: 100px"
+         src="<?= MyVOD::affiche_to_url_miniature($affiche); ?>" alt="...">
+    <?php
+}

@@ -1,0 +1,403 @@
+<?php
+require_once 'header.php';
+
+//je n'aime pas triop mettre le style dans la page
+//mais ca fait un décallage
+?>
+<style>  
+    .control-label {
+        padding-top: 5px !important;
+    }
+</style>
+
+<br>
+
+<!--menu dynamique (tabs)-->
+<!--exemple sur : https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_tabs_dynamic&stacked=h-->
+
+<ul class="nav nav-tabs onglets">
+    <!--<li class="active"><a data-toggle="tab" href="#home">Nouveaux fichiers détectés</a></li>-->
+    <li class="<?= onglets_get_class_ul_li_active('tab1') ?>"><a data-toggle="tab" href="#tab1">Paramétrages de MyVOD</a></li>
+    <li class="<?= onglets_get_class_ul_li_active('tab2') ?>"><a data-toggle="tab" href="#tab2">Affichage</a></li>
+    <li class="<?= onglets_get_class_ul_li_active('tab3') ?>"><a data-toggle="tab" href="#tab3">Contrôle parental</a></li>
+    <li class="<?= onglets_get_class_ul_li_active('tab4') ?>"><a data-toggle="tab" href="#tab4">Mot de passe admin</a></li>
+</ul>
+
+
+<?php
+onglets_render_code_js_persistant_tabs();
+?>
+
+
+
+
+
+
+
+
+<div class="tab-content">
+
+    <form class="form-horizontal" method="post">
+        <fieldset>
+
+
+
+            <div id="tab1" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab1') ?>">
+
+                <div class="">
+
+
+                    <legend>
+                        Paramétrages de MyVOD :
+                    </legend>
+                    <br>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Répertoire local de recherche des films (sur le serveur) :</label> 
+                        <div class="col-sm-6">
+                            <input id="repertoireFilmsLocal" name="repertoireFilmsLocal"  
+                                   class="form-control input-sm" required="" type="text"
+                                   onblur="document.getElementById('a_repertoireFilmsLocal').href = 'actions/explorer.php?repertoire=' + this.value;"
+                                   value="<?= config::repertoireFilmsLocal() ?>" >
+                            <small>sans le \ ou le / à la fin (exemple : C:\films)</small>
+                            <br>
+                            <a id="a_repertoireFilmsLocal"
+                               href="actions/explorer.php?repertoire=<?= config::repertoireFilmsLocal(); ?>" 
+                               target="_blank" >
+                                Explorer
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Alias Web du répertoire des films :</label> 
+                        <div class="col-sm-6">
+                            <input id="repertoireWebFilms" name="repertoireWebFilms"  
+                                   class="form-control input-sm" required="" type="text"
+                                   onblur="document.getElementById('a_repertoireWebFilms').href = this.value + '/';"
+                                   value="<?= config::repertoireWebFilms() ?>" >
+                            <small>sans le / à la fin (exemple : http://192.168.1.3/mes_films)</small>
+                            <br>
+                            <a id="a_repertoireWebFilms"
+                               href="<?= config::repertoireWebFilms(); ?>/" 
+                               target="_blank" >
+                                Vérifier
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Chemin de partage réseau :<br/>
+                            <small>( pas nécessaire si MyVOD est utilisé que en local )</small></label> 
+
+                        <div class="col-sm-6">
+
+                            <input id="repertoireWebPartage" name="repertoireWebPartage"  
+                                   class="form-control input-sm"  type="text"
+                                   onblur="document.getElementById('a_repertoireWebPartage').href = 'actions/explorer.php?repertoire=' + this.value;"
+                                   value="<?= config::repertoireWebPartage() ?>" >
+                            <small>sans le / à la fin (exemple : //192.168.1.3/mes_films)</small>
+                            <br>
+                            <?php
+                            if (Helper_system::apache_as_service()) {
+                                ?>
+
+
+                                <p>
+                                    <small>Pas de possibilité de lancer l'explorer sur un chemin réseau depuis php car Apache est en mode service.</small>
+                                </p>
+
+
+                                <?php
+                            } else {
+                                ?>
+
+                                <a id="a_repertoireWebPartage"
+                                   href="actions/explorer.php?repertoire=<?= config::repertoireWebPartage(); ?>" 
+                                   target="_blank" >
+                                    Explorer
+                                </a>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    </div>  
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >
+                            Taille de fichiers sur 64 bits :
+                        </label>
+                        <div class="col-sm-6">
+                            <?php
+                            $checked_64 = config::taille_fichiers_64_bits() ? ' CHECKED ' : '';
+                            ?>
+                            <input type="hidden" name="taille_fichiers_64_bits" value="0">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" 
+                                           id="taille_fichiers_64_bits" name="taille_fichiers_64_bits" 
+                                           value="1" <?= $checked_64; ?>>
+                                    <i>Permet de supporter les tailles de fichiers > à 4Go mais prend plus de temps.</i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Mots clés supplémentaires pour les recherches google :</label> 
+                        <div class="col-sm-6">
+                            <input id="mots_cles_suppl_google_search" name="mots_cles_suppl_google_search"  
+                                   class="form-control input-sm" required="" type="text"
+                                   value="<?= config::mots_cles_suppl_google_search() ?>" >
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <?php
+                generer_bouton_enregistrer_parametres();
+                ?>
+            </div>
+            <div id="tab2" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab2') ?>">
+
+                <!--col-lg-6-->
+                <div class="">
+
+                    <legend>
+                        Affichage :
+                    </legend>
+                    <br>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >
+                            Affichage : 
+                        </label>
+
+                        <div class="col-sm-6 checkbox">
+                            <input type="hidden" name="affichage_gallerie" value="0" />
+                            <label>
+                                <input type="checkbox" name="affichage_gallerie" value="1" <?= config::affichage_gallerie() ? 'checked' : ''; ?>/>
+                                Affichage des résultats sous forme de galerie.
+                            </label>
+                            <br>
+
+                            <input type="hidden" name="affichage_liste_tablette" value="0" />
+                            <label>
+                                <input type="checkbox" name="affichage_liste_tablette" value="1" <?= config::affichage_liste_tablette() ? 'checked' : ''; ?>/>
+                                Affichage des résultats sous forme de liste pour les tablettes et téléphone (meilleure expérience tactile).
+                            </label>
+                            <br>
+
+                            <input type="hidden" name="affichage_visionnes_apres_ajouts" value="0" />
+                            <label>
+                                <input type="checkbox" name="affichage_visionnes_apres_ajouts" value="1" <?= config::affichage_visionnes_apres_ajouts() ? 'checked' : ''; ?>/>
+                                Affichage des derniers films visionnés après les derniers ajouts.
+                            </label>
+                        </div>
+
+                    </div>  
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >
+                            Tri par défaut pour les résultats de recherche : 
+                        </label>
+
+                        <div class="col-sm-6">
+                            <?php
+                            $choix_tri = get_options_tri_str('tri_recherche_def', config::tri_recherche_def(), 'col-xxs-12 col-xs-6 col-sm-12 col-md-6 col-xl-4');
+                            echo $choix_tri;
+                            ?>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >
+                            Nombre de films dans les récemment lus : </label>
+                        <div class="col-sm-6">
+
+
+                            <SELECT name="nb_visu_histo" size="1" style="width: 80px;">
+                                <?php
+                                for ($i = 0; $i <= 25; $i++) {
+                                    $selected = $i == config::nb_visu_histo() ? ' SELECTED ' : '';
+                                    echo '<option ' . $selected . 'value="' . $i . '">' . $i . '</option>';
+                                }
+                                ?>         
+
+                            </SELECT>
+                            <br>
+                            <small>Mettre '0' pour désactiver cette option.</small>
+
+                        </div>
+                    </div> 
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >
+                            Nombre de films dans les derniers ajouts : </label>
+                        <div class="col-sm-6">
+
+
+                            <SELECT name="nb_visu_ajouts" size="1" style="width: 80px;">
+                                <?php
+                                for ($i = 0; $i <= 25; $i++) {
+                                    $selected = $i == config::nb_visu_ajouts() ? ' SELECTED ' : '';
+                                    echo '<option ' . $selected . 'value="' . $i . '">' . $i . '</option>';
+                                }
+                                ?>         
+
+                            </SELECT>
+                            <br>
+                            <small>Mettre '0' pour désactiver cette option.</small>
+
+                        </div>
+                    </div> 
+
+                </div>
+                <?php
+                generer_bouton_enregistrer_parametres();
+                ?>
+            </div>
+            <div id="tab3" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab3') ?>">
+
+                <!--col-lg-6-->
+                <div class="">
+
+
+                    <legend>
+                        Contrôle parental :
+                    </legend>
+                    <br>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >
+                            Contrôle parental : </label>
+                        <div class="col-sm-6 checkbox">
+                            <input type="hidden" name="controle_parental_actif" value="0" />
+                            <label>
+                                <input type="checkbox" name="controle_parental_actif" value="1" <?= controle_parental::config_actif() ? 'checked' : ''; ?>/>
+                                Activation du filtre contrôle parental.
+                            </label>
+                        </div>
+                    </div>   
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Code parental :</label> 
+                        <div class="col-sm-6">
+                            <input id="mdp2" name="code_parental"  
+                                   class="form-control input-sm" required="" type="password"
+                                   value="<?= controle_parental::code_parental(); ?>" >
+                        </div>
+                    </div> 
+
+
+                </div>
+
+                <?php
+                generer_bouton_enregistrer_parametres();
+                ?>
+
+
+            </div>   
+
+        </fieldset>
+
+
+        <!--avant le bouton enregistrer était ici-->
+
+    </form>
+
+
+
+
+
+    <div id="tab4" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab4') ?>">
+
+
+
+        <form class="form-horizontal" method="post">
+            <fieldset>
+                <div class="">
+                    <legend>
+                        Mot de passe administrateur (défaut 1234) :
+                    </legend>
+                    <br>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Mot de passe :</label> 
+                        <div class="col-sm-6">
+                            <input id="mdp1" name="mdp1"  
+                                   class="form-control input-sm" required="" type="password"
+                                   value="<?= config::mot_de_pass_admin() ?>" >
+                        </div>
+                    </div>  
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Confirmez votre mot de passe :</label> 
+                        <div class="col-sm-6">
+                            <input id="mdp2" name="mdp2"  
+                                   class="form-control input-sm" required="" type="password"
+                                   value="<?= config::mot_de_pass_admin() ?>" >
+                        </div>
+                    </div> 
+
+                </div>
+            </fieldset>
+
+
+
+            <br>
+            <div class="text-center">
+                <button id="action" 
+                        name="action" class="btn btn-danger" 
+                        type="submit"
+                        value="modifier_mdp">
+                    Modifier le mot de passe
+                </button>
+            </div>
+
+            <br>
+
+        </form>
+
+    </div>
+</div>  
+<script type="text/javascript">
+    //exemplepour choper evenements
+    //https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-tabs.php
+
+    //Fix les erreurs d'origines
+    $(document).ready(function () {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var activeTab = $(e.target).attr('href'); // Get the name of active tab
+            var previousTab = $(e.relatedTarget).attr('href');//.text(); // Get the name of previous tab
+            //window.alert(previousTab + '   '+ activeTab);
+
+            //https://stackoverflow.com/questions/5205052/set-class-with-jquery
+            $(previousTab).attr('class', 'tab-pane fade');
+
+        });
+    });
+</script>
+<?php
+require_once 'footer.php';
+
+function generer_bouton_enregistrer_parametres() {
+    ?>
+    <br>
+    <div class="text-center">
+        <button id="action" 
+                name="action" class="btn btn-danger" 
+                type="submit"
+                value="enregistrer">
+            <span class="glyphicon glyphicon-floppy-save"></span>
+            Enregistrer
+        </button>
+
+    </div>
+    <?php
+}

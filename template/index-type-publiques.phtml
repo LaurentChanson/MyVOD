@@ -1,0 +1,88 @@
+<div class="panel-group" id="accordionPublic" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default navbar " >
+        <!--style="z-index: 99;"/\-->
+        <div class=" panel-heading" role="tab" id="heading3">
+            <div class="row panel-title  " >
+
+                <a data-toggle="collapse" 
+                   data-parent="#accordionPublic" 
+                   href="#collapse3" aria-expanded="false" 
+                   aria-controls="collapse3" 
+                   onclick="MAJ_public_deplie();">
+
+                    <?php
+                    render_bouton_collapse('bt_collapse3', $public_deplie,'(Dé)plier le panel du filtre sur les types de publique');
+                    ?>
+
+
+                    <div class=" col-xs-7 "  >
+                        <h4>
+                            <div id="titre_public">Publiques</div>
+                        </h4>
+                    </div>
+
+
+
+
+                </a>
+
+                <input type="hidden" id="public_deplie" name="public_deplie" value="<?= $public_deplie; ?>" />
+
+            </div>
+        </div>
+
+
+        <div id="collapse3" class="panel-collapse collapse<?= $public_deplie ? ' in' : ''; ?>" 
+             role="tabpanel" aria-labelledby="heading3" >
+            <div class="panel-body">
+
+                <div class="row">
+
+                    <div class="pull-right">
+                        <button class="btn btn-default" type="submit" name ="action" id ="action" value="Recherche">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;  
+                    </div>
+                    <div class="text-center"> 
+                        <a href="javascript:CocherGroupCheckBox('public_filtre_',<?= count($publics); ?>);">Tous</a>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <a href="javascript:DecocherGroupCheckBox('public_filtre_',<?= count($publics); ?>);">Aucun</a>
+
+                    </div>
+                </div>
+
+                <div class="checkbox">
+                
+                <?php
+                $idx_public = 0;
+
+                foreach ($publics as $p) {
+
+                    $checked = isset($public_filtre[$idx_public]) ? 'checked' : '';
+                    ?>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-12">
+                        <label>
+                        <INPUT type= "CHECKBOX" 
+                               id="public_filtre_<?= $idx_public ?>"
+                               name="public_filtre[<?= $idx_public ?>]"
+                               value=<?= '"' . $p->Nom . '" ' . $checked; ?>
+                               onchange="RaffraichitNbPublicCoches();">
+                               <?= ' ' . $p->Nom . ' '; ?>
+                        <a href="javascript:FiltrerParPublic(<?= $idx_public ?>);">
+                            <span class="badge">
+                                <?= $p->nb; ?>
+                            </span>
+                        </a></label>
+                    </div>
+                    <?php
+                    $idx_public++;
+                }
+                ?>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+

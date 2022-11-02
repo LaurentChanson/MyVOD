@@ -1,0 +1,194 @@
+<?php
+//entête
+require_once 'header.php';
+
+require_once 'lib/chart/chart.php';
+
+
+//construction formulaire
+//http://bootsnipp.com/forms
+?>
+
+<br>
+
+<div class="row">
+    <!--gestion des fichiers-->
+    <div class="col-sm-4">
+        <fieldset>
+
+            <legend>Gestion des fichiers</legend>
+            <br>
+
+            <p>
+                <a href="maintenance-fichiers.php">Gérer les nouveaux fichiers (films)</a>
+            </p>
+            <p>
+                <a href="plusieurs-fichiers.php">Gérer les films en plusieurs fichiers</a>
+            </p>
+            <p>
+                <a href="gerer-affiches.php">Gérer les affiches des films</a>
+            </p>
+        </fieldset>
+        <br>
+    </div>
+
+
+    <!--dictionnaire-->
+
+    <div class="col-sm-4">
+        <fieldset>
+
+            <legend>Dictionnaire</legend><br>
+            <p>
+                <a href="mots-cles.php">Mots à ignorer dans le dictionnaire</a>
+            </p>
+        </fieldset>
+        <br>
+    </div>
+
+
+    <!--paramètres-->
+    <div class="col-sm-4">
+        <fieldset>
+
+            <legend>Paramètres</legend><br>
+            <p>
+                <a href="parametrages.php">Paramètres généraux</a>
+            </p>
+        </fieldset>
+        <br>
+    </div>
+
+</div> 
+
+
+
+<div class="row">
+
+    <!--espace disponible-->
+    <div class="col-sm-6">
+        <fieldset>
+            <legend>Occupation du disque</legend>
+            <br>
+            <center>
+                <div class="chart_parent">
+                    <?php
+                    //style="max-width:  400px;"
+                    Chart::render_pie("chart_occupation_disque", $series, true, " '#2E8FFF', '#FF5CFF'", true);
+                    ?>
+                </div>
+            </center>
+        </fieldset>
+        <br>
+    </div>
+
+
+
+    <!--informations-->
+    <div class="col-sm-6">
+        <fieldset>
+            <legend>Informations</legend>
+            <br>
+            <p>IP serveur : <b><?= $ip_serveur; ?></b></p>
+            <p>Votre IP : <b><?= $ip_navigateur; ?></b></p>
+            <p>Version PHP : <b><?= phpversion(); ?></b></p>
+            <p>Mobile détecté : <b><?=Helper_system::nav_OS_is_mobile()?'oui':'non'  ?></b></p>
+            <?php
+                $curl_actif_couleur=$curl_actif=='oui'?'success':'danger';
+                $open_ssl_actif_couleur=$open_ssl_actif=='oui'?'success':'danger';
+            ?>
+            <p>
+                Extension PHP CURL chargé : <b class="text-<?= $curl_actif_couleur; ?>"><?= $curl_actif; ?></b>
+                <br>
+                <small>
+                    <i>
+                        L'extension PHP CURL est nécessaire pour récupérer les informations sur Allo-ciné ou DVDFr.
+                    </i>
+                </small>
+            </p>
+            
+            <p>
+                Extension PHP OpenSSL chargé : <b class="text-<?=$open_ssl_actif_couleur; ?>"><?=$open_ssl_actif; ?></b>
+                <br>
+                <small>
+                    <i>
+                        L'extension PHP OpenSSL permet de charger des affiches en SSL depuis la page de modification d'une fiche et pour DVDFr qui est passé en https pour son API.
+                    </i>
+                </small>
+            </p>
+
+            <p>Apache est lancé en tant que console : <b class="text-info"><?= $apache_as_service; ?></b>
+                <br>
+                <small>
+                    <i>
+                        Si Apache est lancé en mode console, des fonctionnalités supplémentaires (comme la mise en corbeille et l'activation de l'explorateur) 
+                    seront activées.
+                    </i>
+                </small>
+            </p>
+        </fieldset>
+        <br>
+
+
+
+
+
+
+
+
+
+
+
+        <!--partie administration-->
+        <form class="form-horizontal" method="post" name="extinction">
+            <fieldset>
+
+                <!-- Form Name -->
+                <legend>Extinction du serveur</legend>
+
+                <br>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="mdp">Mot de passe</label>  
+                    <div class="col-sm-4">
+                        <input id="mdp" name="mdp" type="password" placeholder="" class="form-control input-md">
+
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <div class="col-sm-6  col-xs-offset-4">
+                        <button id="action_off" name="action_off" class="btn btn-danger" type="submit">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>   
+                            Eteindre le serveur
+                        </button>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<?php
+require_once 'footer.php';
+

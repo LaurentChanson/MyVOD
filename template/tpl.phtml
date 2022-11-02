@@ -1,0 +1,301 @@
+<?php
+
+function get_options_tri_str($name, $type_tri_sel, $class = '', $onclick = '', $titre = '') {
+    if (strlen($onclick) > 0) {
+        $onclick = 'onclick="' . $onclick . '"';
+    }
+
+    $rend = $titre . '
+        <div class=" radio row" style="' . (strlen($titre) > 0 ? 'margin-left: 5px;' : '') . '">
+            <div class="' . $class . '">
+                <label>
+                <INPUT type= "radio" name="' . $name . '" 
+                       value=' . TYPE_TRI_TITRE . ' ' . ($type_tri_sel == TYPE_TRI_TITRE ? 'checked' : '') . '
+                       ' . $onclick . '"/>
+                Titre (alphabétique)
+                </label>
+            </div>   
+            <div class="' . $class . '">
+                <label>
+                <INPUT type= "radio" name="' . $name . '" 
+                       value=' . TYPE_TRI_D_AJOUT . ' ' . ( $type_tri_sel == TYPE_TRI_D_AJOUT ? 'checked' : '') . '
+                       ' . $onclick . '"/>
+                Derniers ajouts en 1er
+                </label>
+            </div>  
+            <div class="' . $class . '">
+                <label>
+                <INPUT type= "radio" name="' . $name . '" 
+                       value=' . TYPE_TRI_D_SORTIE . ' ' . ($type_tri_sel == TYPE_TRI_D_SORTIE ? 'checked' : '') . '
+                       ' . $onclick . '"/>
+                Dernières sorties en 1er
+                </label>
+            </div>
+            
+            <div class="' . $class . '">
+                <label>
+                <INPUT type= "radio" name="' . $name . '" 
+                       value=' . TYPE_TRI_D_SORTIE_ASC . ' ' . ($type_tri_sel == TYPE_TRI_D_SORTIE_ASC ? 'checked' : '') . '
+                       ' . $onclick . '"/>
+                Plus ancien au plus récent
+                </label>
+            </div>
+            
+            <div class="' . $class . '">
+                <label>
+                <INPUT type= "radio" name="' . $name . '" 
+                       value=' . TYPE_TRI_NOTATION . ' ' . ($type_tri_sel == TYPE_TRI_NOTATION ? 'checked' : '') . '
+                       ' . $onclick . '"/>
+                Meilleurs notes en 1er
+                </label>
+            </div>
+            
+            <div class="' . $class . '">
+                <label>
+                <INPUT type= "radio" name="' . $name . '" 
+                       value=' . TYPE_TRI_DUREE . ' ' . ($type_tri_sel == TYPE_TRI_DUREE ? 'checked' : '') . '
+                       ' . $onclick . '"/>
+                Durée (du + court au + long)
+                </label>
+            </div>
+            
+
+        </div>';
+    return $rend;
+}
+
+function render_badge($int_val, $class_badge_si_0 = '', $class_badge_si_diff_0 = '') {
+    $class = $int_val == 0 ? $class_badge_si_0 : $class_badge_si_diff_0;
+    ?>
+    <span class="badge <?= $class; ?>"><?= $int_val; ?></span>
+    <?php
+}
+
+function onglets_get_key_script_name() {
+    $nom_page = Helper_system::page_courante_sans_ext();
+    return "tabs_$nom_page" . '_actif';
+}
+
+function onglets_get_value_id_selection() {
+    return Helper_var::session_var(onglets_get_key_script_name(), 'tab1');
+}
+
+function onglets_render_code_js_persistant_tabs() {
+    ?>
+    <script type="text/javascript">
+        //exemplepour choper evenements
+        //https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-tabs.php
+
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var activeTab = $(e.target).attr('href'); // Get the name of active tab
+                var previousTab = $(e.relatedTarget).text(); // Get the name of previous tab
+                //window.alert(activeTab);
+                activeTab = activeTab.replace('#', '');
+                var test = getTexteAjax('./ajax/set-session.php?key=<?= onglets_get_key_script_name(); ?>&value=' + activeTab);
+                //alert_html(test);
+
+            });
+        });
+    </script>
+    <?php
+}
+
+function onglets_get_class_ul_li_active($nom_onglet) {
+    $v = onglets_get_value_id_selection();
+    if ($nom_onglet == $v) {
+        return ' active';
+    }
+    return '';
+}
+
+function onglets_get_class_div_tab_active($nom_onglet) {
+    $v = onglets_get_value_id_selection();
+    if ($nom_onglet == $v) {
+        return ' in active';
+    }
+    return '';
+}
+
+//------------------------------
+function render_logo_has_message(MyVOD_Details $detail) {
+    if ((strlen($detail->MessageModif) == 0) || (Gestion_admin::est_connecte() == false)) {
+        return;
+    }
+    ?>
+    <div onclick="alert('<?= Helper_misc::chaine_pour_js($detail->MessageModif) ?>');">
+        <span class="label label-danger pull-right logo-control-p" 
+              title="<?= (Helper_misc::chaine_pour_html($detail->MessageModif, '<br>')) /* strip_tags */ ?>">
+            <span class="glyphicon glyphicon-exclamation-sign" style="top: 0.5px;"></span>
+        </span>
+        
+        
+        
+    </div>
+    <?php
+}
+
+//------------------------------
+function render_bt_recherche_google(MyVOD_Details $detail, $label, $class_additionnelle = '') {
+    ?>
+    <a href="https://www.google.com/search?q=<?= urlencode($detail->get_args_search_google()); ?>" 
+       class="btn btn-info <?= $class_additionnelle ?>" target="_blank"
+       title="Recherche &quot;<?= $detail->get_args_search_google(); ?>&quot; sur google (nouvel onglet)">
+           <?= $label ?>
+
+    </a>
+    <?php
+}
+
+//------------------------------
+
+function render_lien_suppression(MyVOD_Details $details) {
+    ?>   
+    <a href="javascript:supprimer_fiche_avec_confirmation(<?= $details->ID . ",'" . Helper_misc::chaine_pour_js($details->Titre) . "','" . Helper_misc::chaine_pour_js($details->Filename); ?>')">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> supprimer fiche
+    </a>
+    <?php
+}
+
+function render_logo_deja_vu(MyVOD_Details $f) {
+
+    if ((config::nb_visu_histo() > 0) && ($f->Lu != 0)) {
+        $txt_title = 'Vous avez déjà vu cette vidéo';
+        if ($f->DateLu !== null) {
+            $txt_title = 'Dernière visualisation le ' . MyVOD_Details::DateLongue($f->DateLu) . ' à ' . MyVOD_Details::HeureLongue($f->DateLu);
+        }
+        ?>
+        <span class="text-success" 
+              title="<?= $txt_title; ?>">
+            <span class="glyphicon glyphicon-ok" ></span>
+        </span>
+
+        <?php
+    }
+}
+
+function render_logo_filtre($autorise) {
+
+    if ($autorise) {
+        ?>
+        <span class="label label-success pull-right logo-control-p" 
+              title="Autorisé pour le filtrage parental">
+            <span class="glyphicon glyphicon-filter" ></span>
+        </span>
+
+        <?php
+    } else {
+        ?>
+        <span class="label label-warning pull-right logo-control-p"
+              title="Interdit pour le filtrage parental">
+            <span class="glyphicon glyphicon-filter " style="color: whitesmoke; position: relative; "></span>
+
+            <div style="position: absolute; left:0%; right: 0px; top: 50%; bottom: 0px; margin-top: -25%; color: red;">
+                X
+            </div>
+
+        </span>
+
+        <?php
+    }
+}
+
+function html_lien_ouvrir_actif() {
+    if (Helper_system::nav_OS_is_windows() && Helper_system::nav_is_local() && Helper_system::apache_as_service() == false) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function html_lien_ouvrir($path, $label = 'Dossier', $class_name = '') {
+
+    //if (Helper_system::nav_OS_is_windows() && Helper_system::nav_is_local() && Helper_system::apache_as_service() == false) {
+    if (html_lien_ouvrir_actif()) {
+
+        $class = '';
+        if (strlen($class_name) > 0) {
+            $class = 'class="' . $class_name . '"';
+        }
+        ?>
+
+        <a href="actions/explorer.php?repertoire=<?= urlencode($path); ?>" <?= $class; ?>
+           target="_blank" >
+               <?= $label; ?>
+        </a>
+
+        <?php
+    }
+}
+
+function html_bootstrap_alert_warning($contenu_html) {
+
+    echo '<div class="alert alert-warning alert-block">' . $contenu_html . '</div>';
+}
+
+function html_bootstrap_alert_info($contenu_html) {
+
+    echo '<div class="alert alert-info alert-block">' . $contenu_html . '</div>';
+}
+
+function html_bootstrap_alert_danger($contenu_html) {
+
+    echo '<div class="alert alert-danger alert-block">' . $contenu_html . '</div>';
+}
+
+function html_bootstrap_alert_success($contenu_html) {
+
+    echo '<div class="alert alert-success alert-block">' . $contenu_html . '</div>';
+}
+
+function html_lien_detail($film, $flag_derniers_ajouts = false) {
+
+    $page = 'detail.php?file=' . urlencode($film->ID);
+    if ($flag_derniers_ajouts) {
+        $page.='&ordreajout=1';
+    }
+    echo '<a href="' . $page . '">' . $film->Titre . '</a>';
+}
+
+function html_centre($texte) {
+    ?>
+
+    <p class="text-center"><small>
+
+            <?php
+            echo $texte;
+            ?>
+
+        </small></p>
+    <?php
+}
+
+class stars_rating {
+
+    public static $nb_etoiles = 5;
+
+    public static function render($ratio, $txt_bulle_aide = "") {
+
+        $etoiles = str_repeat('&starf;', self::$nb_etoiles);
+
+        $pourcent = $ratio * 100;
+        if ($pourcent > 100)
+            $pourcent = 100;
+        ?>
+        <rating <?= strlen($txt_bulle_aide) > 0 ? 'TITLE="' . $txt_bulle_aide . '"' : ''; ?> 
+            class="<?= $pourcent == 0 ? 'rating-0' : ''; ?>">
+                <?php
+                if ($pourcent > 0) {
+                    ?>
+                <div class="quarter" style="width: <?= $pourcent; ?>%">
+                    <?= $etoiles; ?>
+                </div>
+                <?php
+            }
+            ?>
+            <?= $etoiles; ?>
+        </rating>
+        <?php
+    }
+
+}

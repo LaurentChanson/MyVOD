@@ -1,0 +1,267 @@
+<?php
+//entête
+require_once 'header.php';
+?>
+<br>
+<!--menu dynamique (tabs)-->
+<!--exemple sur : https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_tabs_dynamic&stacked=h-->
+
+<ul class="nav nav-tabs onglets">
+    <!--<li class="active"><a data-toggle="tab" href="#home">Nouveaux fichiers détectés</a></li>-->
+    <li class="<?= onglets_get_class_ul_li_active('tab1') ?>">
+        <a data-toggle="tab" href="#tab1">
+            Doublons ou en plusieurs parties <?php
+            render_badge(count($fiches_doublons_titres), '', 'badge-warning');
+            ?>
+        </a>
+    </li>
+    <li class="<?= onglets_get_class_ul_li_active('tab2') ?>">
+        <a data-toggle="tab" href="#tab2">
+            Fichiers liées <?php
+            render_badge(count($liaisons));
+            ?>
+        </a>
+    </li>
+</ul>
+
+
+<?php
+onglets_render_code_js_persistant_tabs();
+?>
+
+<div class="tab-content">
+    <div id="tab1" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab1') ?>">
+       
+        <fieldset>
+            <legend>
+                Liste des doublons ou films en plusieurs fichiers
+            </legend>
+        </fieldset>
+        
+        
+        <table class="table table-hover table-striped table-condensed">
+
+            <tbody>
+
+                <?php
+                $count = 0;
+
+
+                //var_dump($cache);
+
+
+                foreach ($fiches_doublons_titres as $fic) {
+                    $count++;
+                    ?>
+
+                    <tr>
+                        <td>
+                            <div class="row-fluid">
+                                <center>
+                                    <h3><?= $fic[0]->Titre; ?></h3>  
+                                </center>
+                                <?php
+                                $i = 0;
+                                //boucle sur chaque sous tableau du tableau de doublons principal
+                                foreach ($fic as $f) {
+                                    //génération du fichier m3u (si le fichier existe sur le disque dur)
+                                    $nom_fichier = mb_strtolower($f->Filename, 'UTF-8');
+
+                                    $file_info = new FileInfos;
+
+                                    if (isset($cache[$nom_fichier])) {
+                                        $file_info = $cache[$nom_fichier];
+                                    }
+
+
+                                    $s = $file_info->full_path;
+                                    $m3u_url = "";
+                                    if (strlen($s) > 0) {
+                                        $m3u_url = m3u_get_url_from_path('video-' . $f->ID, $s);
+                                    }
+                                    ?>
+                                    <div class="col-xs-12 col-lg-6">
+                                        <div class="row">
+                                            <div class="col-xxs-12  col-xs-4">
+                                                <center>
+                                                    <img class="img-thumbnail " style="max-width: 120px"
+                                                         src="<?= MyVOD::affiche_to_url_miniature($f->Affiche); ?>" alt="...">
+                                                </center>
+                                            </div>
+                                            <div class="col-xxs-12 col-xs-8"> 
+                                                <?= ($i + 1); ?><br>
+                                                <b>Fichier : </b><?= $f->Filename; ?><br>
+                                                <b>Taille : </b>
+                                                <?php
+                                                if (strlen($s) > 0) {
+                                                    echo taille_fichier_en_texte($file_info->size) . ' (' . $file_info->size . ' o)';
+                                                }
+                                                ?><br>
+                                                <b>Résolution : </b><?= $file_info->width . ' x ' . $file_info->height; ?><br>
+                                                <b>Année de sortie : </b><?= $f->AnneeSortie; ?><br>
+                                                <b>Durée : </b><?= $f->Duree(); ?><br>
+                                                <b>Dossier : </b><?= dirname($s); ?><br>
+                                                <a href="detail.php?file=<?= $f->ID ?>" >
+                                                    Voir la fiche
+                                                </a>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <a href="detail-modif.php?file=<?= $f->ID ?>" >
+                                                    Modifier la fiche
+                                                </a><br>
+
+                                                <?php
+                                                if (strlen($s) > 0) {
+                                                    ?>
+                                                    <a href="<?= $m3u_url; ?>" type="audio/x-mpegurl" target="_blank">
+                                                        Ouvrir (m3u)
+                                                    </a>
+
+                                                    <?php
+                                                    if (html_lien_ouvrir_actif()) {
+                                                        echo '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;';
+                                                    }
+                                                    html_lien_ouvrir(dirname($s), 'Dossier');
+                                                    echo('<br>');
+                                                } else {
+                                                    //le fichier n'existe pas
+                                                    ?>
+                                                    <div class="text-warning">
+                                                        <b>Fichier introuvable!</b>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <?php
+                                                        //affiche le lien de suppression
+                                                        render_lien_suppression($f);
+                                                        ?>
+                                                    </div>
+
+                                                    <?php
+                                                }
+                                                ?>
+
+                                                <?php
+                                                if ($i == 0) {
+                                                    $fic1 = $f->Filename;
+                                                } else {
+                                                    //met le lien pour lier
+                                                    ?>
+                                                    <center>
+                                                        <a class="btn btn-primary"
+                                                           href="plusieurs-fichiers.php?action=<?= ACTION_LIER ?>&fic1=<?= urlencode($fic1); ?>&fic2=<?= urlencode($f->Filename); ?>" >
+                                                            <i class="fa fa-link" aria-hidden="true"></i> Lier les fiches
+                                                        </a><br>
+                                                    </center>
+                                                    <?php
+                                                }
+                                                ?>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    $i++;
+                                }
+                                ?>
+
+                            </div>
+                        </td>
+                    </tr>
+                    <?php
+                }
+
+                if ($count == 0) {
+                    ?><tr><td>
+                            Aucun résultat
+                        </td></tr>
+                    <?php
+                }
+                ?>
+
+            </tbody>
+
+        </table>
+
+
+
+
+
+    </div>
+
+
+    <div id="tab2" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab2') ?>">
+        <fieldset>
+            <legend>
+                Liste des fichiers liées
+            </legend>
+        </fieldset>
+
+        <table class="table table-hover table-striped table-condensed">
+
+            <tbody>
+                <?php
+                $count = 0;
+                foreach ($liaisons as $l) {
+                    $count++;
+                    ?>
+
+
+
+                    <tr>
+
+
+                        <td >
+                            <div class="row ">
+                                <div class="col-xxs-12 col-xs-2 pull-left">
+
+                                    <center>
+
+                                        <img class="img-thumbnail " style="max-width: 120px"
+                                             src="<?= MyVOD::affiche_to_url_miniature($l->Affiche); ?>" alt="...">
+
+                                    </center>
+                                </div>
+
+
+                                <div class="col-xxs-12 col-xxs-offset-0  col-xs-9 col-xs-offset-1"> 
+
+
+
+                                    <?= $count ?><br> 
+                                    <b>Titre : </b><?= $l->Titre; ?><br> 
+                                    <b>Fichier 1 : </b><?= $l->Filename1; ?><br> 
+                                    <b>Fichier 2 : </b><?= $l->Filename2; ?><br>
+                                    <div style="height: 8px;"></div>
+                                    <a class="btn btn-primary"
+                                       href="plusieurs-fichiers.php?action=<?= ACTION_ENLEVER_LIAISON ?>&fic1=<?= urlencode($l->Filename1); ?>&fic2=<?= urlencode($l->Filename2); ?>" >
+                                        Supprimer la liaison
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php
+                } if ($count == 0) {
+                    ?>
+
+
+                    <tr><td>
+                            Aucun résultat
+                        </td></tr>
+                    <?php
+                }
+//var_dump($liaisons);
+                ?>
+
+            </tbody>
+
+        </table>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+<?php
+require_once 'footer.php';

@@ -1,0 +1,77 @@
+<?php
+$titre_page = 'Renommer le fichier';
+
+//entêtes HTML
+require_once 'header.php';
+?>
+
+<br/>
+
+<form class="form-horizontal" method="POST" name="renommer">
+
+    <fieldset>
+        <br>
+        <!-- Form Name -->
+        <legend>Fichiers à renommer dans la fiche du film</legend>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label" >Nom actuel</label> 
+            <div class="col-sm-8">
+                <input type="hidden" name="nom_fichier_actuel" value="<?= $fichefilm->Filename ?>">
+                <input id="nom_fichier_actuel" name="nom_fichier_actuel"  class="form-control input-sm" required="" type="text"
+                       value="<?= $fichefilm->Filename ?>" disabled>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label" >Nouveau Nom</label> 
+            <div class="col-sm-8">
+                <input id="nouveau_nom_fichier" name="nouveau_nom_fichier"  class="form-control input-sm" required="" type="text"
+                       value="<?= $fichefilm->Filename ?>" >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label" ></label>
+            <div class="col-sm-8">
+                <input type="hidden" name="update_dh_creation" value="0">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="update_dh_creation" value="1" checked="">
+                        Mise à jour de la date heure création (permet de remonter la fiche dans les nouveautés).
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <hr style="margin-bottom: 10px;">
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <small>Le changement de nom n'affecte pas le nom de fichier qui se trouve sur le disque.<br>&nbsp;
+        </small>
+
+        <center>
+
+            <a class="btn btn-default" href="detail-modif.php" >
+                <span class="glyphicon glyphicon-circle-arrow-left"></span>
+                Retour
+            </a>	
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" name="action" value="changer" style="width: 90px" 
+                    class="btn btn-<?= Gestion_admin::$couleur_admin_bootstrap; ?>">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Valider</button>
+
+        </center>
+
+    </fieldset>
+
+</form>
+
+
+<?php
+require_once 'footer.php';
+?>

@@ -1,0 +1,91 @@
+<?php
+define('MYVOD_VERSION', '2.4.4');
+define('MYVOD_VERSION_DATE', '19/08/2020');
+
+require_once 'lib/functions-helper.php';
+
+define('PAGE_DETAIL_MODIF', 'detail-modif.php');
+
+
+
+//sauvegarde le nom de la page générée
+//sauf pour la page modif
+//
+//
+//
+//var_dump( "page prec. ".$_SERVER['HTTP_REFERER']);
+//$THE_REFER=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:''; 
+//var_dump("page prec. ".$THE_REFER);
+//var_dump($_SERVER['PHP_SELF']);
+//var_dump(strpos($THE_REFER,$_SERVER['PHP_SELF']));
+//if (substr( get_page_courante(),-strlen(PAGE_DETAIL_MODIF))!=PAGE_DETAIL_MODIF){
+//var_dump(strpos(Helper_redirection::get_derniere_page(),PAGE_DETAIL_MODIF));
+//var_dump('referer = '.Helper_redirection::get_referer());
+//var_dump(Helper_redirection::get_derniere_page());
+// Helper_redirection::set_derniere_page();       
+//if(strpos(Helper_redirection::get_derniere_page(),PAGE_DETAIL_MODIF)!==false){
+// 
+//}
+//var_dump(Helper_redirection::get_derniere_page());
+//calcul du temps de génération de la page
+if (isset($startTime) == false) {
+    $startTime = $_SERVER['REQUEST_TIME'];
+}
+$endTime = microtime(true);
+$elapsed = $endTime - $startTime;
+$s = number_format($elapsed * 1000, 0, '.', ' ');
+?>
+
+<hr>
+
+<footer class="footer">
+    <small>
+        <!--<p class="pull-right">-->
+        <!--<a href="#">Retour en haut</a>-->
+        <!--</p>-->
+        <p>
+            <a href="index.php">Accueil</a>
+        </p>
+        <p>
+            Code écrit par Laurent Chanson - 2020 - version <?= MYVOD_VERSION ?> (du <?= MYVOD_VERSION_DATE ?>)
+        </p>
+        <p>
+            <a href="a-propos.php">A propos</a>
+        </p>
+        <?php
+        $version_php='';
+        if (Gestion_admin::est_connecte()) {
+           $version_php=' - PHP version '. phpversion();
+        }
+        
+        html_centre("page générée en $s ms".$version_php);
+        ?>
+    </small>
+</footer>
+
+<!-- fin de la div principale (cf header.php)-->
+</div>
+
+
+<!-- Intégration de la libraire de composants du Bootstrap -->
+<script src="theme/defaut/bootstrap/js/bootstrap.min.js"></script> 
+<!--intégration de l'alerte js personnalisé-->
+<script src="lib/js/alert_custom/alert.js"></script> 
+<!--intégration du sablier-->
+<script src="lib/js/alert_custom/alert-sablier.js"></script> 
+
+
+
+<!--préchargement de la font awesome pour la popup "traitement en cours"-->
+
+<i style="visibility: hidden; position:fixed" class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
+
+
+<script>
+    setTimeout(cacher_fleche_scroll_et_fixe_ancre, 100);
+//cacher_fleche_scroll_et_fixe_ancre();
+ //afficher_traitement_en_cours();
+</script>
+
+</body>
+</html>

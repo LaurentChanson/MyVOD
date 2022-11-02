@@ -1,0 +1,46 @@
+<?php
+require_once 'header.php';
+
+require_once 'lib/chart/chart.php';
+?>
+
+<legend>Nombre total de films : <?=$nb_films;?></legend>
+
+
+<div class="row" >
+
+    <?php
+//affichage des camemberts
+
+    render_chart('chart_genres', $series_genres);
+
+    render_chart('chart_public_type', $series_type_public);
+
+    render_chart('chart_decade_prod', $series_decenies);
+
+    render_chart('chart_annees_prod', $series_annees);
+    ?>
+</div>
+
+
+
+<?php
+require_once 'footer.php';
+
+//
+//
+//  FIN
+//
+//
+
+function render_chart($div_id, ChartSeries $serie) {
+    ?>
+    <div class="col-lg-6 chart_parent"  >   
+    
+        <?php
+        Chart::render_pie($div_id, $serie);
+        ?>
+    </div>
+
+    <?php
+}

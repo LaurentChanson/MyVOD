@@ -1,0 +1,75 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21 déc. 2018, 17:42:05
+    Author     : laurent.chanson
+*/
+/*https://www.creativejuiz.fr/blog/css-css3/creer-une-animation-de-neige-ou-de-particules-en-css3*/
+
+#canvas-neige{
+    position : absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+}
+#titre_myvod {
+
+    text-shadow: -1px 0 0 rgba(0, 0, 0, 0.8), 1px 0 0 rgba(0, 0, 0, 0.8), 0 -1px 0 rgba(0, 0, 0, 0.8), 0 1px 0 rgba(0, 0, 0, 0.8), #000000 3px 3px 12px,#ff0000 3px 3px 12px, #FFFFFF 3px 3px 6px;
+}
+
+/*ce qui suit n'est pas utilisé*/
+
+.illustration {
+    position: relative;
+    margin: 0 auto;
+
+}
+
+
+.neige{
+    position : absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: url("./gif-neige-qui-tombe-fond-transparent-7.gif") repeat 0px 0px;
+}
+
+.i-large,
+.i-medium,
+.i-small {
+    position : absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    /*backface-visibility: hidden;*/
+
+    transform: rotateZ(360deg)
+}
+
+.i-large {
+    background: url("./particules_large.png") repeat 0px 0px;
+    -webkit-animation: dropFlowParticles 2s linear infinite;
+    -o-animation: dropFlowParticles 2s linear infinite;
+    animation: dropFlowParticles 2s linear infinite;
+}
+.i-medium {
+    background: url("./particules_medium.png") repeat 0px 0px;
+    -webkit-animation: dropFlowParticles 12s linear infinite;
+    -o-animation: dropFlowParticles 12s linear infinite;
+    animation: dropFlowParticles 12s linear infinite;
+}
+.i-small {
+    background:url("./particules_small.png") repeat 0px 0px;
+    -webkit-animation: dropFlowParticles 27s linear infinite;
+    -o-animation: dropFlowParticles 27s linear infinite;
+    animation: dropFlowParticles 27s linear infinite;
+}
+
+@-webkit-keyframes dropFlowParticles {
+    from { background-position: 0 0; }
+    to { background-position: 0 413px; }
+}
+@keyframes dropFlowParticles {
+    from { background-position: 0 0; }
+    to { background-position: 0 413px; }
+}

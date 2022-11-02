@@ -1,0 +1,57 @@
+<?php
+//entête
+require_once 'header.php';
+
+//var_dump($mode_parental);
+?>
+<br>
+
+<form class="form-horizontal" method="post" 
+      name="connexion"
+      action="connexion.php<?= $mode_parental ? '?mode_parental=1' : ''; ?>">
+    <fieldset>
+
+        <!-- Form Name -->
+        <legend><?= $titre_page; ?></legend>
+
+        <br>
+
+        <!-- Text input-->
+
+        <div class="form-group">
+            <label class="col-xxs-12 col-xxs-offset-0 col-xs-10 col-xs-offset-2 col-sm-3 col-sm-offset-0 control-label" for="mdp">
+<?= $mode_parental ? 'Code déverrouilage du contrôle parental' : 'Mot de passe administrateur'; ?>
+            </label>  
+            <div class="col-xxs-12 col-xxs-offset-0 col-xs-9 col-xs-offset-2 col-sm-6 col-sm-offset-0 col-lg-5 col-xl-4">
+                <input id="mdp" name="mdp" type="password" placeholder="<?= $mode_parental ? 'code parental' : 'mot de passe administrateur'; ?>" 
+                       class="form-control input-md" autofocus>
+
+            </div>
+        </div>
+        <input type="hidden" name="mode_parental" value="<?= $mode_parental; ?>">
+
+        <!-- Button group -->
+        <div class="form-group">
+            <center>
+                <button type="button" id="annuler" name="annuler" class="btn btn-primary"  
+                        VALUE="Annuler"
+                        onclick="self.location.href = 'index.php'">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    Annuler
+                </button>
+                <button type="submit" id="valider" name="valider_mdp" class="btn btn-success" 
+                        VALUE="Valider">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    Valider
+                </button>
+            </center>
+        </div>
+    </fieldset>
+</form>
+
+<br>
+<br>
+<br>
+
+<?php
+require_once 'footer.php';

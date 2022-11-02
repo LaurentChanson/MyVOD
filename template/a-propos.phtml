@@ -1,0 +1,131 @@
+<?php
+require_once 'header.php';
+?>
+
+
+
+<br>
+<fieldset>
+    <legend>Détails :</legend>
+</fieldset>
+
+<p>
+    <i>
+        Ce projet permet de répertorier les films.
+        Il permet d'aller chercher les informations issues d'<a href="http://www.allocine.fr" target="_blank">Allociné</a> ou <a href="http://www.dvdfr.com" target="_blank">DVDFr</a>. <br>
+        Avec l'interface réseau de votre ordinateur, il permet de visualiser les vidéos sur une tablette, autre PC... sans ré-encodage.<br>
+        MyVOD est compatible avec PHP5 et PHP7.
+    </i>
+</p>
+<p>
+<ul>
+    <li>
+        <i>
+            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Android : Je vous conseille d'installer BSPlayer FREE. Il permet de lire beaucoup de formats et gère les chemins réseau.
+            <a target="_blank"
+               href="https://play.google.com/store/apps/details?id=com.bsplayer.bspandroid.free&hl=fr">Voir sur Google Play...
+            </a>
+        </i>
+    </li>
+</ul>
+<ul>
+    <li>
+        <i>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Android : Depuis une certaine mise à jour, Chrome sous Android ne propose plus BSPlayer pour lire les fichier m3u. Avec Firefox sous Android, il n'y a pas ce soucis.
+            Vous pouvez toujours utiliser Chrome en choisissant Firefox comme lecteur puis depuis Firefox, prendre BSPlayer.
+            <a target="_blank"
+               href="https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=fr">Voir sur Google Play...
+            </a>
+        </i>
+    </li>
+</ul>
+</p>
+
+
+<br>
+<br>
+
+
+
+<fieldset>
+    <legend>Ce projet utilise :</legend>
+</fieldset>
+
+
+<p>
+
+<ul>
+    <li>
+        <b>MediaInfo :</b><br>
+        <i>
+            MediaInfo fournit des informations techniques et les tags à propos de vos fichiers video et audio.<br>
+            Site web :        
+            <a href="https://mediaarea.net/fr/MediaInfo" target="_blank">https://mediaarea.net/fr/MediaInfo</a>
+        </i>
+    </li>
+    <br>
+    <li>
+        <b>API Allociné Helper : </b><br>
+        <i>
+            L'API Allociné Helper permet d'utiliser plus simplement l'API d'[AlloCiné](http://www.allocine.fr/).<br>
+            Site web :
+            <a href="https://github.com/etienne-gauvin/api-allocine-helper" target="_blank">https://github.com/etienne-gauvin/api-allocine-helper</a>
+        </i>
+    </li>
+    <br>
+    <li>
+        <b>Highcharts : </b><br>
+        <i>
+            Highcharts est une bibliothèque de cartographie écrit en JavaScript pur, 
+            offrant un moyen facile d'ajouter des graphiques interactifs à votre site web ou une application web.<br> 
+            Site web :
+            <a href="http://www.highcharts.com" target="_blank">http://www.highcharts.com</a>
+        </i>
+    </li>
+    <br>
+    <li>
+        <b>Bootstrap : </b><br>
+        <i>
+            Bootstrap permet de rendre un site en responsive (indépendant de la taille de l'écran)<br> 
+            Site web :
+            <a href="http://getbootstrap.com/" target="_blank">http://getbootstrap.com</a>
+        </i>
+    </li>
+    <br>
+    <li>
+        <b>Font Awesome : </b><br>
+        <i>
+            Font Awesome vous donne des icônes vectorielles évolutives qui peuvent instantanément être personnalisées - taille, couleur, ombre portée, et tout ce qui peut être fait avec la puissance de CSS.<br>
+            Site web :
+            <a href="http://fontawesome.io/" target="_blank">http://fontawesome.io</a>
+        </i>
+    </li>
+    <br>
+    <li style="visibility: hidden; height: 0px;">
+        <b>Hammer.js : </b><br>
+        <i>
+            Hammer vous aide à ajouter une prise en charge des gestes tactiles à votre page et à supprimer le délai de 300 ms par les clics.<br>
+            Site web :
+            <a href="http://hammerjs.github.io/" target="_blank">http://hammerjs.github.io</a>
+        </i>
+    </li>
+
+</ul>
+
+
+</p>
+
+<br>
+<br>
+<fieldset>
+    <legend>Historique des versions :</legend>
+</fieldset>
+
+<p>
+    <i>
+        <?= $txt_versions; ?>
+    </i>
+</p>
+
+<?php
+require_once 'footer.php';

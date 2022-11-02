@@ -1,0 +1,105 @@
+<?php
+//$taille_deplie = false;
+?>
+
+<div class="panel-group" id="accordionTaille" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default navbar" style="z-index: 99;">
+        <div class=" panel-heading" role="tab" id="heading5">
+            <div class="row panel-title  " >
+
+                <a data-toggle="collapse" 
+                   data-parent="#accordionTaille" 
+                   href="#collapse5" aria-expanded="false" 
+                   aria-controls="collapse5" 
+                   onclick="MAJ_avance_deplie();">
+
+                    <?php
+                    render_bouton_collapse('bt_collapse5', $avance_deplie, '(Dé)plier le panel des options avancés de filtre (taille de fichier ou jamais lu)');
+                    ?>
+
+                    <div class=" col-xs-7 "  >
+                        <h4>
+                            <div id="titre_taille">Taille de fichiers</div>
+                        </h4>
+                    </div>
+
+                </a>
+
+                <input type="hidden" id="taille_deplie" name="taille_deplie" value="<?= $avance_deplie; ?>" />
+
+            </div>
+        </div>
+
+
+
+
+        <div id="collapse5" class="panel-collapse collapse<?= $avance_deplie ? ' in' : ''; ?>" 
+             role="tabpanel" aria-labelledby="heading5" >
+            <div class="panel-body">
+
+
+                <div class="row" style="margin-bottom: 4px;">
+
+                    <div class="pull-right">
+                        <button class="btn btn-default" type="submit" name ="action" id ="action" value="Recherche">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;  
+                    </div>
+                </div>
+
+
+                <div class=" form-inline">
+                    <div class="form-group">
+
+                        <label for="taille_min" style="font-weight: initial;">Taille du fichier compris entre &nbsp;</label>
+                        <?php
+                        generer_liste_tailles_fichier('taille_min', $taille_min);
+                        ?>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="taille_max" style="font-weight: initial;">&nbsp;et&nbsp;</label>
+
+                        <?php
+                        generer_liste_tailles_fichier('taille_max', $taille_max);
+                        ?>
+                    </div>
+
+                    
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+
+//---------------------------- fin --------------------------
+
+
+function generer_liste_tailles_fichier($name, $val_selectionne) {
+    ?>
+    <select class="form-control input-sm" id="<?= $name ?>" name="<?= $name ?>">
+        <?php
+        for ($i = 0; $i <= 14; $i++) {
+            $t = $i * 200;
+            $t_go = $i * 0.2;
+
+            $txt = $t < 1000 ? $t . ' Mo' : $t_go . ' Go';
+
+            $selected = $val_selectionne == $t ? ' selected ' : '';
+
+            if ($i == 0)
+                $txt = "";
+            ?>
+            <option value="<?= $t; ?>" <?= $selected ?>><?= $txt; ?></option>
+            <?php
+        }
+        ?>
+    </select>
+
+
+    <?php
+}

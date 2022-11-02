@@ -1,0 +1,110 @@
+<div class="panel-group" id="accordionGenres" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default navbar " >
+        <!--        style="z-index: 99;" /\-->
+        <div class=" panel-heading" role="tab" id="heading1">
+            <div class="row panel-title  " >
+
+                <a data-toggle="collapse" 
+                   data-parent="#accordionGenres" 
+                   href="#collapse1" aria-expanded="false" 
+                   aria-controls="collapse1" 
+                   onclick="MAJ_genre_deplie();">
+
+                    <?php
+                    render_bouton_collapse('bt_collapse1', $genre_deplie, '(Dé)plier le panel du filtre sur les genres');
+                    ?>
+
+
+                    <div class=" col-xs-7 "  >
+                        <h4>
+                            <div id="titre_genre">Genres</div>
+                        </h4>
+                    </div>
+
+
+
+
+                </a>
+
+                <input type="hidden" id="genre_deplie" name="genre_deplie" value="<?= $genre_deplie; ?>" />
+
+            </div>
+        </div>
+
+
+        <div id="collapse1" class="panel-collapse collapse<?= $genre_deplie ? ' in' : ''; ?>" 
+             role="tabpanel" aria-labelledby="heading1" >
+            <div class="panel-body">
+
+                <div class="row">
+
+                    <div class="pull-right">
+                        <button class="btn btn-default" type="submit" name ="action" id ="action" value="Recherche">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;  
+                    </div>
+                    <div class="text-center"> 
+                        <a href="javascript:CocherGroupCheckBox('genre_filtre_',<?= count($genres); ?>);">Tous</a>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <a href="javascript:DecocherGroupCheckBox('genre_filtre_',<?= count($genres); ?>);">Aucun</a>
+
+                    </div>
+
+                </div>
+                <div class="row checkbox">
+
+                    <?php
+                    $idx_genres = 0;
+
+                    //var_dump($genres);
+
+                    foreach ($genres as $g) {
+
+                        $checked = isset($genre_filtre[$idx_genres]) ? 'checked' : '';
+                        ?>
+
+
+                        <div class="full_320 col-xs-6 col-sm-6 col-md-4 col-lg-6" >
+                            <label>
+                                <INPUT type= "CHECKBOX" 
+                                       id="genre_filtre_<?= $idx_genres ?>"
+                                       name="genre_filtre[<?= $idx_genres ?>]"
+                                       value=<?= '"' . $g->Nom . '" ' . $checked; ?>
+                                       onchange="RaffraichitNbGenresCoches();">
+                                <?= ' ' . $g->Nom . ' '; ?>
+                            <a href="javascript:FiltrerParGenre(<?= $idx_genres ?>);">
+                                <span class="badge">
+                                    <?= $g->Count; ?>
+                                </span>
+                            </a></label>
+                        </div>
+                        <?php
+                        $idx_genres++;
+                    }
+                    ?>
+                </div>
+                <div class="radio row">
+
+                    <hr style="margin-top:15px;margin-bottom: 5px;">
+                    <div class="full_320 col-xs-6 col-sm-6" style="padding-left: 15px;">
+                        <label>
+                            <INPUT type= "radio" name="rech_genres_etendus" 
+                                   value=0 <?= $rech_genres_etendus == 0 ? 'checked' : ''; ?> 
+                                   onclick="ValiderFormulaire();"
+                                   />
+                            Seulement sur le genre principal</label>
+                    </div>
+                    <div class="full_320 col-xs-6 col-sm-6" style="padding-left: 15px;">
+                        <label>
+                            <INPUT type= "radio" name="rech_genres_etendus" 
+                                   value=1 <?= $rech_genres_etendus == 1 ? 'checked' : ''; ?> 
+                                   onclick="ValiderFormulaire();"
+                                   />
+                            Genres secondaires</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

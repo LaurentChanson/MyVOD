@@ -1,0 +1,394 @@
+<?php
+//entête
+require_once 'header.php';
+
+//Affichage des doublons
+//var_dump($fichiers_doublons);
+$count_doublons = 0;
+//var_dump($fichiers_doublons_ou_deplaces);
+foreach ($fichiers_doublons_ou_deplaces as $doublons) {
+    if (count($doublons) > 1) {
+        $count_doublons+=count($doublons);
+    }
+}
+?>
+
+<br>
+
+<!--bouton de recherche sur le disque-->
+<center>
+    <a id="a_recherche_disque" 
+       href="?action=<?= ACTION_FORCE_RECHERCHE . '&param=true' ?>"
+       class="">
+        <button type="button" name="bt_recherche_disque" 
+                id="bt_recherche_allocine" 
+                class="btn btn-info"
+                title="Rechercher de nouveau les fichers sur le disque pour actualiser les listes">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            Rechercher sur le disque
+        </button>
+    </a>
+</center>
+<br>
+
+<!--menu dynamique (tabs)-->
+<!--exemple sur : https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_tabs_dynamic&stacked=h-->
+
+<ul class="nav nav-tabs onglets">
+    <!--<li class="active"><a data-toggle="tab" href="#home">Nouveaux fichiers détectés</a></li>-->
+    <li class="<?= onglets_get_class_ul_li_active('tab1') ?>">
+        <a data-toggle="tab" href="#tab1">
+            Nouveaux fichiers détectés <?php
+render_badge(count($fichiers_detectes), '', 'badge-warning');
+?>
+        </a>
+    </li>
+    <li class="<?= onglets_get_class_ul_li_active('tab2') ?>">
+        <a data-toggle="tab" href="#tab2">
+            Fichiers Ignorés <?php
+            render_badge(count($fichiers_ignores));
+?>
+        </a>
+    </li>
+    <li class="<?= onglets_get_class_ul_li_active('tab3') ?>">
+        <a data-toggle="tab" href="#tab3">
+            Liste des problèmes <?php
+            render_badge($count_doublons + count($liste_fiches), 'badge-success', 'badge-warning');
+?>
+        </a>
+    </li>
+</ul>
+
+
+<?php
+onglets_render_code_js_persistant_tabs();
+?>
+
+
+<div class="tab-content">
+
+    <div id="tab1" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab1') ?>">
+
+        <!--  liste des fiches orphelines -->
+
+        <fieldset>
+            <legend>Nouveaux fichiers détectés</legend>
+
+            <div class="form-group">
+
+
+                <div class="checkbox-inline">
+                    <label>
+                        <input type="checkbox" 
+                                  value="" 
+                                  <?=$chk_j_ai_chance_checked;?>
+                                  id='chk_j_ai_chance'
+                                  style="margin-left: -20px !important; margin-top: 4px !important;">J'ai de la chance. Si le nombre de résultat est de 1 lors d'une recherche, je valide la fiche.
+                    </label>
+                </div>
+            </div>
+
+
+            <!--Liste des nouveaux fichiers trouvés et qui ne sont pas enregistrés dans la base de données :-->
+
+            <table class="table table-hover table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th width="100%">Liste des nouveaux fichiers trouvés et qui ne sont pas enregistrés dans la base de données :
+                            <span class="badge"><?= count($fichiers_detectes) ?></span>
+                        </th>
+                    </tr>
+                </thead>
+                <script>
+                    function aller_page_recherche(url) {
+                        var element = document.getElementById('chk_j_ai_chance');
+                        //console.log(url);
+                        if (element.checked) {
+                            //alert(url);
+                            url +='&<?=PARAM_VALIDATION_AUTO?>=1';
+                            //alert('checked='+element.checked);
+                            //alert(url);
+                            
+                        }
+                        //alert(url );
+                        
+                        window.location = url;
+                    }
+                </script>
+
+
+
+
+                <tbody>
+
+                    <?php
+                    $count = 0;
+//var_dump( $lst_m3u_url);
+                    foreach ($fichiers_detectes as $fic) {
+                        ?>
+                        <tr><td>
+                                <?= ++$count; ?>
+                                <br>
+                                <b>Fichier : </b><?= $fic->nom; ?><br>
+                                <b>Chemin : </b> <?= $fic->path; ?></br>
+                                <b>Taille : </b><?= taille_fichier_en_texte($fic->taille); ?><br>
+
+                                <?php
+                                //en test (a remplacer '< ?=' et '? >' par '<?=' et '? >' 
+                                //<a href="?action=< ?= ACTION_CREER_FICHE_ET_RECHERCHER . '&param=' . $fic->nom; ? >">Créer la fiche et rechercher les informations</a>
+                                ?>
+                                <div class="text-center">
+                                    <?php
+                                        $nom_fichier_pour_js=urlencode($fic->nom);
+                                    ?>
+                                    <a href="#" onclick="aller_page_recherche(&quot?action=<?=ACTION_CREER_FICHE_ET_RECHERCHER . '&amp;param=' . $nom_fichier_pour_js; ?>&quot); return false;">Créer la fiche et rechercher les informations</a>
+                                </div>
+                                <br>
+                                <div class="pull-left"> &nbsp;&nbsp;&nbsp;&nbsp;		
+
+                                    <a href="<?= $lst_m3u_url[$fic->nom]; ?>" type="audio/x-mpegurl"  target="_blank">
+                                        Ouvrir
+                                    </a>
+
+                                    <?php
+                                    if (html_lien_ouvrir_actif()) {
+                                        echo("\n - ");
+                                        html_lien_ouvrir(dirname($fic->path), 'Dossier');
+                                    }
+                                    ?>
+                                </div>    
+                                <div class="pull-right"> 
+                                    <a href="?action=<?= ACTION_AJOUTER_IGNORES . '&param=' . $fic->nom; ?>">Ignorer</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+                                <div class="text-center"> 
+                                    <a href="?action=<?= ACTION_CREER_FICHE . '&param=' . $fic->nom; ?>">Créer et éditer la fiche</a>
+                                </div>
+
+
+
+                            </td> </tr>
+                        <?php
+                    }
+
+                    if ($count == 0) {
+                        ?><tr><td>
+                                Aucun résultat
+                            </td></tr>
+                        <?php
+                    }
+                    ?>
+
+
+                </tbody>
+            </table>
+
+        </fieldset>
+
+    </div>
+    <div id="tab2" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab2') ?>">
+
+        <!--Liste des fichiers ignorés :-->
+        <fieldset>
+            <legend>Fichiers ignorés </legend>
+            <table class="table table-hover table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th width="100%">Liste des fichiers ignorés de ladétection de nouveaux fichiers :
+                            <span class="badge"><?= count($fichiers_ignores); ?></span>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $count = 0;
+
+//affichage des fichiers ignorés
+
+
+                    foreach ($fichiers_ignores as $bl) {
+                        ?>
+                        <tr>
+                            <td>
+                                <?= ++$count; ?><br>
+                                <b>Fichier : </b><?=$bl;?><br>
+                                <div class="text-center"> 
+                                    <a href="?action=<?= ACTION_RETIRER_IGNORES . '&param=' . $bl; ?>">Retirer</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+                            </td> 
+                        </tr>
+                        <?php
+                    }
+                    if ($count == 0) {
+                        ?>
+                        <tr>
+                            <td>
+                                Aucun résultat
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+
+                </tbody>
+            </table>
+        </fieldset>
+
+
+    </div>
+    <div id="tab3" class="tab-pane fade<?= onglets_get_class_div_tab_active('tab3') ?>">
+
+        <!--Liste des fichiers en conflits sur le nom :-->
+        <fieldset>
+            <legend>Liste des problèmes </legend>
+
+
+            <table class="table table-hover table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th width="100%">Liste des fichiers en conflits sur le nom :
+                            <span class="badge"><?= $count_doublons; ?></span>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $count = 0;
+                    foreach ($fichiers_doublons_ou_deplaces as $doublons) {
+
+                        if (count($doublons) > 1) {
+
+
+
+                            //parcourt des doublons >1
+                            foreach ($doublons as $fic) {
+                                ?>
+                                <tr>
+                                    <td>
+                                        <?=
+                                        ++$count;
+
+                                        $m3u_url = m3u_get_url_from_path('dbl-' . $count, $fic->path);
+                                        ?>
+                                        <br>
+
+                                        <b>Fichier : </b><?= $fic->nom; ?>    
+                                        <br>
+                                        <b>Chemin : </b><?= $fic->path; ?> 
+                                        <br>
+                                        <b>Taille : </b><?=
+                            taille_fichier_en_texte($fic->taille) .
+                            ' (' . number_format($fic->taille, 0, ',', ' ') . ' o)';
+                                        ?>     
+                                        <br> 
+
+
+                                        <div> &nbsp;&nbsp;&nbsp;&nbsp;		
+                                            <a href="<?= $m3u_url; ?>" type="audio/x-mpegurl" target="_blank">
+                                                Ouvrir
+                                            </a>
+
+                                            <?php
+                                            html_lien_ouvrir(dirname($fic->path), 'Dossier');
+                                            ?>
+
+                                        </div> 
+
+
+                                    </td>
+                                </tr>
+
+                                <?php
+                            }
+                        }
+                    }
+                    if ($count == 0) {
+                        ?><tr><td>
+                                Aucun résultat
+                            </td></tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+
+            </table>
+            <br>
+
+
+            <!--Liste des fiches orphelines :-->
+
+            <table class="table table-hover table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th width="100%">Liste des fiches orphelines (dont la fiche existe dans la base de données et dont le fichier a disparu ou renommé) :
+                            <span class="badge"><?= count($liste_fiches); ?></span>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    <?php
+                    $count = 0;
+                    foreach ($liste_fiches as $value) {
+                        ?>  
+
+                        <tr>
+                            <td>
+                                <?= ++$count; ?><br>
+
+                                <b>Titre : 
+                                    <?php
+                                    html_lien_detail($value);
+                                    ?>
+                                </b>
+                                <br>
+                                <b>Fichier : </b><?= $value->Filename; ?>    
+                                <br>
+
+                                <div class="pull-left">
+                                    <a href="detail-modif.php?file=<?= $value->ID ?>">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> modifier fiche
+                                    </a>
+                                </div>
+
+                                <div class="text-center">
+                                    <?php
+                                    //var_dump('toto');
+                                    render_lien_suppression($value);
+                                    ?>                    
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        <?php
+                    }
+
+
+                    if ($count == 0) {
+                        ?><tr><td>
+                                Aucun résultat
+                            </td></tr>
+                        <?php
+                    }
+                    ?>
+
+                </tbody>
+
+            </table>
+        </fieldset>
+
+    </div>
+</div>
+
+
+<?php
+require_once 'footer.php';
+
+
+/**
+ * FIN
+ */

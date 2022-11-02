@@ -1,0 +1,95 @@
+
+<div class="panel-group" id="accordionNationalite" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default navbar" style="z-index: 99;">
+        <div class=" panel-heading" role="tab" id="heading4">
+            <div class="row panel-title  " >
+
+                <a data-toggle="collapse" 
+                   data-parent="#accordionNationalite" 
+                   href="#collapse4" aria-expanded="false" 
+                   aria-controls="collapse4" 
+                   onclick="MAJ_nationalite_deplie();">
+
+                    <?php
+                    render_bouton_collapse('bt_collapse4', $nationalite_deplie, '(Dé)plier le panel du filtre sur les nationnalités');
+                    ?>
+
+
+                    <div class=" col-xs-7 "  >
+                        <h4>
+                            <div id="titre_nationalite">Nationalités</div>
+                        </h4>
+                    </div>
+
+                </a>
+
+                <input type="hidden" id="nationalite_deplie" name="nationalite_deplie" value="<?= $nationalite_deplie; ?>" />
+
+            </div>
+        </div>
+
+
+
+
+        <div id="collapse4" class="panel-collapse collapse<?= $nationalite_deplie ? ' in' : ''; ?>" 
+             role="tabpanel" aria-labelledby="heading4" >
+            <div class="panel-body">
+
+                <div class="row">
+
+
+                    <div class="pull-right">
+                        <button class="btn btn-default" type="submit" name ="action" id ="action" value="Recherche">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;  
+                    </div>
+
+                    <div class="text-center"> 
+                        <a href="javascript:CocherGroupCheckBox('nationalite_filtre_',<?= count($nationalites) ?>);">Tous</a>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <a href="javascript:DecocherGroupCheckBox('nationalite_filtre_',<?= count($nationalites) ?>);">Aucun</a>
+
+                    </div>
+
+                </div>
+                <div class="checkbox">
+
+                    <?php
+                    //                   var_dump($nationalite_filtre);
+                    //$nationalite_filtre=array('Corée','Argentine');
+
+                    $idx = 0;
+                    foreach ($nationalites as $n) {
+                        $checked = '';
+                        if (in_array($n, $nationalite_filtre)) {
+                            $checked = 'CHECKED';
+                        }
+                        ?>
+                        <div class="col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-6">
+                            <label>
+                                <INPUT type= "CHECKBOX" 
+                                       id="nationalite_filtre_<?= $idx ?>"
+                                       name="nationalite_filtre[<?= $idx ?>]"
+                                       value=<?= '"' . $n . '" ' . $checked; ?>
+                                       onchange="RaffraichitNbNationalitesCoches();">
+                                       <?= ' ' . $n . ' '; ?>
+                                <a href="javascript:FiltrerParNationalite(<?= $idx; ?>);">
+                                    <span class="badge ">
+                                        <small>
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                        </small>
+                                    </span>
+                                </a>
+                            </label>
+
+                        </div>
+                        <?php
+                        $idx++;
+                    }
+//var_dump($nationalites_filtre);
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

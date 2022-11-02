@@ -1,0 +1,96 @@
+/* 
+    Created on : 21 août 2015, 09:22:49
+    Author     : Laurent
+    Modifié le : 25/07/2017 
+*/
+
+/*le fond (overlay)*/
+.alertOverlay{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%!important;
+    /*opacity: 0.6;*/
+    z-index: 9001;
+    background-color: rgba(102,102,102,0.6);
+}
+
+
+
+/*la fenêtre*/
+.alertBox{
+    z-index:9998;
+    /*! top: 50%; */
+    font-family: Arial!important;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    
+    /*! max-height: 97%; */
+    overflow-y: auto;
+}
+.modal-content {
+}
+/*le titre*/
+.alertTitle{
+    font-size: 18px!important;
+    font-weight: bold;
+    /*évite de déborder le texte sur le bouton fermer*/
+    width: 96%;
+}
+
+
+
+/*le bouton fermer*/
+.alertBtClose{
+    position: absolute;
+    top:10px; 
+    right: 15px;
+    font-size: 30px!important;
+    /*font-weight: 200;*/
+    cursor: pointer;
+    z-index: 9999;  
+    color: #ffffff;
+    opacity: 0.6;
+}
+
+.alertBtClose:hover{
+    color: #ffffff;
+    opacity: 0.8;
+}
+.alertBtClose:focus{
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+.modal-footer>button {
+    min-width: 80px;
+}
+/*fixe le décallage en hauteur*/
+@media (min-width: 768px) {
+  .modal-dialog {
+    margin: 10px auto;
+  }
+}
+.modal-body{
+    max-height: calc(90vh - 110px); 
+    overflow: auto;
+}
+@media (max-height: 450px) {
+    .modal-body{
+        max-height: calc(73vh - 85px); 
+    }
+}
+/*Sablier*/
+.sablier{
+    top:25%; 
+    z-index:9999;
+}
+@media (max-height: 450px) {
+    .sablier{
+        top:5%;
+    }
+    .sablier .modal-body{
+        max-height: 240px; 
+    }
+}

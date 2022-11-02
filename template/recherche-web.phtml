@@ -1,0 +1,315 @@
+<?php
+//entêtes HTML
+require_once 'header.php';
+
+if (strlen($recherche_ori) > 0) {
+    ?>
+    <div>
+        <legend style="word-wrap: break-word;">
+            Recherche pour : <?= $recherche_ori ?>
+        </legend>
+    </div>
+
+    <?php
+}
+?>
+<div class="row">
+    <?php
+    $idx_saisie=0;
+    
+    //affiche les 2 panneaux de recherche
+    aficher_formulaire('Rechercher sur Allociné.fr');
+
+    aficher_formulaire('Rechercher sur Dvdfr.com (quota restant ' . DVDFRAPIWrapper::GetQuotasRestant() . ')', type_recherche::RECHERCHE_DVDFR);
+    ?>
+</div>
+
+<!--option du dico-->
+
+<div class="panel panel-default " >
+    <div class="panel-heading" >
+        <h4 class=" panel-title">
+            <button 
+                class="btn btn btn-primary btn-xs" 
+                type="button" data-toggle="collapse" 
+                data-target="#motsclesdico" 
+                aria-expanded="false" aria-controls="motsclesdico">
+                <i class="fa fa-book" aria-hidden="true"></i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;* Mots clés appartenant au dictionnaire 
+
+        </h4>  
+    </div>
+    <div id="motsclesdico" class=" collapse panel-collapse">
+        <div class="panel-body ">
+            <small>
+                <?php
+                $m_prec = '';
+                $nb_keys = count($keys);
+                $i = 0;
+                foreach ($keys as $m) {
+                    $i++;
+                    if (strlen($m_prec) > 0 && substr($m, 0, 1) != substr($m_prec, 0, 1)) {
+                        echo('<br>');
+                    }
+                    echo($m );
+                    if ($nb_keys > $i) {
+                        echo( ', ');
+                    }
+
+                    $m_prec = $m;
+                }
+
+                //<?= join(', ', $keys); >
+                ?>
+            </small>
+
+
+
+            <a href="mots-cles.php" target="_blank">modifier ...</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--affichage des résultats-->
+<?php
+//var_dump($page_retour);
+if (isset($donnees)) {
+    if ($donnees != false) {
+        ?>
+        <form id="frm_choix" name="frm_choix" action="<?= $page_retour ?>" method="post">
+            <input type="hidden" name="type_recherche" value="<?= $type_recherche->numero; ?>">
+            <legend>Résultats : <?= count($donnees) ?> fiche(s) trouvée(s) sur <?= $type_recherche->get_site() ?></legend>
+
+            <div class="row">
+                <?php
+                $film = new WebRechercheData();
+                $index_resultat=0;
+                // Pour chaque résultat de film.
+                foreach ($donnees as $film) {
+                    $index_resultat++;
+                    ?>
+                    <div class="col-xl-12  col-lg-6 col-xl-4">
+
+                        <table class="table table-hover table-striped table-condensed" >
+
+                            <tbody>
+
+                                <tr style="height: 410px;">
+
+                                    <td style = "text-align: center;vertical-align: middle;width: 40%">
+
+                                        <img style="min-width: 80px; max-width: 200px;
+
+                                             max-height:280px;
+                                             height: auto;
+                                             width: 100%;" 
+                                             src="<?= $film->posterURL ?>"  alt="affiche">
+
+                                    </td>
+                                    <td style = "vertical-align: middle; width:initial;">  
+
+                                        <h3><?= $film->title; ?>  </h3>
+
+                                        <p>Titre original : <?= $film->originalTitle ?></p>
+                                        <p>Réalisateur : <?= $film->directors ?></p>
+                                        <p>Année : <?= $film->productionYear ?></p>
+                                        <p>Acteurs : <?= $film->actors ?></p>
+                                        <?php
+                                        if (strlen($film->href) > 0) {
+                                            ?>
+                                            <p>Fiche détaillée :  <br><a href="<?= $film->href ?>" 
+                                                                        target="_blank"
+                                                                        title="Aller sur la fiche détaillée (nouvel onglet)"><?= $film->href ?></a>
+                                            </p>
+                                            <?php
+                                        } else {
+                                            echo "<center>Pas de fiche détaillé</center>\n";
+                                        }
+                                        ?>
+                                        <br>
+
+                            <center>
+                                
+                                <input  type="hidden" name="validation_auto" value="<?= $validation_auto ?>">
+                                <?php
+                                if (strlen($recherche_ori) > 0) {
+                                    //31/05/2018 : renvoie le nom du fichier en post car en multi-onglets et les sessions ce n'est pas ca
+                                    ?>
+                                    <input  type="hidden" name="file" value="<?= $recherche_ori ?>">
+                                    <?php
+                                }
+                                ?>
+
+                                <button type="submit" name="web_fiche_code" 
+                                        id="web_fiche_code_<?=$index_resultat;?>" 
+                                        value="<?= $film->code ?>" style="width: 90px" 
+                                        class="btn btn-<?= Gestion_admin::$couleur_admin_bootstrap; ?>">
+                                    Choisir
+                                </button>
+                            </center>
+
+
+                            </td>
+
+                            </tr> 
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+        </form>
+
+
+        <?php
+    } else {
+        //affichage du message si pas de donnée renvoyé
+        html_bootstrap_alert_danger($error_retour . ' sur ' . $type_recherche->get_site());
+    }
+}
+?>
+
+<center>
+
+    <?php
+    //var_dump(urlencode($recherche_ori));
+    ?>
+
+
+    <a href="<?= $page_retour ?>" class="btn btn-default">
+        Annuler
+    </a>
+    &nbsp;&nbsp;
+    <a href="detail-modif.php?file=<?= urlencode($recherche_ori) ?>"
+       class="btn btn-danger" 
+       title="Modifier la fiche du film">
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editer la fiche
+    </a>
+
+</center>
+<script>
+    //remet les champs de saisie à l'origine
+function raz_champs_recherche(){
+    for (var i = 0; i <= 1; i++) {
+        var element = document.getElementById('recherche_web'+i);
+        element.value="<?=Helper_misc::chaine_pour_js($recherche_ori)?>";
+        //alert('recherche_web'+i);
+    }
+}
+</script>
+<?php
+
+//validation auto si le nombre de résultat = 1 et actif 
+if($validation_auto!=0 && count($donnees)==1){
+    //on valide automatiquement via du js
+    ?>
+<script src="lib/js/alert_custom/alert-sablier.js"></script> 
+<script>
+    afficher_traitement_en_cours();
+    var bt = document.getElementById('web_fiche_code_1');
+    bt.click();
+</script>
+    <?php
+    message::ajouter_alerte_ok("La validation automatique a été activé via l'option <b>&quot;J'ai de la chance&quot;</b>. C'est pour cette raison que vous aviez été redirigé automatiquement vers cette page.");
+}
+
+
+
+require_once 'footer.php';
+
+/**
+ * 
+ * FIN DE LA PAGE
+ * 
+ */
+function aficher_formulaire($titre_formulaire, $type_recherche_aff = type_recherche::RECHERCHE_ALLOCINE) {
+    global $recherche;
+    global $type_recherche;
+    global $ignore_dictionnaire;
+    global $enleve_dernier_mot_si_non_trouve;
+    global $recherche_ori;
+    global $idx_saisie;
+    
+    /* global $keys; */
+    ?>
+
+    <!--bandeau de recherche-->
+
+    <div class="col-md-6  col-lg-6">
+        <form id="frm_recherche"  method="post" name="frm_recherche" >
+
+            <nav class="navbar navbar-default" role="navigation">
+                <ul class=" nav navbar-nav">
+                    <div class="container">
+
+                        <div class=" navbar-brand ">&nbsp;<?= $titre_formulaire ?>
+
+
+                        </div>
+                    </div>
+
+                    <div class=" container col-md-6 col-lg-6">
+                        <div class="col-sm-11 col-xl-5">
+                            <div class="input-group">
+                                <input type="hidden" name="type_recherche" value="<?= $type_recherche_aff; ?>">
+                                <input type="text" class="form-control"  id="recherche_web<?=$idx_saisie?>" name="recherche_web" value="<?= $recherche; ?>" 
+    <?= ($type_recherche->numero == $type_recherche_aff) ? 'autofocus' : ''; ?>>
+
+
+                                <span class="input-group-btn">
+
+
+                                    <button class="btn btn-default" type="button" value="clear_recherche" title="Ré-initialiser avec &quot;<?=$recherche_ori?>&quot;" 
+                                            onclick="raz_champs_recherche();">
+                                        <i class="fa fa-undo" aria-hidden="true"></i>
+                                    </button>
+
+
+
+                                    <button class="btn btn-default" type="submit" name ="action" id ="action" value="Recherche">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+
+
+                                </span> 
+                            </div><!-- /input-group -->
+                            <div class="checkbox">
+                                <input type="hidden" name="ignore_dictionnaire" value=""/>
+                                <label>
+                                <input type="checkbox" name="ignore_dictionnaire" 
+                                       value="ON" <?= strlen($ignore_dictionnaire) > 0 ? 'checked' : ''; ?> /> Ignorer les mots clés du dictionnaire 
+                                <small>
+                                    ( * )
+                                </small>
+                                </label>
+                                <br>
+                                
+                                <input type="hidden" name="enleve_dernier_mot_si_non_trouve" value=""/>
+                                <label>
+                                <input type="checkbox" name="enleve_dernier_mot_si_non_trouve" 
+                                       value="ON" <?= strlen($enleve_dernier_mot_si_non_trouve) > 0 ? 'checked' : ''; ?> /> S'il n'y a aucun résultat, enlever le dernier mot et relancer la recherche 
+                                </label>
+                                <br>
+                                <br>
+                            </div>
+                        </div> 
+
+                    </div><!-- /.row -->
+
+
+
+                </ul>
+            </nav>
+        </form>
+
+    </div>
+
+    <?php
+    $idx_saisie++;
+}

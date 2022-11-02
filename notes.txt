@@ -1,0 +1,259 @@
+------------------------------
+        <b>api Allociné</b>
+------------------------------
+
+api + recente que celle utilisé
+https://github.com/gromez/allocine-api
+
+infos ici
+https://wiki.gromez.fr/dev/api/allocine_v3
+
+
+
+
+------------------------------
+        <b>install note</b>
+------------------------------
+
+- faire un alias sur le dossier 'MyCinemaData' 'C:\wamp\www\MyCinema\MyCinemaData' et le noter ds le fichier de config
+
+
+
+------------------------------
+        <b>change log</b>
+------------------------------
+
+<b>à faire ou en cours</b>
+--------------------
+
+
+
+
+EN TEST
+--------------------
+
+pouvoir modifier depuis la premiere page
+
+film drones war bande annonce hauteur
+ mettre min et max height
+
+lien vers affiche ne marche pas sous opéra et chrome
+ERR_BLOCKED_BY_XSS_AUDITOR
+
+
+
+
+
+
+
+
+
+maintenance-fichiers.php
+
+
+
+
+redirection a faire et session
+quand on ajoute ce n'est plus actualisé
+erreur php quand on utilise la session
+
+
+
+
+
+
+
+--------------------------
+
+pouvoir supprimer si titre=nom fichier
+
+http://localhost/MyVOD/app/maintenance-fichiers.php
+enlever le var_dump qd validé
+
+maintenance-fichiers.php mettre des temps
+
+
+
+pouvoir supprimer fiche (a voir, il suffit de renommer le fichier)
+
+pb avec My.Pet.Dinosaur.2017.FRENCH.BDRip.x264.mkv
+
+
+
+my.pet.dinosaur.2017.french.bdrip.x264.mkv introuvable
+
+tester avec 
+nos.voisins.les.hommes.france.www.dvdrip-truefrench.com.avi
+mot homme est ignoré
+
+
+
+my.pet.dinosaur.2017.french.bdrip.x264.mkv
+pareil mot qui degage
+
+
+
+
+
+
+
+
+
+
+
+
+ajout faq?
+
+//ajouter le panmove pour afficher le carré ou non en fct de la distance
+
+
+
+
+------------------------------
+     ***** fait *****
+------------------------------
+
+recherche-web.php : mettre le nom du fichier origine en info (pour copie coller)
+
+logo MyVod derriere un scream error (z index)
+
+page de recherche de fichiers mettre en session car met trop de temps car une recherche est effectué à chaque fois
+
+stats : taille en To si > 1To
+
+lien trt_suppression_fiche.php vers une erreur 404
+
+detail-modif.php : quand on est a moitié de l'ecran, le bt valider est caché par une div invisible.
+
+
+
+voir pour glisser pour changer de fiche (cf librairie Hammer.js)
+
+modifier l'affiche ne marche plus via l'url en direte (film marie curie) (25/07/2017)
+
+https://media.services.cinergy.ch/media/box1600/e04ff38b278a2f0059f714b3e4e18d6863b98d7e.jpg (25/07/2017)
+
+upload directe quand on a choisit un fichier (25/07/2017)
+
+
+titre popup plus gras (05/10/2016)
+ajouter réalisateur et acteur dans affiche galerie (jouer avec css pour que ca apparait quand on clique avec popup) (05/10/2016)
+
+quand on ouvre un fichier m3u et que le fichier n'existe pas, on doit rester avec le navigateur et mettre un message
+(c'est ds le cas ou le fichier vient d'être supprimé) (testé sur le poste caisse et FF le 05/10/2016) ????
+
+changer les phrases dans les affiches (24/02/2017)
+
+ - mettre affiches des films precedents et suivant au survol de la souris (06/03/2017)
+cf : http://codepen.io/anon/pen/myEJvQ
+ou
+http://www.reposcript.com/article48/comment-faire-une-infobulle-au-survol-de-la-souris-en-html-et-css
+ou
+https://www.scriptol.fr/css/infobulle.php
+
+
+- quand on fait annuler qd on fait une recherche et pas de résultat
+
+i.t.2016.french.hdrip.x264.www.zone-telechargement.ws.mkv
+
+Erreur lors de l'exécution de la requête :
+INSERT INTO [file] (file_name,full_path,size) VALUES (NULL,NULL,-1)
+SQLSTATE[23000]: Integrity constraint violation: 19 file.file_name may not be NULL
+
+- Passer de admin & parent (ajout d'un autre bouton de déconnexion)
+
+***** en cours *****
+
+
+***** à faire *****
+
+
+
+
+
+
+------------------
+
+
+
+
+
+
+
+
+
+
+
+
+ - gestion des fichiers m3u (série) (web-url) et .ignore
+
+ - gestion des séries
+
+ - voir type de média (série, film, web url ...)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ - mettre lien lire video dans la page d'édition de fiche (a voir)
+
+
+
+
+
+ - Ajouter label pour le type de son (2.1, 5.1...)
+
+
+
+ - avec le navigateur android (non chrome), le fond ne s'étire plus.
+
+
+
+ - gestion du bandeau. le reprendre si on a scrollé, ne pas l'afficher pour les pages suivantes.
+cela permet de centraliser la Gestion du bandeau (je pense qu'actuellement, il est géré dans 2 endroits différents)
+
+ - faire une liste de films à regarder
+
+ - faire une liste de remarques ou notes (a réfléchir)
+
+
+ - réduire  la largeur du panel à gauche (index) voir système de punaise en js
+
+ - accélérer temps de mise en cache (voir si c'est la bdd manque transaction ou le scan du répertoire)
+
+ - rechercher partout ou il y a un lien pour regarder vidéo et faire soit une fonction pour passer en target=_self
+
+
+ - ajout de la recherche via le lien de la fiche web 
+(quand on modifie le champ 'Lien vers la fiche web', on change 'Rechercher les informations sur Allociné par le code fiche')
+
+ - gerer-affiches.php : ligne 61 : traiter affiche manquante.
+
+ - faire le point (ou un tri) sur les path img_path, ...
+
+
+
+
+ - ajout de commentaires utilisateurs
+
+ - informations sur le navigateur (http://www.killersites.com/community/index.php?/topic/2562-php-to-detect-browser-and-operating-system/)
+
+
+ - page admin : pouvoir sauvegarder le répertoire data et télécharger le .zip
+
+
+ - recup des données issues de BDFCi (api fermée) (infos sur http://www.bdfci.info/apis/)
+
+ - voir http://www.choisirunfilm.fr/ pour prendre le modele de résultat
+
+ - www.themoviedb.org pour rechercher les films

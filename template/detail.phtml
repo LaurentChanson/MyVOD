@@ -1,0 +1,803 @@
+<?php
+$titre_page = 'Détails du film';
+
+require_once 'header.php';
+
+require_once 'detail-commun.phtml';
+
+
+//var_dump($detail);
+?>
+
+
+<!--modifie le titre de la page en faisant appel au js-->
+<script type="text/javascript">
+    document.title = "<?= 'MyVOD : ' . $detail->Titre; ?>";
+
+    remonte_page_menu();
+
+    //pour les side bar
+    active_fixed_side_bar_hd();
+
+</script>
+
+<?php
+//Helper_system::temps_ecoule('debut');
+//L'image de fond
+render_image_fond($url_afiche);
+
+//la ligne avec les boutons précédent et suivant
+ajout_boutons_precedent_et_suivant($detail);
+
+//var_dump($url_afiche);
+?>
+<hr>
+<?php
+//tests
+//require_once './lib/media-info.php';
+//$xmlstr=media_info_XML( $file_info->full_path);
+//tests
+
+
+
+if ($detail != false) {
+    ?>
+
+    <div class="row" >
+
+
+        <?php
+        render_affiche_full_width($url_afiche);
+        ?>
+
+
+        <!--Le panel de gauche (si écran large)-->
+        <div id="side_bar_parent" class="col-xl-2 col-lg-3 visible-lg">
+            <div id="side_bar" >
+                <center>
+                    <?php
+                    render_panel_liens();
+                    ?>
+                </center>
+            </div>
+        </div>
+
+
+        <div id="body_content" class="col-xl-10 col-lg-9" >
+            <div class="visible-xxs visible-xs" align="center">
+                <!--titre petits écrans-->
+                <?php
+                render_titre($detail);
+                ?>
+            </div>
+            <!--body content-->
+
+            <!--l'affiche-->
+
+            <?php
+            render_affiche($url_afiche, false);
+            ?>
+
+            <!--description principale-->
+
+            <div align="center" >
+                <div class="hidden-xxs hidden-xs ">
+                    <br/>
+                    <?php
+                    render_titre($detail);
+                    ?>
+                </div>
+                <h3>
+                    <center>
+                        <?php
+                        $ratio = $detail->NoteMoyenne();
+                        stars_rating::render($ratio, $detail->NoteMoyenneTexte());
+                        ?>
+                    </center>
+                </h3>
+
+
+
+
+                <?php
+                if (isset($m3u_url)) {
+                    ?>
+                    <!--lien pour regarder la vidéo-->
+                    <div style="width: 100%">
+                        <a href="<?= $m3u_url; ?>" 
+                           class="btn btn-success "  type="audio/x-mpegurl" target="_blank">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  Lire la vidéo</a>
+                    </div>
+                    <?php
+                }
+                ?>
+                <div style="width: 100%; ">
+                    <?php
+                    //ajoute un peu d'espace
+
+                    if ($detail->HD720 || $detail->HD1080 || $detail->is_vff() || $detail->is_mkv()) {
+                        ?>
+                        <div style="width: 100%; height: 8px;"></div>
+
+                        <?php
+                    }
+
+
+                    //var_dump(theme_config::$repertoire_img );
+                    if ($detail->HD720) {
+                        ?>
+                        <img src="<?= theme_config::$repertoire_img ?>/720P_HD-logo.png" height="38em" width="auto" alt="720P_HD-logo"/>
+                        <?php
+                    }
+                    if ($detail->HD1080) {
+                        ?>
+                        <img src="<?= theme_config::$repertoire_img ?>/1080P_FullHD-logo.png" height="38em" width="auto" alt="1080P_HD-logo"/>
+                        <?php
+                    }
+                    if ($detail->is_vff()) {
+                        ?>
+                        <img src="<?= theme_config::$repertoire_img ?>/VFF-logo.gif" height="38em" width="auto" alt="VFF-logo"/>
+                        <?php
+                    }
+                    if ($detail->is_mkv()) {
+                        ?>
+                        <img src="<?= theme_config::$repertoire_img ?>/MKV-logo.gif" height="38em" width="auto" alt="MKV-logo"/>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <?php
+                //}
+                ?>
+
+
+                <?php
+                if ($file_info->file_exists()) {
+                    ?>
+                    <!--résolution-->
+                    <p class="text-center" style="margin-top: 8px;">
+                        <span class="text-info">
+                            <strong>
+                                Résolution : <?= $file_info->width . ' x ' . $file_info->height ?>
+                            </strong>
+                        </span>
+
+                    </p>
+                    <?php
+                }
+                ?>
+
+                <h4>
+                    <span class="text-warning"><?= $detail->Genres() . ' / ' . $detail->TypePublic; ?></span>
+                </h4>
+                <h5>
+                    <span class="text-success"><?= strlen($detail->Nationalite) > 0 ? $detail->Nationalite . '<br><br>' : '' ?></span>
+                    <span class="text-success"><?= $detail->AnneeSortie . ' - ' . $detail->Duree(); ?></span>
+                </h5>
+                <!--note-->
+                <h6>
+                    <span class="text-success"><?php
+                        //echo 'note (sur 10) : ' . $detail->NoteSpecSur10() . ' (spectateurs) - ' . $detail->NotePresseSur10() . ' (presse)';
+                        echo $detail->NoteMoyenneTexte();
+                        ?></span>
+                </h6>
+                <br/>
+            </div>
+
+            <!--description détaillé-->
+
+            <div>
+
+
+                <!--le type de média-->
+                <?php
+                if (strlen($detail->TypeFilm) > 0) {
+                    ?>
+
+                    <p>
+                        <span class="text-info">
+                            <strong>Type média : </strong>
+                        </span>
+                        <span class="muted"><?= $detail->TypeFilm; ?>
+                        </span>
+                    </p>
+
+
+                    <?php
+                }
+                ?>
+                <!--nationalité-->
+                <?php
+                if (strlen($detail->Nationalite) > 0) {
+                    ?>
+                    <p>
+                        <span class="text-info">
+                            <strong>Nationalité : </strong>
+                        </span>
+                        <span class="muted"><?= $detail->Nationalite; ?>
+                        </span>
+                    </p>
+                    <?php
+                }
+                ?>
+                <!--dateDeSortie-->
+                <p>
+                    <span class="text-info">
+                        <strong>Date de sortie : </strong>
+                    </span>
+                    <span class="muted"><?= $detail->DateSortieLongue(); ?>
+                    </span>
+                </p>
+                <!--realisateur-->
+                <p>
+                    <span class="text-info">
+                        <strong>Réalisateurs : </strong>
+                    </span>
+                    <span class="muted"><?= $detail->Realisateur; ?>
+                    </span>
+                </p>
+                <!--acteurs-->
+                <p>
+                    <span class="text-info">
+                        <strong>Acteurs : </strong>
+                    </span>
+                    <span class="muted"><?= $detail->Acteurs; ?>
+                    </span>
+                </p>
+                <!--synopsis-->
+                <p>
+                    <span class="text-info">
+                        <strong>Synopsis :<br/></strong>
+                    </span>
+                    <span class="muted"><?= $detail->Synopsis; ?>
+                    </span>
+                </p>
+
+            </div>
+            <br/>
+
+
+            <!--panel liens-->
+            <div class="row">
+
+                <div class="col-sm-8 col-sm-offset-2 hidden-lg">  
+                    <br>
+
+                    <?php
+                    render_panel_liens();
+                    ?>
+
+
+                </div>
+            </div>
+
+            <!--informations sur le média-->
+            <?php
+            //if ($fichier_existe) {
+            //require_once './lib/media-info.php';
+            $i = 0;
+            foreach ($lst_fichiers_a_lire as $file_info) {
+                $i++;
+                //on va chercher les informations via media info
+                //info sur les panels collapsables sur http://getbootstrap.com/javascript/
+                //plié : 'panel-collapse collapse' -  déplié : 'panel-collapse collapse in'
+                ?>
+                <!--détails codec-->
+                <div class="panel-group" id="accordion_<?= $i; ?>" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading" role="tab" id="heading0">
+                            <h3 class="panel-title" style="word-break: break-all;">
+                                <a data-toggle="collapse" data-parent="#accordion_<?= $i; ?>" 
+                                   href="#collapse_<?= $i; ?>"
+                                   title="(dé)plier cet onglet pour avoir les informations détaillées du fichier (via MediaInfo)"
+                                   aria-expanded="true" aria-controls="collapse_<?= $i; ?>">
+                                    Informations sur le média : <?= $file_info->file_name; ?> 
+                                </a> (
+                                <span>
+                                    <a href="https://mediaarea.net/fr/MediaInfo"
+                                       target="_blank"
+                                       title="+ d'infos sur MediaInfo (nouvel onglet)"
+                                       >
+                                        MediaInfo...
+                                    </a>
+                                </span>
+                                )
+                            </h3>
+                        </div>
+                        <div id="collapse_<?= $i; ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading0" >
+                            <div class="panel-body infos-media">
+                                <?php
+                                $s = $file_info->full_path;
+
+                                if (strlen($s) && file_exists_utf8($s)) {
+
+
+                                    $details_codec = $file_info->media_info_html;  //media_info_HTML($s);
+//var_dump($details_codec);
+                                    echo $details_codec;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <?php
+            }
+            ?>
+
+
+
+            <!--bandes annonces quand il y en a plusieurs-->
+            <?php
+            render_bandes_annonces($detail->BandesAnnonces);
+            ?>
+
+            <!--panel bande annonce celui par défaut (qui n'est pas dans la liste)-->
+            <?php
+            if ($detail->BandeAnnonceUrl && count($detail->BandesAnnonces) == 0) {
+                ?> 
+                <div class="row">
+
+                    <div class="col-md-8 col-md-offset-2">  
+                        <br>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Bande annonce</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <div class="embed-responsive-item">
+                                        <?= $detail->BandeAnnonceRender(); //$detail->BandeAnnonceEmbed;          ?>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <?php
+                if (isset($m3u_url)) {
+                    ?>
+                    <!--lien pour regarder la vidéo-->
+                    <center>
+                        <a href="<?= $m3u_url; ?>" 
+                           class="btn btn-success "  type="audio/x-mpegurl" target="_blank">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  Lire la vidéo</a>
+                    </center>
+                    <br/>
+                    <?php
+                }
+            }
+            ?>
+
+
+        </div>
+        <!--<script src="lib/js/hammer.js"></script>-->
+
+        <script>
+            /* //  désactivé LC le 29/09/2017
+             //variables utilisés pour le touch
+             var myElement = document.getElementById('body_content');
+             var bt;
+             var changedPointer;
+                 
+             // create a simple instance
+             // by default, it only adds horizontal recognizers
+             var mc = new Hammer(myElement);
+             var seuil = 100;
+             mc.get('pan').set({  threshold:seuil });
+             //http://hammerjs.github.io/recognizer-pan/
+             // listen to events... //panmove
+                 
+             //ajouter le panmove pour afficher le carré ou non en fct de la distance
+                 
+             mc.on("panstart panleft panright  pancancel panend panmove", function(ev) {
+             console.log( ev.type +" gesture detected.");
+             switch (""+ev.type) {
+             case "panstart":
+             myElement.style.left = "0px";
+             myElement.style.top = "0px";
+             myElement.style.border = "3px solid";
+             changedPointer = ev.changedPointers[0];
+                 
+             case "panleft":
+             bt = document.getElementById("fiche_suivante"); 
+             setTimeout(function(){
+             myElement.style.left = ev.deltaX+"px";
+             myElement.style.top = ev.deltaY+"px";
+             }, 10);
+             //myElement.style.backgroundColor = "red";
+             break;
+             case "panmove":
+             var pointer = ev.changedPointers[0];
+             //alert(""+Math.abs(changedPointer.clientX-pointer.clientX));
+             if(Math.abs(changedPointer.clientX-pointer.clientX)>seuil){
+             myElement.style.border = "1px solid";
+             }else{
+             myElement.style.border = "";
+             }
+             break;
+             case "panright":
+             bt = document.getElementById("fiche_precedente");
+             setTimeout(function(){
+             myElement.style.left = ev.deltaX+"px";
+             myElement.style.top = ev.deltaY+"px";
+             }, 10);
+             //myElement.style.backgroundColor = "blue";
+             break;
+             case "panend":
+             case "pancancel":
+             //"panend" Not Working in Chrome on Android #1103 (bug Hammer.js)
+             //https://github.com/hammerjs/hammer.js/issues/1103
+                 
+             //myElement.style.backgroundColor = "green";
+             myElement.style.left = "0px";
+             myElement.style.top = "0px";
+             myElement.style.border = "";
+                 
+             var pointer = ev.changedPointers[0];
+             //alert(""+Math.abs(changedPointer.clientX-pointer.clientX));
+             if(Math.abs(changedPointer.clientX-pointer.clientX)>seuil){
+                 
+             //on valide si on est au-dessus du seuil
+                 
+             if(bt!==null && typeof(bt) !== 'undefined'){
+             afficher_traitement_en_cours();
+             setTimeout(function(){    
+             bt.click();
+             }, 10);
+             }
+             }else{
+             changedPointer=pointer;
+             }
+             break;
+             }
+                 
+                 
+                 
+                 
+             });
+             */
+        </script>
+
+
+    </div>
+    <hr>
+
+
+    <?php
+    ajout_boutons_precedent_et_suivant($detail, 'bulle-en-haut');
+}
+
+
+
+
+require_once 'footer.php';
+
+//pour l'autocompletion
+$detail = new MyVOD_Details();
+//Helper_system::temps_ecoule();
+
+exit();
+
+//
+// FIN DE LA PAGE
+//
+
+function render_titre(MyVOD_Details $detail) {
+
+
+
+
+    if (controle_parental::config_actif() && controle_parental::filtrage_actif() == false) {
+        ?>
+        <h3>
+            <?php
+            render_logo_filtre($detail->Autorise);
+            ?>
+        </h3>
+        <?php
+    }
+
+    render_logo_has_message_h3($detail);
+
+
+    //var_dump($detail->get_infos_dhCreation());
+    $detail_infos_dhCreation = $detail->get_infos_dhCreation()
+    ?>
+
+    <span class="<?= $detail->Titre == $detail->Filename ? 'text-danger text-dessus' : 'text-info'; ?>"
+          >
+        <h2 style="display: inline;">
+            <?php render_logo_deja_vu($detail); ?>
+        </h2>
+        <h1 style="display: inline;" title="<?= $detail_infos_dhCreation ?>">
+            <?= $detail->Titre; ?>
+        </h1>
+
+    </span>
+    <h3 style="margin-top: 10px">
+        <span class="text-muted"
+              title="<?= $detail_infos_dhCreation ?>">
+                  <?= $detail->is_fiche_non_renseignee() ? '<br><br>(Fiche non renseignée)' : '(' . $detail->TitreOriginal . ')'; ?>
+        </span>
+    </h3>
+    <?php
+}
+
+function render_logo_has_message_h3(MyVOD_Details $detail) {
+    if ((strlen($detail->MessageModif) == 0) || (Gestion_admin::est_connecte() == false)) {
+        return;
+    }
+    ?>
+    <h3>
+        <?php
+        render_logo_has_message($detail);   //cf tpl.phtml
+        ?>
+
+    </h3>
+
+    <?php
+}
+
+function render_panel_liens($pour_panel_gauche = false) {
+
+    global $host_details;
+    global $m3u_url;
+    global $detail;
+    global $nom_fichier;
+    global $file_info;
+    global $lst_fichiers_a_lire;
+    global $filename_or_id;
+    $i = 0;
+
+    //var_dump($file_info->size);
+    ?>
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Liens</h3>
+        </div>
+        <div class="panel-body">
+
+
+            <?php
+            //modification de la fiche
+            //if(Gestion_admin::est_connecte()){
+            ?>
+            <!--modifier le fiche-->
+            <a href="detail-modif.php?file=<?= $filename_or_id; ?>" 
+               class="btn btn-<?= Gestion_admin::$couleur_admin_bootstrap; ?> center-block"
+               title="Modifier la fiche du film">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                Modifier la fiche</a>
+
+            <br/>
+
+
+            <!--fiche détaillée-->
+
+            <?php
+            //lien vers la fiche détaillée (Allociné ou DVDFr)
+            if (isset($host_details) && strlen($host_details) > 1) {
+                ?>
+                <a href="<?= $detail->MovieLink; ?>" 
+                   class="btn btn-warning center-block" target="_blank"
+                   title="Fiche détaillée sur <?= $host_details; ?> (nouvel onglet)">
+                    <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                    Fiche détaillée...
+                </a>
+                <br/>
+                <?php
+            }
+            //var_dump($detail);
+            //bouton de recherche google
+
+            render_bt_recherche_google($detail, '<i class="fa fa-search" aria-hidden="true"></i>
+                     Rechercher sur Google...', 'center-block');
+            ?>
+            <br/>
+            <?php
+            //bouton pour lire la vidéo (m3u)
+            if (isset($m3u_url)) {
+                ?>
+
+
+                <!--lien pour regarder la vidéo-->
+                <a href="<?= $m3u_url; ?>" 
+                   class="btn btn-success center-block"  type="audio/x-mpegurl" target="_blank">
+                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  Lire la vidéo (<?= $file_info->width . ' x ' . $file_info->height ?>)</a>
+                <p class="text-center" style="word-break: break-all;">
+                    <small>
+                        <?= $nom_fichier . ' (' . taille_fichier_en_texte($file_info->size) . ')'; ?>
+
+                    </small>
+                </p>  
+
+
+                <!--<div class="container-fluid">-->
+                <div class="row">
+                    <center>
+
+
+                        <?php
+                        $nb = count($lst_fichiers_a_lire);
+                        $i = 0;
+                        foreach ($lst_fichiers_a_lire as $file_info) {
+
+
+                            //$url_save = str_ireplace(config::repertoireFilmsLocal(), config::repertoireWebFilms(), $file_info->full_path);
+                            $url_save = MyVOD::get_url_download($file_info->full_path);
+
+
+                            //var_dump($url_save);
+                            ?> 
+                            <div class="col-sm-<?= $nb == 1 ? 12 : 6; ?> col-lg-12">
+                                <p>
+                                    <a href="<?= $url_save; ?>" 
+                                       class="btn btn-default center-block"  type="application/octet-stream" download target="_blank">
+                                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>  Télécharger la vidéo<?php
+                                        if ($nb > 1) {
+                                            echo ' (' . ($i + 1) . '/' . $nb . ')';
+                                        }
+                                        ?> *
+                                    </a>
+                                <div style="word-break: break-all;">
+                                    <small>
+                                        <?= $file_info->file_name . ' (' . taille_fichier_en_texte($file_info->size) . ')'; ?>
+
+                                    </small>
+                                </div>
+                                </p>
+                            </div>
+
+                            <?php
+                            $i++;
+                        }
+
+                        $i = 0;
+                        ?>
+
+                    </center>
+                    <!--</div>-->
+                </div>      
+
+
+
+
+
+
+
+
+
+
+                <?php
+                //faire les différents liens de telechargements
+
+                $nb = count($lst_fichiers_a_lire);
+                $rep_precedent = "";
+                $rep_courant = "";
+                foreach ($lst_fichiers_a_lire as $file_info) {
+                    $i++;
+                    $url_save = str_ireplace(config::repertoireFilmsLocal(), config::repertoireWebFilms(), $file_info->full_path);
+                    $rep_courant = dirname($file_info->full_path);
+                    ?>
+
+                    <!--ouverture du répertoire-->
+                    <?php
+                    if (Helper_system::nav_OS_is_windows() && Helper_system::nav_is_local()) {
+                        if ($rep_precedent != $rep_courant) {
+                            html_lien_ouvrir(dirname($file_info->full_path), '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp&nbspOuvrir le répertoire', 'btn btn-info center-block');
+                            ?>
+                            <small><center>
+                                    <?= dirname($file_info->full_path); ?>
+                                </center></small>
+                            <br>
+                            <?php
+                        }
+                    }
+                    $rep_precedent = $rep_courant;
+                }//foreach
+                //}// if (file_exists_utf8($s)) {
+            }
+
+
+            //faire test d'existance du fichier ou si fiche incomplete, on propose le lien de suppression
+            //on peut supprimer si pas de fichier ou titre égal fichier
+            if (Gestion_admin::est_connecte() && ($i == 0 || $detail->Titre == $detail->Filename)) {
+                //$possibilite_suppression = true;
+                ?>
+                <!--lien de suppression-->
+                <a href="#" 
+                   class="btn btn-warning center-block"
+                   title="Supprimer cette fiche de la base de données"
+                   onclick="javascript:supprimer_fiche_avec_confirmation(<?= $detail->ID ?>, '<?= Helper_misc::chaine_pour_js($detail->Titre); ?>', '<?= Helper_misc::chaine_pour_js($detail->Filename); ?>');
+                                   return false;">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    Supprimer la fiche
+                </a>
+                <br>
+                <?php
+            }
+
+
+
+
+
+
+
+            //le texte d'explication pour le téléchargement
+            if ($i > 0) {
+                ?><small>
+                    * Si la vidéo s'affiche dans votre navigateur. Pour enregistrer, faire click-droit sur le bouton puis 
+                    "enregistrer le contenu sous".
+
+                    <br>
+                </small>
+
+                <?php
+            }
+            ?> 
+
+        </div>
+    </div>
+
+
+
+    <?php
+}
+
+function ajout_boutons_precedent_et_suivant($detail, $class = '') {
+    global $idx_prec;
+    global $idx_suiv;
+    global $detail_prec;
+    global $detail_suiv;
+    global $prec_suivant_ordre_ajout;
+    ?>
+    <nav >
+        <ul class="pager group_bt_prec_suiv">
+
+            <?php
+            $ordre_ajout = $prec_suivant_ordre_ajout != 0 ? '&ordreajout=1' : '';
+            //ajout des boutons précédent et suivant
+            //<li class="previous"><a href="#">&larr; Film précédent</a></li>
+            if ($idx_prec != false) {
+                //echo '<li class="previous"><a href="detail.php?file=' . $idx_prec . $ordre_ajout . '">&larr; <small>' . $detail_prec->Titre . '</small></a></li>';
+                //MyVOD::affiche_to_url($detail->Affiche);
+                ?>
+                <li class="previous <?= $class ?>">
+                    <a id="fiche_precedente" href="detail.php?file=<?= $idx_prec . $ordre_ajout ?>">&larr; <small><?= $detail_prec->Titre ?></small>
+
+                        <img class="affiche_popup"
+                             src="<?= MyVOD::affiche_to_url_miniature($detail_prec->Affiche) ?>" alt="<?= $detail_prec->Titre ?>">  
+
+                    </a>
+                </li>
+                <?php
+            }
+
+
+            //<li class="next"><a href="#">Film suivant &rarr;</a></li>
+            if ($idx_suiv != false) {
+                //echo '<li class="next"><a href="detail.php?file=' . $idx_suiv . $ordre_ajout . '"><small>' . $detail_suiv->Titre . '</small> &rarr;</a></li>';
+                ?>
+                <li class="next <?= $class ?>">
+                    <a id="fiche_suivante" href="detail.php?file=<?= $idx_suiv . $ordre_ajout ?>"><small><?= $detail_suiv->Titre ?></small> &rarr;
+
+                        <img class="affiche_popup" 
+                             src="<?= MyVOD::affiche_to_url_miniature($detail_suiv->Affiche) ?>" alt="<?= $detail_suiv->Titre ?>">
+
+                    </a>
+                </li>
+                <?php
+            }
+            ?>
+        </ul>
+    </nav>
+    <?php
+}

@@ -1,0 +1,83 @@
+
+<div class="panel-group" id="accordionAnnees" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default navbar" style="z-index: 99;">
+        <div class="panel-heading" role="tab" id="heading2">
+            <div class="row panel-title form-group">
+
+                <a data-toggle="collapse" 
+                   data-parent="#accordionAnnees" 
+                   href="#collapse2" aria-expanded="false" 
+                   aria-controls="collapse2" 
+                   onclick="MAJ_annee_deplie();">
+                       <?php
+                       render_bouton_collapse('bt_collapse2', $annee_deplie, '(Dé)plier le panel du filtre sur les années de production');
+                       ?>
+
+                    <div class="col-xs-9"  >
+                        <h4>
+                            <div id="titre_annee">Années de production</div>
+                        </h4>
+                    </div>
+
+                </a>
+
+                <input type="hidden" id="annee_deplie" name="annee_deplie" value="<?= $annee_deplie; ?>" />
+
+            </div>
+        </div>
+
+
+        <div id="collapse2" class="panel-collapse collapse<?= $annee_deplie ? ' in' : ''; ?>" role="tabpanel" aria-labelledby="heading2" >
+            <div class="panel-body">
+
+                <div class="row">
+
+                    <div class="pull-right">
+                        <button class="btn btn-default" type="submit" name ="action" id ="action" value="Recherche">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>&nbsp;&nbsp;&nbsp;&nbsp;  
+                    </div>
+                    <div class="text-center"> 
+                        <a href="javascript:CocherGroupCheckBox('annee_filtre_',<?= count($annees) ?>);">Tous</a>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <a href="javascript:DecocherGroupCheckBox('annee_filtre_',<?= count($annees) ?>);">Aucun</a>
+
+                    </div>
+
+                </div>
+
+                <div class="checkbox">
+                    <?php
+                    $idx = 0;
+
+
+                    foreach ($annees as $a) {
+
+                        $checked = isset($annee_filtre[$idx]) ? 'checked' : '';
+                        ?>
+
+
+                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-4">
+                            <label>
+                                <INPUT type= "CHECKBOX" 
+                                       id="annee_filtre_<?= $idx ?>"
+                                       name="annee_filtre[<?= $idx ?>]"
+                                       value=<?= '"' . $a->AnneeSortie . '" ' . $checked; ?>
+                                       onchange="RaffraichitNbAnneesCoches();">
+                                       <?= ' ' . $a->AnneeSortie . ' '; ?>
+                                <a href="javascript:FiltrerParAnnee(<?= $idx; ?>);">
+                                    <span class="badge">
+                                        <?= $a->Count; ?>
+                                    </span>
+                                </a></label>
+                        </div>
+                        <?php
+                        $idx++;
+                    }
+                    ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

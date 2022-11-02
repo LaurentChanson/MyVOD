@@ -1,0 +1,859 @@
+<?php
+$titre_page = 'Modification du film';
+
+//entêtes HTML
+require_once 'header.php';
+
+require_once 'detail-commun.phtml';
+
+//var_dump(Helper_redirection::get_derniere_page());
+
+//L'image de fond
+if (isset($fichefilm->Affiche)) {
+    render_image_fond(MyVOD::affiche_to_url($fichefilm->Affiche));
+}
+?>
+
+<!--modifie le titre de la page en faisant appel au js-->
+<script type="text/javascript">
+
+    remonte_page_menu();
+    //pour les side bar
+    active_fixed_side_bar_hd();
+
+</script>
+<script src="lib/js/detail-modif.js"></script>
+
+
+<?php
+if (strlen($fichefilm->MessageModif) > 0) {
+    ?>
+    <script src="lib/js/alert_custom/alert.js"></script> 
+    <script>
+        alert("<?= Helper_misc::chaine_pour_js($fichefilm->MessageModif) ?>");
+    </script>
+    <?php
+}
+?>
+
+
+
+
+
+<br/>
+<!--https://developer.mozilla.org/fr/docs/Web/HTML/Element/select-->
+<!--http://bootsnipp.com/forms?version=3-->
+
+<form class="form-horizontal" enctype="multipart/form-data" method="POST">
+
+    <!--Le panel de gauche (si écran large)-->
+
+    <div class="row">
+
+
+        <?php
+        render_affiche_full_width(MyVOD::affiche_to_url($fichefilm->Affiche));
+        ?>
+
+        <div id="side_bar_parent" class="col-lg-3">
+            <div id="side_bar" >
+                <center>
+                    <br>
+                    <?php
+                    render_boutons_annuler_valider(true);
+                    ?>
+                </center>
+            </div>
+        </div>
+
+        <div id="body_content" class="col-lg-9">
+
+            <!--body content-->
+
+
+
+
+            <input type="hidden" name="title_key" id="titleKey" value="<?= $fichefilm->TitleKey; ?>">
+            <input type="hidden" name="filename" id="filename" value="<?= $fichefilm->Filename; ?>"> 
+            <input type="hidden" name="path" id="path" value="<?= $file_info->full_path; ?>">
+
+            <input type="hidden" name="bandes_annonces" id="bandes_annonces" value="<?= $fichefilm->SerialiseBandesAnnonces(); ?>">
+
+
+            <div>
+
+                <!-- Form Name -->
+                <legend>Fichiers</legend>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" >Fichier</label> 
+                    <div class="col-sm-6">
+                        <input id="fichier" name="fichier"  class="form-control input-sm" required="" type="text"
+                               value="<?= $fichefilm->Filename ?>" disabled>
+
+                        <div class="pull-right">
+                            <a href="detail-modif-change-nom-fichier.php?file=<?= $fichefilm->ID; ?>">Changer le nom de fichier</a>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" >Emplacement</label> 
+                    <div class="col-sm-6">
+                        <input id="path" name="path"  class="form-control input-sm" required="" type="text"
+                               value="<?= $file_info->full_path ?>" disabled>
+
+                        <?php
+                        if (strlen($file_info->full_path) && $file_info->file_exists()) {
+                            ?>
+                            <i>
+                                <small>
+                                    Taille : <?= taille_fichier_en_texte($file_info->size); ?>
+                                    <?php
+                                    if ($file_info->width > 0) {
+                                        ?>
+                                        - Résolution : <?= $file_info->width . ' x ' . $file_info->height ?>
+                                        <?php
+                                    }
+                                    ?>
+                                </small>
+                            </i>
+                            <?php
+                        }
+                        ?>
+
+                        <?php
+                        if (Helper_system::nav_OS_is_windows() && Helper_system::nav_is_local()) {
+                            ?>
+
+                            <div class="pull-right">
+                                <?php
+                                html_lien_ouvrir(dirname($file_info->full_path), 'Ouvrir le répertoire');
+                                ?>
+
+                            </div>
+                            <?php
+                        }
+                        ?> 
+
+
+
+
+                    </div>
+                </div>   
+
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" >
+                        Message interne (admin)
+                        <a class="btn btn-primary btn-sm" style="margin-top: -8px;"
+                           title="Aperçu du message"
+                           onclick="afficher_message_interne();">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                    </label> 
+                    <div class="col-sm-8">
+                        <textarea id="messageModif" name="messageModif" class="form-control input-sm"><?= $fichefilm->MessageModif; ?></textarea>   
+                    </div>
+                    <script>
+                        function afficher_message_interne(){
+                            var messageModif = document.getElementById('messageModif');
+                            var txt = messageModif.value;
+                            if(txt.length===0)txt="Il n'y a rien a afficher.";
+                            alert(txt);
+                        }
+                    
+                    </script>
+                </div> 
+
+
+
+                <!-- Form Name -->
+                <legend>Titre</legend>
+
+                <!-- Text input (titre)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="titre">Titre</label>  
+                    <div class="col-sm-6">
+                        <input id="titre" name="titre" placeholder="Titre" class="form-control input-sm" required="" type="text"
+                               value="<?= $fichefilm->Titre ?>">
+        <!--                <span class="help-block">titre du film</span>  -->
+                    </div>
+                </div>
+
+                <!-- Text input (Titre original)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="titreOriginal">Titre original</label>  
+                    <div class="col-sm-6">
+                        <input id="titreOriginal" name="titreOriginal" placeholder="Titre original" class="form-control input-sm" required="" type="text"
+                               value="<?= $fichefilm->TitreOriginal ?>">
+
+                    </div>
+                </div>
+
+                <!--Résolution-->
+                <legend>Résolution</legend>
+                <div class="form-group">
+                    <div class="radio col-xs-10 col-xs-offset-2">
+                        <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2">
+                            <label>
+                            <INPUT type= "radio" name="resolution" value="0" <?= $fichefilm->is_hd() == false ? 'checked' : '' ?>> SD
+                            </label>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2">
+                            <label>
+                            <INPUT type= "radio" name="resolution" value="720" <?= $fichefilm->HD720 ? 'checked' : ''; ?>> HD 720P
+                            </label>
+                        </div>
+                        <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2">
+                            <label>
+                            <INPUT type= "radio" name="resolution" value="1080" <?= $fichefilm->HD1080 ? 'checked' : ''; ?>> HD 1080P
+                            </label>
+                        </div>
+                    </div>
+                </div> 
+
+
+
+                <!-- Form Name -->
+                <legend>Fiche du film</legend>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="type_media">Type de média (long métrage, série...)</label>  
+                    <div class="col-sm-4">
+
+                        <datalist id="lst_types_film">
+                            <?php
+//remplissage des genres ds la datelist
+                            $i = 1;
+                            foreach ($liste_type_films as $t) {
+                                $selected = ''; // = $g->nom == $fichefilm->genre ? ' selected ' : '';
+                                echo '<option ' . $selected . 'value="' . $t . '">' . $t . '</option>';
+                                $i++;
+                            }
+                            ?>
+                        </datalist>
+
+
+
+                        <input id="type_media" name="type_media" placeholder="type de média (obligatoire)" 
+                               class="form-control input-sm" required="" 
+                               type="text" list="lst_types_film" 
+                               value="<?= $fichefilm->TypeFilm ?>">
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="type_media">Nationalité</label>  
+
+                    <datalist id="lst_nationalites">
+                        <?php
+//remplissage des genres ds la datelist
+
+
+                        $i = 1;
+                        foreach ($liste_nationalite as $n) {
+                            $selected = ''; // = $g->nom == $fichefilm->genre ? ' selected ' : '';
+                            echo '<option ' . $selected . 'value="' . $n . '">' . $n . '</option>';
+                            $i++;
+                        }
+                        ?>
+                    </datalist>
+                    <div class="col-sm-4">
+                        <input id="nationalite" name="nationalite" placeholder="Nationalité (obligatoire)" 
+                               class="form-control input-sm" required="" 
+                               type="text" list="lst_nationalites" 
+                               value="<?= $fichefilm->Nationalite ?>">
+
+                    </div>
+                </div>
+
+
+
+
+                <!-- Text input (Date de sortie)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="dateSortie">Date de sortie</label>  
+                    <div class="col-sm-3">
+                        <input id="dateSortie" name="dateSortie" placeholder="" class="form-control input-sm"  
+                               type="date"
+                               value="<?= $fichefilm->DateSortie; ?>">
+                        <span class=""><i><small>date au format AAAA-MM-JJ si pas de calendrier</small></i></span> 
+
+
+                    </div>
+
+                    <label class="col-sm-2 control-label" for="dateSortie">Année prod.</label>
+                    <div class="col-sm-2">
+                        <input id="AnneeSortie" name="anneeSortie"
+                               type="number" class="form-control input-sm"
+                               value="<?= $fichefilm->AnneeSortie; ?>">
+                    </div>
+                </div>
+
+
+                <!-- Text input (Durée)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="duree">Durée</label>  
+                    <div class="col-sm-2">
+                        <input id="duree" name="duree" placeholder="Durée" class="form-control input-sm" 
+                               type="time"
+                               value="<?= $fichefilm->Duree_html5(); ?>">
+
+                    </div>
+                </div>
+
+                <!-- Select Basic (Genre)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="genre">Genre(s)</label>
+                    <datalist id="lst_genres">
+                        <?php
+//remplissage des genres ds la datelist
+                        $i = 1;
+                        foreach ($genres as $g) {
+                            $selected = ''; // = $g->nom == $fichefilm->genre ? ' selected ' : '';
+                            echo '<option ' . $selected . 'value="' . $g->Nom . '">' . $g->Nom . '</option>';
+                            $i++;
+                        }
+                        ?>
+                    </datalist>
+                    <div class="row col-sm-8">
+
+
+
+                        <?php
+//boucle sur les 3 genres
+                        for ($idx = 1; $idx <= 3; $idx++) {
+                            ?>
+                            <div class="col-sm-<?= 4; //$idx == 1 ? 3 : 2      ?>">
+                                <input type="text" name="genre<?= $idx; ?>" class="form-control input-sm" list="lst_genres" 
+                                       value="<?= $fichefilm->{"GenreNom" . $idx} ?>"/>
+                            </div>
+                            <?php
+                        }
+                        ?>
+
+                    </div>
+                </div>
+
+
+                <!-- Select Basic (Type de publique)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="publicType">Type de publique</label>
+                    <div class="col-sm-4">
+
+
+
+                        <input type="text" name="publicType" class="form-control input-sm" list="lst_public_types" value="<?= $fichefilm->TypePublic ?>"/>
+                        <datalist id="lst_public_types">
+                            <?php
+//remplissage des type de public
+                            $i = 1;
+                            foreach ($publicTypes as $p) {
+                                $selected = ''; //= $p->nom == $fichefilm->publicType ? ' selected ' : '';
+                                echo '<option ' . $selected . 'value="' . $p->Nom . '">' . $p->Nom . '</option>';
+                                $i++;
+                            }
+                            ?>
+                        </datalist>
+                    </div>
+                </div>
+
+                <!-- Text input (Réalisateur)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="realisateur">Réalisateur</label>  
+                    <div class="col-sm-6">
+                        <input id="realisateur" name="realisateur" placeholder="Réalisateur du film" class="form-control input-sm" type="text"
+                               value="<?= $fichefilm->Realisateur ?>">
+
+                    </div>
+                </div>
+
+                <!-- Textarea (Acteurs)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="acteurs">Acteurs</label>
+                    <div class="col-sm-8">                     
+                        <textarea class="form-control input-sm" id="acteurs" name="acteurs"><?= $fichefilm->Acteurs ?></textarea>
+                    </div>
+                </div>
+
+                <!-- Text input (Note de la presse)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="notePresse">Note de la presse (sur 10)</label>  
+                    <div class="col-sm-2">
+                        <input id="notePresse" name="notePresse" placeholder="note de la presse sur 10" class="form-control input-sm" type="text"
+                               value="<?= $fichefilm->NotePresse * 10 ?>">
+                    </div>
+                </div>
+
+                <!-- Text input (Note des spectateurs)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="noteSpec">Note des spectateurs (sur 10)</label>  
+                    <div class="col-sm-2">
+                        <input id="noteSpec" name="noteSpec" placeholder="note sur 10 spectateurs" class="form-control input-sm" type="text"
+                               value="<?= $fichefilm->NoteSpec * 10 ?>">
+
+                    </div>
+                </div>
+
+
+
+                <legend>Résumé</legend>
+
+
+                <!-- Textarea (Synopsis)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="synopsis">Synopsis</label>
+                    <div class="col-sm-8">                     
+                        <textarea class="form-control input-sm" id="synopsis" name="synopsis" ><?= $fichefilm->Synopsis ?></textarea>
+                    </div>
+                </div>
+
+
+
+
+                <legend>Web</legend>
+
+                <!-- Text input (recherche sur le web)-->
+
+                <div class="form-group">
+
+                    <label class="col-sm-4 control-label" for="movieLink">Lien vers la fiche web</label>  
+                    <div class="col-sm-6">
+                        <input id="movieLink" name="movieLink" placeholder="lien vers la fiche détaillé" class="form-control input-sm" type="text"
+                               value="<?= $fichefilm->MovieLink ?>">
+                        <a href="<?= $fichefilm->MovieLink ?>"  target="_blank" class="pull-right"><?= $fichefilm->MovieLink ?></a>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="movieLink">Rechercher les informations sur le web
+                    </label> 
+                    <div class="col-sm-6">
+                        <input  name="txt_recherche_web" id="txt_recherche_web" placeholder="Mots clés" 
+                                class="form-control input-sm" required="" 
+                                type="text" onBlur="refreshLiensRechercheAllocine()"
+                                onkeypress="return page_affiche_lien_id_si_entree('a_recherche_dvdfr', event)"
+                                value="<?= $fichefilm->Titre ?>">
+         <!--                <span class="help-block">titre du film</span>  -->
+
+                        <a id="a_recherche_dvdfr" 
+                           href="recherche-web.php?recherche_web=<?= $fichefilm->Filename ?>&type_recherche=<?= type_recherche::RECHERCHE_DVDFR; ?>"  
+                           class="pull-right">
+                            <button type="button" name="bt_recherche_dvdfr" id="bt_recherche_dvdfr" 
+                                    class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                sur Dvdfr
+                            </button>
+                        </a>
+                        <div class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+                        <a id="a_recherche_allocine" 
+                           href="recherche-web.php?recherche_web=<?= $fichefilm->Filename ?>&type_recherche=<?= type_recherche::RECHERCHE_ALLOCINE; ?>" 
+                           class="pull-right">
+                            <button type="button" name="bt_recherche_allocine" id="bt_recherche_allocine" 
+                                    class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                sur Allociné
+                            </button>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Text input (recherche sur allociné ou dvdfr par le numéro)-->
+
+
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="movieLink">Rechercher les informations sur Allociné par le code fiche</label> 
+                    <div class="col-sm-6">
+                        <input  name="code_allocine" id="txt_recherche_id_allocine" placeholder="identifiant AlloCiné" 
+                                class="form-control input-sm"  type="text"
+                                onblur="document.getElementById('a_recup_allocine').href = 'detail-modif.php?web_fiche_code=' + this.value;"
+                                value="<?= $code_allocine; ?>">
+         <!--                <span class="help-block">titre du film</span>  -->
+
+                        <a id="a_recup_allocine" 
+                           href="detail-modif.php?web_fiche_code=<?= $code_allocine; ?>"  
+                           class="pull-right">
+                            Renseigner la fiche en allant chercher les informations sur Allociné
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+
+                        </a>
+                    </div>
+                </div> 
+                <?php
+//}
+//if ($code_dvdfr != false) {
+                ?>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="movieLink">Rechercher les informations sur Dvdfr par le code fiche</label> 
+                    <div class="col-sm-6">
+                        <input  name="code_dvdfr" id="txt_recherche_id_allocine" placeholder="identifiant DvdFr" 
+                                class="form-control input-sm"  type="text"
+                                onblur="document.getElementById('a_recup_dvdfr').href = 'detail-modif.php?web_fiche_code=' + this.value + '&type_recherche=1';"
+                                value="<?= $code_dvdfr ?>">
+         <!--                <span class="help-block">titre du film</span>  -->
+
+                        <a id="a_recup_dvdfr"
+                           href="detail-modif.php?web_fiche_code=<?= $code_dvdfr; ?>&type_recherche=1"  
+                           class="pull-right">
+                            Renseigner la fiche en allant chercher les informations sur DvdFr
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+
+                        </a>
+                    </div>
+                </div> 
+
+                <?php
+//}
+                ?>
+
+
+                <legend>Affiche</legend>
+
+
+                <!-- Text input (URL de l'Affiche)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="affiche_url">url de l'affiche (http: ou https:)</label>  
+                    <div class="col-sm-6 ">
+                        <input id="movieLink" name="affiche_url" placeholder="copier-coller l'url de l'affiche" class="form-control input-sm" type="text"
+                               value="<?= $fichefilm->UrlImageSource; ?>">
+                        <button name = "action" value="recup_affiche" type="submit" class="btn btn-default pull-right"
+                                title="Charger l'affiche sur le serveur">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;Appliquer
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <!-- Text input (résultat de l'affiche)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="upload_affiche">Uploader l'affiche</label>  
+                    <div class="col-sm-6">
+
+                        <span class="btn btn-primary btn-file">
+                            <i class="fa fa-upload" aria-hidden="true"></i>
+                            Choisir un fichier ...
+                            <input type="file" name="upload_affiche" id="upload_affiche"
+                                   style="float: left;"
+                                   accept="image/*" value=""
+                                   />
+                        </span>
+                        <input type="submit" name="action" id="submit_upload"
+                               style="float: right; visibility: hidden; display: none"
+                               value="Upload"  />
+
+                        <script>
+                            document.getElementById("upload_affiche").onchange = function () {
+                                afficher_traitement_en_cours();
+                                document.getElementById("submit_upload").click();
+                            };
+                        </script>
+
+                    </div>
+                </div>
+
+
+
+
+                <!-- Text input (résultat de l'affiche)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="affiche">Affiche</label>  
+                    <div class="col-sm-6">
+                        <input id="affiche" name="affiche" placeholder="Affiche" class="form-control input-sm" type="text"
+                               value="<?= $fichefilm->Affiche ?>">
+
+
+                    </div>
+                </div>
+
+
+                <!--l'affiche-->
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="affiche">Aperçu</label>  
+                    <?php
+                    render_affiche(MyVOD::affiche_to_url($fichefilm->Affiche), false);
+                    ?>
+                </div>
+
+                <!--bande annonce principale-->
+                <legend>Bande annonce principale</legend>
+
+                <div class="form-group">
+
+                    <label class="col-sm-4 control-label" for="movieLink">Bande annonce (url)</label>  
+                    <div class="col-sm-6">
+                        <input id="ba_link" name="ba_link" placeholder="lien vers la bande annonce" class="form-control input-sm" type="text"
+                               value="<?= $fichefilm->BandeAnnonceUrl ?>">
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+
+                    <label class="col-sm-4 control-label" for="movieLink">Bande annonce (code)</label>  
+                    <div class="col-sm-6">
+                        <input  name="ba_code" placeholder="code bande annonce" class="form-control input-sm" type="text"
+                                value="<?= $fichefilm->BandeAnnonceCode ?>">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="col-sm-4 control-label" for="movieLink">Bande annonce (html)
+                    </label>  
+
+                    <div class="col-sm-8">
+                        <textarea class="form-control input-sm" id="ba_embed" name="ba_embed" ><?= $fichefilm->BandeAnnonceEmbed ?></textarea>
+                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                        : Si la bande annonce vient de Youtube, faire un clic droit sur la vidéo et faites un "Copier le code d'intégration" puis coller dans l'encadré ci-dessus.
+                    </div>
+                </div>
+
+
+
+
+                <?php
+                if (strlen($fichefilm->BandeAnnonceUrl) > 4) {
+                    ?>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Aperçu</label>
+
+
+
+                        <div class=" col-sm-6">
+
+
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <div class="embed-responsive-item">
+                                    <?= $fichefilm->BandeAnnonceRender(); ?>
+                                </div> 
+
+                            </div>
+
+                            <a href="<?= $fichefilm->BandeAnnonceUrl ?>"  target="_blank" style="margin-top: 4px;"><?= $fichefilm->BandeAnnonceUrl ?></a>
+
+                        </div>
+                    </div>
+                    <?php
+                }
+//var_dump($fichefilm->BandeAnnonceUrl);
+                ?>
+
+
+
+                <br>
+
+                <!--les autres bandes annonces-->
+
+
+
+
+                <?php
+                render_bandes_annonces_modif($fichefilm->BandesAnnonces);
+//pour tests
+//
+//var_dump($fichefilm->BandesAnnonces);
+//var_dump($fichefilm->SerialiseBandesAnnonces());
+                ?>
+
+
+
+
+                <!--trait horizontal-->
+                <legend>   </legend>
+
+
+                <center>
+
+                    <?php
+                    render_boutons_annuler_valider();
+                    ?>
+
+                </center>
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+
+    //redimentionnement automatique des text Area
+    window.onload = function () {
+        //ajoute les événements aux 2 textareas
+        document.getElementById("synopsis").onkeyup = function () {
+            FitToContent(this, 50000);
+        };
+        document.getElementById("acteurs").onkeyup = function () {
+            FitToContent(this, 50000);
+        };
+        document.getElementById("ba_embed").onkeyup = function () {
+            FitToContent(this, 50000);
+        };
+        document.getElementById("messageModif").onkeyup = function () {
+            FitToContent(this, 50000);
+        };
+    };
+    
+    //et une fois au chargement du formulaire
+    FitToContent("synopsis", 50000);
+
+    FitToContent("acteurs", 50000);
+
+    FitToContent("ba_embed", 50000);
+
+    FitToContent("messageModif", 50000);
+
+
+    //FitToContent est dans le fichier detail-modif.js
+
+
+
+
+</script>
+
+
+
+<?php
+require_once 'footer.php';
+
+/*
+ * 
+ * FIN DE LA PAGE
+ * 
+ */
+
+
+
+
+$fichefilm = new MyVOD_Details();   //pour l'autocompletion
+
+function render_boutons_annuler_valider($gen_bt_recherche = false) {
+    global $code_dvdfr, $code_allocine;
+
+	//var_dump(Helper_redirection::get_derniere_page());
+
+    $largeur_ligne = 'col-xs-12 col-sm-4 col-lg-12';
+    $largeur_bt = 'col-xxs-5 col-xs-4 col-sm-5 col-sm-offset-1';
+
+    //fixe la largeur de ligne quand les boutons de recherches sont invisibles
+    if ($gen_bt_recherche == false) {
+
+        $largeur_ligne = 'col-xs-12 col-md-6 col-md-offset-3 col-lg-offset-1 ';
+        $largeur_bt = 'col-xxs-5 col-xs-4 col-md-4';
+    }
+    $style_bt = 'padding-left: 10px;';
+    ?>
+    <div class="row">
+
+
+        <div class="<?= $largeur_ligne ?>"
+             style="z-index: 1">
+
+            <a class="btn btn-default <?= $largeur_bt; ?> col-xs-offset-1 col-xxs-offset-0" 
+               style="<?= $style_bt; ?>"
+               href="<?= Helper_redirection::get_derniere_page(); ?>" >
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                Précédent
+            </a>	
+
+
+            <button type="submit" name="action" value="sauver" 
+                    class="btn btn-<?= Gestion_admin::$couleur_admin_bootstrap; ?> <?= $largeur_bt; ?> col-xs-offset-2"
+                    style="<?= $style_bt; ?>"
+                    onclick="return valider_formulaire();">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Valider
+            </button>
+
+            <div class="col-xs-12 hidden-sm hidden-md" style="height: 15px; "></div>
+        </div>
+
+
+        <?php
+        if ($gen_bt_recherche) {
+            ?>
+
+            <?php
+            //var_dump($code_allocine,$code_dvdfr);
+            if ($code_allocine != false || $code_dvdfr != false) {
+                //if (true) {
+                $mode_allocine = $code_allocine != false;
+                ?>
+
+                <div class="<?= $largeur_ligne ?> col-md-3 col-xs-pull-0 col-sm-pull-1 col-md-pull-0" 
+                     style="padding-top: 5px; ">
+                    <button type="button"  
+                            title="Actualiser la fiche en allant chercher les information sur le web (via <?= $mode_allocine ? 'Allociné' : 'DvdFr' ?>)."
+                            class="btn btn-info btn-sm <?= $largeur_bt; ?> col-xs-offset-1 col-xxs-offset-0 col-sm-push-6 col-lg-push-0"
+                            style="word-wrap: break-word; <?= $style_bt; ?>"
+                            onclick="document.getElementById('<?= $mode_allocine ? 'a_recup_allocine' : 'a_recup_dvdfr' ?>').click();">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        sur le web
+                    </button>
+                </div>
+
+
+                <div class="col-xs-12 hidden-sm hidden-md" style="height: 15px; "></div>
+
+                <?php
+            } else {
+                ?>
+                <div class="col-sm-2" 
+                     style="padding-top: 5px; ">
+                </div>
+                <?php
+            }
+            ?>
+            <div class="<?= $largeur_ligne ?> col-md-3 col-xs-pull-0 col-sm-pull-1 col-md-pull-0" 
+                 style="padding-top: 5px;">
+                <button type="button"  
+                        title="Rechercher avec Allociné par le titre"
+                        class="btn btn-primary btn-sm <?= $largeur_bt; ?> col-xs-offset-1 col-xxs-offset-0"
+                        style="<?= $style_bt; ?>"
+                        onclick="document.getElementById('bt_recherche_allocine').click();">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    sur Allociné
+                </button>
+
+                <button type="button" 
+                        title="Rechercher avec Dvdfr par le titre"
+                        class="btn btn-primary btn-sm <?= $largeur_bt; ?> col-xs-offset-2"
+                        style="<?= $style_bt; ?>"
+                        onclick="document.getElementById('bt_recherche_dvdfr').click();">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    sur Dvdfr
+                </button>
+
+            </div>
+
+
+            <div class="col-xs-12" style="height: 15px; "></div>
+            <?php
+        }
+        ?>
+
+    </div>
+    <?php
+}

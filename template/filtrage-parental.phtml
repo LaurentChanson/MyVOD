@@ -1,0 +1,310 @@
+<?php
+$titre_page = 'Filtrage parental';
+require_once 'header.php';
+
+
+?>
+
+<br>
+
+<legend>Filtrage parental :</legend>
+
+<br>
+
+
+
+<!--menu dynamique (tabs)-->
+<!--exemple sur : https://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_tabs_dynamic&stacked=h-->
+
+  <ul class="nav nav-tabs onglets">
+    <!--<li class="active"><a data-toggle="tab" href="#home">Nouveaux fichiers détectés</a></li>-->
+    <li class="<?=onglets_get_class_ul_li_active('tab1')?>"><a data-toggle="tab" href="#tab1">Type de publique</a></li>
+    <li class="<?=onglets_get_class_ul_li_active('tab2')?>"><a data-toggle="tab" href="#tab2">Genres</a></li>
+    <li class="<?=onglets_get_class_ul_li_active('tab3')?>"><a data-toggle="tab" href="#tab3">Genres (Liste blanche prioritaire)</a></li>
+  </ul>
+
+
+    <?php
+    onglets_render_code_js_persistant_tabs();
+    ?>
+
+
+ <div class="tab-content">
+
+     <div id="tab1" class="tab-pane fade<?=onglets_get_class_div_tab_active('tab1')?>">
+
+<form name="myform"  
+      class="form-horizontal"
+      method="post" 
+      action="filtrage-parental.php">
+
+    <fieldset>   
+
+        <h4>Type de publique</h4>
+
+        <!--liste noire (type de publique)-->
+
+        <div class="list-group col-md-5 row">
+            <label class="control-label col-xs-12 text-danger">
+                Interdits :
+            </label>
+
+            <SELECT NAME="liste_type_public_interdit[]"  
+                    
+                    class="col-xs-12" style="margin-left: 7px; " 
+                    MULTIPLE SIZE="<?= count($liste_interdit); ?>">
+                        <?php
+                        foreach ($liste_interdit as $s) {
+                            echo('<OPTION VALUE="' . $s . '">' . $s);
+                        }
+                        ?>   
+            </SELECT>
+            
+        </div>
+
+
+
+        <!--boutons d'action-->
+       
+        <div class="col-md-2 " >
+            <center>
+                
+                <div style="height: 50px; " class="hidden-xs hidden-sm"></div>
+                
+                <button type="submit" id="valider" name="action" 
+                        class="btn btn-success col-md-12" 
+                        style="min-width: 60px;"
+                        VALUE="<?=ACTION_AUTORISER;?>">
+                    <span class="glyphicon glyphicon-arrow-down visible-xs visible-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-right hidden-xs hidden-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                </button>
+                &nbsp;
+
+                <button type="submit" id="valider" name="action" 
+                        class="btn btn-danger col-md-12" 
+                        style="min-width: 60px;"
+                        VALUE="<?=ACTION_INTERDIRE;?>">
+                    <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-up visible-xs visible-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-left hidden-xs  hidden-sm" aria-hidden="true"></span>
+                    
+                </button>
+                
+                <div style="height: 20px; " class="visible-xs visible-sm"></div>
+                  
+            </center>
+        </div>
+       
+        <!--liste blanche (type de publique)-->
+
+        <div class="list-group col-md-5 row">
+            <label class="control-label  col-xs-12 text-success">
+                Autorisés :
+            </label>
+            <div class="list-group">
+                <SELECT NAME="liste_type_public_autorise[]" 
+                        class="col-xs-12" style="margin-left: 7px;"
+                        MULTIPLE SIZE="<?= count($liste_autorise); ?>">
+                            <?php
+                            foreach ($liste_autorise as $s) {
+                                echo('<OPTION VALUE="' . $s . '">' . $s);
+                            }
+                            ?>   
+                </SELECT>
+            </div>
+        </div>
+
+
+
+
+    </fieldset>
+</form>
+
+     </div>
+     <div id="tab2" class="tab-pane fade<?=onglets_get_class_div_tab_active('tab2')?>">
+
+<form name="myform2"  
+      class="form-horizontal"
+      method="post" 
+      action="filtrage-parental.php">
+
+
+    <fieldset>   
+
+        <h4>Genres</h4>
+        <!--liste non autorise genres-->
+
+        <div class="list-group col-md-5 row">
+            <label class="control-label col-xs-12 text-danger">
+                Interdits :
+            </label>
+
+            <SELECT NAME="liste_genres_non_autorise[]"  
+                    class="col-xs-12" style="margin-left: 7px;"
+                    MULTIPLE SIZE="<?= count($genres_interdits); ?>">
+                        <?php
+                        $g=new MyVOD_Genre(); //pour autocompletion
+                        foreach ($genres_interdits as $g) {
+                            echo('<OPTION VALUE="' . $g->ID . '">' . $g->Nom);
+                        }
+                        ?>   
+            </SELECT>
+            
+        </div>
+
+
+
+        <!--boutons d'action genres-->
+       
+        <div class="col-md-2 " >
+            <center>
+                
+                <div style="height: 50px; " class="hidden-xs hidden-sm"></div>
+                
+                <button type="submit" id="valider" name="action" 
+                        class="btn btn-success col-md-12" 
+                        style="min-width: 60px;"
+                        VALUE="<?=ACTION_AUTORISER_GENRES;?>">
+                    <span class="glyphicon glyphicon-arrow-down visible-xs visible-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-right hidden-xs hidden-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                </button>
+                &nbsp;
+
+                <button type="submit" id="valider" name="action" 
+                        class="btn btn-danger col-md-12" 
+                        style="min-width: 60px;"
+                        VALUE="<?=ACTION_INTERDIRE_GENRES;?>">
+                    <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-up visible-xs visible-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-left hidden-xs  hidden-sm" aria-hidden="true"></span>
+                </button>
+                
+                <div style="height: 20px; " class="visible-xs visible-sm"></div>
+                  
+            </center>
+        </div>
+       
+        <!--liste autorise genres-->
+
+        <div class="list-group col-md-5 row">
+            <label class="control-label  col-xs-12 text-success">
+                Autorisés :
+            </label>
+            <div class="list-group">
+                <SELECT NAME="liste_genres_autorise[]" 
+                        class="col-xs-12" style="margin-left: 7px;"
+                        MULTIPLE SIZE="<?= count($genres_autorises); ?>">
+                            <?php
+                            foreach ($genres_autorises as $g) {
+                                echo('<OPTION VALUE="' . $g->ID . '">' . $g->Nom);
+                            }
+                            ?>   
+                </SELECT>
+            </div>
+        </div>
+
+
+
+
+    </fieldset>
+</form>
+
+         
+     </div>
+     <div id="tab3" class="tab-pane fade<?=onglets_get_class_div_tab_active('tab3')?>">
+
+
+<form name="myform3"  
+      class="form-horizontal"
+      method="post" 
+      action="filtrage-parental.php">
+
+
+    <fieldset>   
+
+        <h4>Genres (Liste blanche prioritaire)</h4>
+        <!--liste non autorise genres-->
+
+        <div class="list-group col-md-5 row">
+            <label class="control-label col-xs-12 text-danger">
+                Exclus de la liste blanche prioritaire :
+            </label>
+
+            <SELECT NAME="liste_noire_genres[]"  
+                    class="col-xs-12" style="margin-left: 7px;"
+                    MULTIPLE SIZE="<?= count($genres_liste_non_blanche); ?>">
+                        <?php
+                        $g=new MyVOD_Genre(); //pour autocompletion
+                        foreach ($genres_liste_non_blanche as $g) {
+                            echo('<OPTION VALUE="' . $g->ID . '">' . $g->Nom);
+                        }
+                        ?>   
+            </SELECT>
+            
+        </div>
+
+
+
+        <!--boutons d'action genres-->
+       
+        <div class="col-md-2 " >
+            <center>
+                
+                <div style="height: 50px; " class="hidden-xs hidden-sm"></div>
+                
+                <button type="submit" id="valider" name="action" 
+                        class="btn btn-success col-md-12" 
+                        style="min-width: 60px;"
+                        VALUE="<?=ACTION_AJOUTER_GENRES_LISTE_BLANCHE;?>">
+                    <span class="glyphicon glyphicon-arrow-down visible-xs visible-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-right hidden-xs hidden-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                </button>
+                &nbsp;
+
+                <button type="submit" id="valider" name="action" 
+                        class="btn btn-danger col-md-12" 
+                        style="min-width: 60px;"
+                        VALUE="<?=ACTION_ENLEVER_GENRES_LISTE_BLANCHE;?>">
+                    <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-up visible-xs visible-sm" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-arrow-left hidden-xs  hidden-sm" aria-hidden="true"></span>
+                </button>
+                
+                <div style="height: 20px; " class="visible-xs visible-sm"></div>
+                  
+            </center>
+        </div>
+       
+        <!--liste autorise genres-->
+
+        <div class="list-group col-md-5 row">
+            <label class="control-label  col-xs-12 text-success">
+                Liste blanche prioritaire :
+            </label>
+            <div class="list-group">
+                <SELECT NAME="liste_blanche_genres[]" 
+                        class="col-xs-12" style="margin-left: 7px;"
+                        MULTIPLE SIZE="<?= count($genres_liste_blanche); ?>">
+                            <?php
+                            foreach ($genres_liste_blanche as $g) {
+                                echo('<OPTION VALUE="' . $g->ID . '">' . $g->Nom);
+                            }
+                            ?>   
+                </SELECT>
+            </div>
+        </div>
+
+
+
+
+    </fieldset>
+</form>
+
+         </div>
+ </div>
+
+<?php
+require_once 'footer.php';

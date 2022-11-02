@@ -1,0 +1,385 @@
+<?php
+//Les pages sont en UTF-8 donc on le dit au navigateur
+header('Content-Type: text/html; charset=UTF-8');
+//sinon erreur sous Chrome & Cie
+header("X-XSS-Protection: 0");
+//les fonctions html
+require_once 'tpl.phtml';
+
+$liste_pages_fluid = array('index.php', 'detail.php', 'detail-modif.php', 'statistiques.php');
+//exemple css tiré de http://bammweb.free.fr/publication/index.php
+//http://code18.blogspot.fr/2010/04/calculer-le-temps-dexecution-dun-script.html
+//tuto bootsrap : http://dbmwebdesign.fr/Tutos/rwd/tuto-bootstrap.html
+//Thème de noel (actif entre le 1er décembre et le 05 janvier)
+$theme_noel = ((date('nd') >= 1201) || (date('nd') <= 105));
+//$theme_noel=false;
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>MyVOD : <?= $titre_page; ?></title>
+        <!-- compatibilité IE (a tester) -->
+        <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; chrome=1" />
+        <!-- évite les pb d'accents -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name = "author" content = "Laurent CHANSON" >
+
+        <!-- favicon -->
+        <link rel="shortcut icon" href="<?= theme_config::$repertoire_img; ?>favicon.ico"/>
+
+        <!--type="image/png"-->
+        <!--reel_favicon.png-->
+
+        <!--mode application android-->
+        <!--(http://www.mobilexweb.com/blog/home-screen-web-apps-android-chrome-31)-->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <!--couleur de la barre des titre chrome android-->
+        <meta name="theme-color" content="#344959">
+
+        <!-- On ouvre la fenêtre à la largeur de l'écran -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap défaut -->
+        <!--<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen"/>-->
+        <!-- Bootstrap theme slate (+d'infos sur http://bootswatch.com/)-->
+        <!--<link href="lib/bootstrap/bootstrap-slate.css" rel="stylesheet" media="screen"/>-->
+
+        <link href="<?= theme_config::$href_css; ?>" rel="stylesheet" media="screen" type="text/css"/>
+
+        <!--intégration de l'alerte js personnalisé-->
+        <link href="lib/js/alert_custom/alert.css" rel="stylesheet" type="text/css"/>
+        <!--        incone font awesome-->
+        <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+
+        <!-- Intégration de la libraire jQuery -->
+        <script src="lib/js/jquery-1.11.1.min.js"></script>
+
+        <?php
+        if ($theme_noel) {
+            //met l'effet de neige sur le bandeau
+            ?>
+            <link href="<?= theme_config::$repertoire ?>/noel/neige.css" rel="stylesheet" media="screen" type="text/css"/>
+            
+            <?php
+        }
+        ?>
+
+
+        <?php
+//pas de toolTip en tactile
+        if (Helper_system::nav_OS_is_mobile() == false) {
+            ?>
+            <script type="text/javascript">
+
+                //pour activer les tooltips customisés
+                $(document).ready(function () {
+                    showtooltip();
+                });
+
+            </script>
+            <?php
+        }
+        ?>
+
+        <!--intégration du myvod-common.js-->
+        <script src="lib/js/myvod-common.js"></script> 
+
+    </head>
+
+    <body>
+
+        <!-- flèche remonter -->
+        <div id="fleche_remonter" class="btn btn-primary"  style="visibility: hidden" onclick="remonter_page();" >
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </div>
+
+        <!-- bandeau -->
+        <div id="bandeau" align="center">
+            <a href="index.php">
+                <div id="titre_myvod">
+                    MyVOD
+                </div>
+                <?php
+//Thème de noel (pour le mois de décembre)
+                if ($theme_noel) {
+                    //exemple de neigne sur
+                    //https://www.creativejuiz.fr/blog/css-css3/creer-une-animation-de-neige-ou-de-particules-en-css3
+                    //d'autres exemples
+                    //https://www.e-monsite.com/forum/vos-trucs-et-astuces/que-tombe-la-neige.html
+                    //https://circlecube.com/tutorials/snow/
+                    ?>
+
+
+                    <canvas  id="canvas-neige" width="2000px" height="265px" style="background-color: transparent;" ></canvas>
+                    <script src="<?= theme_config::$repertoire ?>/noel/neige/neige.js"></script> 
+                    
+                    <img id="noel" alt="noel_g" src="<?= theme_config::$repertoire ?>/noel/Christmas_Decoration_PNG_Clip_Art_g.png" class="" style="position: absolute;left: 0;height: 100%;">
+                    <img id="noel" alt="noel_d" src="<?= theme_config::$repertoire ?>/noel/Christmas_Decoration_PNG_Clip_Art_d.png" class="" style="position: absolute;right: 0;height: 100%;">
+
+                    <?php
+                }
+                ?>
+
+                <img id="bandeau_img_lg" class="img-responsive" 
+                     alt="bandeau"
+                     src="<?= theme_config::$repertoire_img ?>/bandeau.jpg"/>
+
+            </a>
+
+        </div>
+        <!-- fin du bandeau -->
+
+        <!-- menu -->
+        <!--<div id="menu_parent" class="container-fluid">-->
+        <div id="menu_parent" class="container-fluid">
+            <div id="menu">
+
+                <!--onglets (menu)-->
+                <ul  class="nav nav-tabs" role="tablist">
+                    <li role="presentation"
+                        class="<?= $page_courante == 'index.php' ? '' : 'in'; ?>active">
+                        <a href="index.php">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span class="invisible_320 hidden-xxs">Films</span>
+                        </a>
+                    </li>
+
+                    <?php
+//Gestion du menu (2eme onglet)
+
+                    switch ($page_courante) {
+
+                        case "detail.php":
+                            ?>
+                            <li role="presentation" class="active" title="Détail d'un film">
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                                    <span class="invisible_320 hidden-xxs">Détail d'un film</span>
+                                </a>
+                            </li>
+                            <?php
+                            break;
+                    }
+                    ?>
+
+                    <!--onglet statistiques-->
+                    <li role="presentation" 
+                        class="<?= $page_courante == 'statistiques.php' ? '' : 'in'; ?>active">
+                        <a href="statistiques.php">
+                            <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                            <span class="invisible_320 hidden-xxs">Statistiques</span>
+                        </a>
+                    </li>
+
+                    <?php
+                    if ($page_courante == "a-propos.php") {
+                        ?>
+                        <!--onglet a propos-->
+                        <li role="presentation" class="active" title="A Propos">
+                            <a href="#">
+                                <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+                                <span class="invisible_320 hidden-xxs">A Propos</span>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                    ?>
+
+                    <!--onglet filtrage parental-->
+                    <li role="presentation" title="Filtrage parental"
+                        class="<?= $page_courante == 'filtrage-parental.php' ? '' : 'in'; ?>active">
+                        <a href="filtrage-parental.php">
+                            <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                            <span class="invisible_320 hidden-xxs">Filtrage</span>
+                        </a>
+                    </li>
+                    <!--onglet administration-->
+                    <?php
+                    $texte_menu_admin = '<span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="invisible_320 hidden-xxs">Admin</span>';
+//gestion du bouton déconnexion
+                    if (Gestion_admin::est_connecte()) {
+
+                        //ajout de l'onglet admin pour toutes les pages sauf l'admin
+                        //TODO AJOUT dans la liste 
+                        //maintenance-fichiers.php
+                        //plusieurs-fichiers.php
+                        //gerer-affiches.php
+                        //mots-cles.php
+                        //parametrages.php
+                        $liste_pages_admin = array('admin.php', 'maintenance-fichiers.php', 'plusieurs-fichiers.php', 'gerer-affiches.php', 'mots-cles.php', 'parametrages.php');
+                        //$page_courante == "admin.php" (=>active)
+                        ?>
+                        <!--menu admin connecté-->
+                        <li 
+                            class="dropdown  <?= in_array($page_courante, $liste_pages_admin) /* $page_courante == "admin.php" */ ? 'active' : ''; ?>">
+                            <a class="dropdown-toggle"
+                               title="Administration"
+                               data-toggle="dropdown"
+                               href="#">
+                                   <?= $texte_menu_admin; ?>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="maintenance-fichiers.php">Gérer les nouveaux fichiers (films)</a>
+                                </li>
+                                <li>
+                                    <a href="plusieurs-fichiers.php">Gérer les films en plusieurs fichiers</a>
+                                </li>
+                                <li>
+                                    <a href="gerer-affiches.php">Gérer les affiches des films</a>
+                                </li>
+                                <li class="nav-divider"></li>  
+                                <li>
+                                    <a href="mots-cles.php">Mots à ignorer dans le dictionnaire</a>
+                                </li> 
+                                <li class="nav-divider"></li> 
+                                <li>
+                                    <a href="parametrages.php">Paramètres généraux</a>
+                                </li> 
+                                <li>
+                                    <a href="admin.php">Informations sur le système</a>
+                                </li>
+                            </ul>
+                        </li>                
+
+                        <?php
+                    } else {
+                        //non connecté
+                        switch ($page_courante) {
+                            case "admin.php":
+                                ?>
+                                <li role="presentation" class="active" title="Administration">
+                                    <a href="#"><?= $texte_menu_admin; ?></a>
+                                </li>
+                                <?php
+                                break;
+                            /*
+                              case "index.php":
+                              case "statistiques.php":
+                              case "filtrage-parental.php": */
+                            //modification du 08/07/2016 LC version 2.2.2
+                            default:
+                                //on met la page d'admin (<a href="admin.php">)
+                                //23/10/2018 : LC. Changé en déverrouillage de la même page
+                                //(<a href="connexion.php">) //marche pas vraiement
+                                ?>
+                                <li role="presentation" class="inactive" title="Administration">
+                                    <a href="admin-connect.php"><?= $texte_menu_admin; ?></a>
+                                </li>
+                                <?php
+                                break;
+                        }
+                    }
+                    ?>
+
+                    <!--raccourci Extinction-->
+                    <li role="presentation" class="inactive">
+                        <a href="#" title="Eteindre le serveur"
+                           onclick="demande_extinction()">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                            <span class="invisible_320 hidden-xxs">Extinction</span>
+                        </a>
+                    </li>   
+
+                    <?php
+                    if (Gestion_admin::est_connecte()) {
+                        ?>
+                        <div role="presentation" class=" pull-right">
+
+                            <!--bouton deconnexion (admin)-->
+                            <div role="presentation" class=" pull-right">
+                                <a href="index.php?deconnect=true" 
+                                   id="deconnect"
+                                   title="Déconnectez-vous"
+                                   class="btn btn-<?= Gestion_admin::$couleur_admin_bootstrap; ?> center-block">
+
+                                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                                    <span class="invisible_320 hidden-xxs">Déconnexion</span>
+                                </a>
+                            </div>
+
+                            <?php
+                            if (controle_parental::config_actif()) {
+                                ?>
+
+                                <!--contrôle parental actif (bouton à droite) mode admin en rouge-->
+                                <div  class=" pull-right">
+                                    <a href="traitements.php?action=deconnexion_et_passe_parent" 
+                                       id="controle_parental_actif"
+                                       class="btn btn-<?= Gestion_admin::$couleur_admin_bootstrap; ?> center-block"
+                                       title="Déconnectez-vous et passez directement en mode parent">
+
+                                        <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+
+                                    </a>
+                                </div>
+
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <?php
+                    } else {
+
+                        //mode admin = faux
+                        //si le contrôle parental est actif, on affiche un bouton avec déverrou
+                        if (controle_parental::config_actif()) { // && $page_courante != 'connexion.php') {
+                            //default, primary, success, info, warning, danger
+                            //bouton pour déverrouiller le contrôle parental
+                            if (controle_parental::filtrage_actif()) {
+                                ?>
+
+                                <!--contrôle parental actif (bouton à droite) mode enfant-->
+                                <div  class=" pull-right">
+                                    <a href="connexion.php?mode_parental=1" 
+                                       id="controle_parental_actif"
+                                       class="btn btn-primary center-block"
+                                       title="Passez en mode &quot;Parent&quot;">
+
+                                        <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+
+                                    </a>
+                                </div>
+
+                                <?php
+                            } else {
+                                ?>
+
+                                <!--filtre contrôle parental désactivé  (bouton à droite) mode parent-->
+                                <div  class=" pull-right">
+                                    <a href="index.php?deconnect=true" 
+                                       id="controle_parental_desactive"
+                                       class="btn btn-info center-block"
+                                       title="Vous êtes en mode &quot;parent&quot;. Le contrôle parental est inactif">
+
+                                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                                        <span class="invisible_320 hidden-xxs">Déconnexion</span>
+                                    </a>
+                                </div>
+
+
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
+
+
+                </ul>
+
+            </div>
+        </div>
+        <!-- fin menu -->
+        <!-- Conteneur principal -->
+        <div class="container<?= in_array($page_courante, $liste_pages_fluid) ? '-fluid' : ''; ?>"> 
+
+
+
+            <?php
+//affichage des messages
+            message::render();
+            
+            

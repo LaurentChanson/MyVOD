@@ -1,0 +1,61 @@
+<?php
+$export_deplie = false;
+?>
+
+<div class="panel-group" id="accordionExport" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default navbar" style="z-index: 99;">
+        <div class=" panel-heading" role="tab" id="heading6">
+            <div class="row panel-title  " >
+
+                <a data-toggle="collapse" 
+                   data-parent="#accordionExport" 
+                   href="#collapse6" aria-expanded="false" 
+                   aria-controls="collapse6" 
+                   onclick="MAJ_export_deplie();">
+
+                    <?php
+                    render_bouton_collapse('bt_collapse6', $export_deplie,'(Dé)plier le panel d\'export');
+                    ?>
+
+
+                    <div class=" col-xs-7 "  >
+                        <h4>
+                            <div id="titre_export">Export</div>
+                        </h4>
+                    </div>
+
+                </a>
+
+                <input type="hidden" id="export_deplie" name="export_deplie" value="<?= $export_deplie; ?>" />
+
+            </div>
+        </div>
+
+
+
+
+        <div id="collapse6" class="panel-collapse collapse<?= $export_deplie ? ' in' : ''; ?>" 
+             role="tabpanel" aria-labelledby="heading6" >
+            <div class="panel-body">
+
+                <div class="row">
+
+
+
+                    <div class="col-xxs-12 col-xs-4">
+                        <a href="export.php" 
+                           gggdownload----
+                           target="_blank">Exporter tout (CSV)</a>
+                    </div>
+                    <div class="col-xxs-12 col-xs-8">
+                        <a href="export.php?contenu=search" 
+                           gggdownload----
+                           target="_blank">Exporter le résultat de recherche (CSV)</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1180 @@
+/*appel du thème bootstrap modifié*/
+@import url('bootstrap/bootstrap-slate.css') ;
+/*support pour les grands écrans*/
+/*https://github.com/marcvannieuwenhuijzen/BootstrapXL*/
+@import url('bootstrap/BootstrapXL.css') ;
+/*support pour les petits ecrans*/
+@import url('bootstrap/bootstrapXXS.css') ;
+
+
+/*font du titre*/
+@font-face {
+    font-family: "TitreFont";
+    src: url('font/Roboto-Medium.ttf');
+}
+
+/*évite que le titre soit coupé s'il passe sur 2 ligne'*/
+.navbar-brand {
+    height: initial;
+}
+/*évite le décallage avec le menu quand il est en fixed*/
+#last_added_movies, #last_added_movies_suite, #debut_liste_bande_annonce {
+    padding-top:50px;
+    position:relative; 
+    top:-50px;
+    margin-bottom:-50px;
+}
+#last_added_movies_suite, #debut_liste_bande_annonce{
+    visibility: hidden;   /*évite d'être par dessus la combo'*/
+}
+/*enleve les ecarts entre les affiches et les bords*/
+#derniers_films_ajoutes>.container-fluid, #derniers_films_visionnes>.container-fluid,#resultats_recherche>.container-fluid{
+    margin-left: -10px;
+    margin-right: -10px;
+}
+#resultats_recherche{
+    border: 2px solid #62BD4F;
+    background-color : transparent;
+}
+#derniers_films_ajoutes{
+    background-color:  rgba(91,192,222,0.8);  /*#5BC0DE;*/
+    border: 2px solid #3DCED8;
+}
+#derniers_films_visionnes{
+    /*background-color: rgba(110,220,110,0.8)*/
+    border: 2px solid rgb(233, 101, 6);
+    background-color : transparent;
+    background-color : rgba(52,73,89,0.5);
+}
+#derniers_films_ajoutes>*>a{
+    color:#2a6496;
+}
+/*couleur de fond des panels*/
+.panel{
+    background-color: rgba(46,51,56,0.7);
+}
+.infos-media table{
+    background-color: transparent;
+}
+.btn-info{
+    border-color: rgba(0, 0, 0, 0.4);
+}
+
+/*réduit les marges de chaque coté (10/03/2016)*/
+body>.container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow-x:hidden;
+    overflow-y: visible;
+    /*height: 100%;*/
+}
+body{
+    /*pas sur que ca marche sur un mobile*/
+    overflow-x:hidden;
+    /*background: linear-gradient( #272b30 0%, #344959 60%, #272b30 100%);*/
+    /*background-attachment: fixed;*/
+
+
+}
+p{
+    text-align: justify;
+}
+.alert{
+    text-align: justify;    /*LC 30/10/2018 pour les messages dans le haut de la page*/
+}
+footer{
+    margin-bottom: 20px;
+}
+.panel-group {
+    margin-bottom: 10px;
+}
+
+.alert-success{
+    margin-bottom: 10px;
+}
+
+small, .small{
+    font-size: 90%;
+}
+/*ressère les panel Genres & Publique*/
+@media (min-width: 768px) and (max-width: 1199px) {
+    .genres{
+        padding-right: 0px;
+    }
+}
+
+.text-dessus{
+    position:absolute;
+    margin : auto;
+    top:0;
+    left : 0;
+    width : 100%;
+    word-wrap: break-word;
+    padding: 60px;
+    padding-top:0px;
+}
+
+/*pas de collapse pour le panel à gauche et grands écrans*/
+@media (min-width: 1200px) {
+    #autres_panels{
+        display: block !important;
+        visibility: visible!important;
+        height: initial !important;
+        overflow: visible !important;
+    }
+}
+/*
+en test LC: 19/11/2018
+input[type="radio"], input[type="checkbox"]:not(.labal input[type="checkbox"]) {
+
+    margin: 8px 0 0 !important;
+}*/
+
+/*corrige la position des radio et checkbox*/
+label input[type="checkbox"],label input[type="radio"] {
+    /*margin: 3px -20px 0 !important;*/
+    /*les 3 lignes ci dessous permet à Android d'aligner correctement en vertical les boutons radio et checkbox'*/
+    margin: 1px -20px 0 ;
+    line-height: 17px;
+    min-height: 17px;
+}
+.radio label, .checkbox label {
+    margin-bottom: 1px;
+}
+.radio, .checkbox {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+.form-horizontal .radio, .form-horizontal .checkbox, .form-horizontal .radio-inline, .form-horizontal .checkbox-inline {
+    padding-top: 5px;
+}
+
+
+.input-sm{
+    line-height: 1.5 !important; /*fix hauteur lettres avec FF*/
+}
+/*les traits de séparation pour les résultats sous forme de liste*/
+.resultats-liste hr{
+    border-top: 1px solid #787878;
+}
+
+/*-----------------*/
+/*    tooltip      */
+/*-----------------*/
+.tooltip{
+    position:fixed ;
+    font-size: 14px;
+    z-index: 9999;
+}
+.tooltip.in {
+  opacity: 1;
+  /*filter: alpha(opacity=90);*/
+}
+.tooltip-inner {
+    max-width: 80vw;
+    background-color: #666;
+    /*color:#c8c8c8;;*/
+    border: 1px solid #666;
+    padding: 8px 18px;
+    border-radius: 8px;
+    opacity: 1;
+}
+
+.tooltip.top .tooltip-arrow , .tooltip.top-left .tooltip-arrow, .tooltip.top-right .tooltip-arrow  {
+  border-top-color: #666;
+}
+
+.tooltip.right .tooltip-arrow {
+  border-right-color: #666;
+}
+.tooltip.left .tooltip-arrow {
+  border-left-color: #666;
+}
+.tooltip.bottom .tooltip-arrow, .tooltip.bottom-left .tooltip-arrow, .tooltip.bottom-right .tooltip-arrow {
+  border-bottom-color: #666;
+}
+
+/*Tooltip : taille de la flèche*/
+.tooltip.top .tooltip-arrow {
+  margin-left: -6px;
+  border-width: 6px 6px 0;
+}
+.tooltip.top-left .tooltip-arrow {
+  right: 6px;
+  margin-bottom: -6px;
+  border-width: 6px 6px 0;
+
+}
+.tooltip.top-right .tooltip-arrow {
+  left: 6px;
+  margin-bottom: -6px;
+  border-width: 6px 6px 0;
+
+}
+.tooltip.right .tooltip-arrow {
+  margin-top: -6px;
+  border-width: 6px 6px 6px 0;
+
+}
+.tooltip.left .tooltip-arrow {
+  margin-top: -6px;
+  border-width: 6px 0 6px 6px;
+
+}
+.tooltip.bottom .tooltip-arrow {
+  margin-left: -6px;
+  border-width: 0 6px 6px;
+
+}
+.tooltip.bottom-left .tooltip-arrow {
+  right: 6px;
+  margin-top: -6px;
+  border-width: 0 6px 6px;
+
+}
+.tooltip.bottom-right .tooltip-arrow {
+  left: 6px;
+  margin-top: -6px;
+  border-width: 0 6px 6px;
+
+}
+
+/*toolTip : position pour compenser la taille de la flèche*/
+.tooltip.top {
+  margin-top: -2px;
+  padding: 6px 0;
+}
+.tooltip.right {
+  margin-left: 2px;
+  padding: 0 6px;
+}
+.tooltip.bottom {
+  margin-top: 2px;
+  padding: 6px 0;
+}
+.tooltip.left {
+  margin-left: -2px;
+  padding: 0 6px;
+}
+
+
+
+/*-----------------*/
+/* Image de fond   */
+/*quand on survole */
+/*  avec la souris */
+/*-----------------*/
+
+#img_background{
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -50%;
+    margin-top: -50%;
+    /*transform: translate(-50%, -50%);*/
+
+    width:100%;
+    height:auto;
+    opacity:0.3;
+    visibility: hidden;
+    z-index:-1;
+}
+
+/*utilisé dans les pages de détails*/
+.img_fond_detail{
+    position:fixed;
+    left:0px;
+    top:0px;
+    width: 100%;
+    height: 100%;
+    z-index:-1;
+    opacity:0.1;
+    margin:0;
+    padding:0;
+}
+
+
+
+/*--------------------*/
+/*    Affiche_popup   */
+/*--------------------*/
+.affiche_popup{
+    width: 33%;
+    min-width: 100px;
+    height: auto;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 5px;
+    /*petit effet d'ombrage*/
+    box-shadow: 0px 0px 4px #c8c8c8;
+}
+
+/*invisible dans une popup*/
+.modal-body .popup-invisible{
+    display: none;
+}
+
+/*---------------------------------------*/
+/*    visible ou non dans une popup      */
+/*---------------------------------------*/
+
+.popup-visible{
+    display: none;
+}
+.modal-body .popup-visible{
+    display:  block;
+    /*background-color: red;*/
+}
+
+/*-----------------*/
+/*    Bandeau      */
+/*-----------------*/
+#bandeau{
+    -webkit-box-shadow: inset 0 100px 100px rgba(0,0,0,.075), 0 0 180px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 100px 100px white, 0 0 8px white,
+        inset 0 100px 100px rgba(0,0,0,.075), 0 0 180px rgba(102, 175, 233, 0.6);
+    max-height:  210px;
+    overflow: hidden;
+    background-color:#354A5B;/*rgba(102, 175, 233, 0.25);*/
+    position: relative;  /*permet que le texte MyVOD suive le bandeau quand il y a des erreurs php*/
+}
+#bandeau_img{
+    width:100%;
+    background-color:#354A5B;
+}
+
+/*applique une image de fond (car sur opéra 12 le bandeau est affiché en dernier)*/
+#bandeau_img_lg{
+    background-color:#354A5B;
+    background: url(img/bandeau_small.jpg) ; 
+    background-size: cover  ;
+    background-repeat:no-repeat;
+
+}
+
+
+@media (min-width: 1200px) {
+    #bandeau_img_lg{
+        margin:-50px!important;
+        width:100%;
+    }
+    #body_content{
+        /*background-color: red;*/
+        padding-left: 0px;
+
+    }
+}
+
+@media (min-width: 2000px) {
+    #bandeau_img_lg{
+        margin:-100px!important;
+        margin:-7vh!important;
+
+    }
+}
+
+
+#body_content{
+    padding-top: 0.5px;
+}
+
+/*-----------------------*/
+/* Special petits ecran  */
+/*-----------------------*/
+@media (max-width: 320px) {
+    .full_320{
+        width: 100%;
+    }
+    .invisible_320{
+        visibility: hidden;
+        display: none;
+    }
+}
+
+
+/*--------*/
+/* Titre  */
+/*--------*/
+@media (max-width: 400px) {
+    #titre_myvod{
+        margin-top: -1px;        font-size: 2.2em; 
+    }
+}
+@media (min-width: 400px) and (max-width: 578px) {
+    #titre_myvod{
+        margin-top: -10px;        font-size: 4em; 
+    }
+}
+@media (min-width: 578px) and (max-width: 892px) {
+    #titre_myvod{
+        margin-top: -15px;        font-size: 5.5em; 
+    }
+}
+
+@media (min-width: 892px) and (max-width: 1200px) {
+    #titre_myvod{
+        margin-top: -15px;        font-size: 8em; 
+    }
+}
+
+#titre_myvod{
+    color: white;
+    top:0px; left:8%;
+    position : absolute;
+    font-family: TitreFont;
+    /*font-size: 4em;*/
+
+    font-size: 10vw;
+
+    /*font-style: italic;*/
+    -webkit-transform: skewX(-20deg);
+    -moz-transform: skewX(-20deg);
+    -o-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+
+    text-shadow: #000000 3px 3px 6px;
+    text-shadow: -1px 0 0 rgba(0, 0, 0, 0.8), 
+        1px 0 0 rgba(0, 0, 0, 0.8),
+        0 -1px 0 rgba(0, 0, 0, 0.8),
+        0 1px 0 rgba(0, 0, 0, 0.8),
+        #000000 3px 3px 12px,#000000 3px 3px 12px, #FFFFFF 3px 3px 6px;
+
+
+}
+
+@media (min-width: 1200px) {
+    #titre_myvod{
+        margin-top: -15px;
+        font-size: 6em; 
+        font-size: 7vw;
+    }
+}
+@media (min-width: 1500px) {
+    #titre_myvod{
+        margin-top: -15px;
+        font-size: 9em; 
+        font-size: 8vw;
+    }
+}
+@media (min-width: 2000px)  {
+    #titre_myvod{
+        margin-top: -45px;        
+        font-size: 12em; 
+    }
+}
+
+/*---------------------------*/
+/*      Petits logo HD       */
+/*---------------------------*/
+.label-quality {
+    background-color:#000;
+    color:#fff;
+    /*padding: .2em .6em;*/
+    padding: .24em .6em .2em .6em;
+    display: inline-block;
+}
+/* idem dans une popup */
+.modal-body .label-quality{
+    font-size: 1.2em;
+    padding-bottom: 0.27em;
+    padding-top: 0.27em;
+}
+
+/*-----------------*/
+/*      Menu       */
+/*-----------------*/
+#menu{
+    position: relative;
+    top: 0px;
+    z-index: 150;
+    padding-top: 3px;
+}
+
+.menu-fixed{
+    background-color: #344959; /* #272B30;*/
+    background: linear-gradient(to bottom, #93A0AB, #344959 10%);
+    position: fixed!important;
+    right: 0px;
+    left:0px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#menu_parent{
+    min-height: 50px!important;
+    /*en test height: 50px!important;*/
+    overflow: visible;
+}
+
+/*ajoute un trait en bas des éléments du menu*/
+.nav-tabs > .inactive, .dropdown{
+    border-bottom: 1px solid #1c1e22;
+}
+.nav-tabs > li > a:hover{
+    border-bottom-color: #3e444c;
+}
+
+
+/*menu qui se déroule au survol de la souris*/
+/*http://stackoverflow.com/questions/8878033/how-to-make-twitter-bootstrap-menu-dropdown-on-hover-rather-than-click*/
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+/*met le sous menu à gauche pour les très petites écrans*/
+@media (max-width: 384px) {
+    .dropdown .dropdown-menu {
+        margin-left: -230%;
+    }
+}
+
+
+
+
+
+/*top du bouton déconnexion et controle parental*/
+#deconnect,#controle_parental_actif,#controle_parental_desactive{
+    margin-top: 1px;
+}
+
+/*pour les petits écrans, on met un peut d'espace sur le bouton'*/
+@media  (max-width: 490px) { /*490 c'est à peu près la largeur du menu'*/
+    #deconnect,#controle_parental_desactive,#controle_parental_actif {
+        /*color: greenyellow;*/
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+}
+
+
+/*---------------------------------------------------*/
+/*    Texte du bouton Lire vidéo dans la galerie     */
+/*  (le fait apparaitre si la tuile est assez large) */
+/*---------------------------------------------------*/
+@media  (max-width: 530px) {
+    .lire_video_in_galerie{
+        display : none;
+    }     
+}
+
+@media  (min-width: 768px) and (max-width: 868px) {
+    .lire_video_in_galerie{
+        display : none;
+    }
+}
+@media  (min-width: 992px) and (max-width: 1092px) {
+    .lire_video_in_galerie{
+        display : none;
+    }
+}
+@media  (min-width: 1200px) and (max-width: 1499px) {
+    .lire_video_in_galerie{
+        display : none;
+    }
+}
+.modal-body .lire_video_in_galerie{
+    display: initial !important;
+}
+
+/*-----------------*/
+/*    Side_bar     */
+/*-----------------*/
+@media (min-width: 1200px) {
+    #side_bar_parent{
+        /*padding-right: 0px;*/
+        /*max-width: 300px;*/
+    }
+    #side_bar{
+        /*max-width: 300px;*/
+    }
+}
+.side_bar-fixed{
+    position: fixed;
+    /*largeur du parent*/
+    width: inherit;
+    /*fix le décallage pendant le changement de position*/
+    padding-right:  27.5px!important;  
+    /*idem en hauteur*/
+    top:50px!important;
+    /*permet aux tooltips d'aller au dessus'*/
+    z-index: 1;
+}
+
+
+/*-----------------*/
+/* Fleche_remonter */
+/*-----------------*/
+#fleche_remonter {
+    position: fixed; 
+    top: 90%; 
+    right: 2%; 
+    z-index:999; 
+    opacity: 0.6; 
+    border-radius:60px;
+    /*height:60px!important;*/
+    background-image: none;
+    color : white;
+    border-color: transparent;
+
+}  
+#fleche_remonter:hover {
+    opacity: 0.9;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 80px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 80px rgba(102, 175, 233, 0.6);
+    /*border-color: #c8c8c8;;*/
+}
+/*changement de la hauter en fct de la hauteur de l'écran*/
+@media (max-height: 700px) {
+    #fleche_remonter {  top: 84%;    }
+}
+@media (max-height: 300px) {
+    #fleche_remonter { top: 65%;}
+}
+/*position & taille de la flèche*/
+#fleche_remonter span {
+    font-size: 1.8em!important;
+    margin-top: 1px;
+    margin-bottom: 5px;
+    margin-left: 1px;
+    margin-right: -2px;
+}
+
+
+
+
+
+/*-----------------------*/
+/*    Divers glyphicon   */
+/*-----------------------*/
+.icon-flipped {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+
+.rotate-90{
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+}
+
+
+/*-------------------------*/
+/* Gros plan sur l'affiche */
+/*-------------------------*/
+.overlay-fixed  {
+    visibility: hidden;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width:100%;
+    height:100%;
+    text-align:center;
+    z-index: 1000;
+    background-color:     rgba(39,43,48,0.8);  /* #272B30;*/
+
+}
+.overlay-fixed >img{
+    max-height: 100%;
+    width: auto;
+}
+.overlay-non-fixed{
+    visibility: hidden;
+    overflow: hidden;
+    position:absolute;
+    left: 0px;
+    top: 0px;
+    width:100%;
+    height:100%;
+    text-align:center;
+    z-index: 1000;
+    background-color:     rgba(39,43,48,0.8);  /* #272B30;*/ 
+}
+.overlay-non-fixed>img{
+    /*laisse une petite marge pour éviter d'être coincé*/
+    position: relative;
+    width: 100%;
+    padding: 0px;
+    border-radius: 0px;
+    border: none;
+    /*top:50px!important;*/
+
+}
+
+
+/*--------------------------------*/
+/* Reset bande annonce allocine   */
+/* car il est imposé par allociné */
+/*--------------------------------*/
+#ACEmbed iframe{
+    width: 100% !important;
+    height: 100% !important;
+    /*height: 100% !important;*/  /*enlevé car posait problèmes sous Chrome (des ascenseurs apparaissaient) -> En test*/
+    /*min-height: 99% ;
+    max-height: 100% ;*/
+}
+
+
+/*----------------------------------------*/
+/* Resserre les éléments en mode gallerie */
+/*----------------------------------------*/
+#body_content .col-xs-6{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+
+/*-----------------------------------------------------------*/
+/* Force la hauteur de la grille (fix problème d'alignement) */
+/*            utilisé pour l'affichage en gallerie           */
+/*-----------------------------------------------------------*/
+.gallerie {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+.calage {
+    padding-top: 130%; /* aspect ratio */
+}
+.affiche_gallerie {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /*background-color: silver;*/ /* show me! */
+    width : 100%;  
+    height: 100% !important; 
+}
+/*effet de zoom quand on survole l'image en galerie'*/
+.gallerie:hover>img {
+    padding: 0px!important;
+}
+
+/*-----------------------*/
+/* Logo control parental */
+/*-----------------------*/
+.logo-control-p{
+    padding-top: 6px; 
+    position:relative; 
+    margin-left: 3px; 
+}
+
+/*------------*/
+/*  Légende   */
+/*------------*/
+.legende{
+    position: absolute;
+    background: rgba(255,255,255,.0);
+    opacity: 0;
+    color: black;
+    text-align:justify;
+    text-decoration: none;
+    border-radius: 4px;
+    line-height: 1.1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width:100%;
+    z-index:99;
+    padding: 10px;
+    overflow: hidden;/*reporté à la galerie*/ /*06/11/2018 : en test car le texte déborde sur la bordure du bas*/
+}
+.legende:hover,.legende:focus,.legende:active{
+
+    background: rgba(255,255,255,.85);
+    opacity: 1;
+    border: solid 2px;
+    border-color: #428BCA;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+/*modif 06/11/2018 permet d'éviter d'avoir les tooltip d'affichés suite a un changement d'onglet (par ex quand on clique sur le bouton 'google')'*/
+.gallerie>.legende {
+    visibility: hidden;
+}
+.gallerie:hover>.legende,.gallerie:focus>.legende,.gallerie:active>.legende{
+    visibility:visible;
+}
+
+
+.legende hr{
+    margin: 0px;
+}
+
+/*-----------------------*/
+/*   Entête des panels   */
+/*-----------------------*/
+.panel-heading{
+    background-image: linear-gradient(#484E55, #3A3F44 60%, #313539);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    padding: 7px 15px;
+}
+
+/*---------------------------*/
+/*  Titre quand pas d'affiche*/
+/*---------------------------*/
+.titre-sans-affiche{
+    position: absolute;
+    top:5%;
+    width: 100%;
+    text-align: center;
+    font-weight : bold;
+    color: #aaa;
+}
+
+/*couleur de police pour les listes*/
+select{
+    color: #272B30;
+    background-color: #e0e0e0;
+    background-image: none;
+    border: 1px solid #cccccc;
+    /*is working for android 2.2,2.3 but not for android 3.0,3.2.*/
+    visibility: visible; 
+    -webkit-appearance: menulist-text;
+    border-radius: 3px;
+    height: 30px;
+    /*line-height: 30px;*/
+    padding: 2px;
+    line-height: 14px;
+}
+
+textarea{
+    min-height:30px;
+}
+
+/*-----------------------*/
+/*  Boutons effet lumière*/
+/*-----------------------*/
+.btn:hover{
+    /* box-shadow: 0px 0px 20px #FFFFFF;*/
+    /*border-color: #66afe9;*/
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    /*color: #FFF;*/
+}
+/*enleve le carré bleu sous Chrome*/
+.btn:focus{
+    /*outline-width: 1px;/*enleve le carré bleu sous Chrome*/
+    outline: none;
+    font-weight: bold;
+}
+/*------------------------*/
+/*  Boutons effet lumière */
+/*  (les bt prec & suiv.) */
+/*------------------------*/
+.group_bt_prec_suiv > li > a:hover {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+@media (min-width: 400px) and (max-width: 1199px) {
+    .group_bt_prec_suiv  {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}
+
+@media  (min-width: 1200px) {
+
+    .group_bt_prec_suiv  {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
+
+/*-----------------------*/
+/*   Les bandes annonces */
+/*-----------------------*/
+.embed-responsive-item{
+    /*met un fond noir pendant le chargement des bandes annonces*/
+    background-color: black;
+}
+.bandes-annonce-miniature{
+    /*centre les images dans le cas où il n'y a pas d'embed'*/
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+}
+.bandes-annonce-miniature-lecture{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+/*-----------------------*/
+/*      Page stats       */
+/*-----------------------*/
+/*fix bootstrap : il met des écarts trop grand*/
+.highcharts-contextmenu hr{
+    margin-top:5px;
+    margin-bottom: 5px;
+}
+
+/*-----------------------*/
+/*      Type file        */
+/*-----------------------*/
+input[type="file"]{
+    color: rgb(128, 128, 128);
+    /*background-color: red;*/
+    height: 34px;
+}
+input[type="submit"]{
+    height: 34px;
+}
+/*https://stackoverflow.com/questions/572768/styling-an-input-type-file-button*/
+::-webkit-file-upload-button {
+
+    height: 34px;
+    border-radius: 4px;
+
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+/*--------------------------------------------------------------------*/
+/*      Texte caché dans la galerie et réaparait avec la popup        */
+/*--------------------------------------------------------------------*/
+.text-cache-galerie{
+    display: none;
+}
+
+.alertBox .text-cache-galerie{
+    display: inline;
+}
+
+
+
+
+/*-------------------------------*/
+/*      Notation (étoiles)       */
+/*-------------------------------*/
+
+rating{
+    display: inline-block;
+    position: relative;
+    /*font-size: 1.5em;*/
+    margin: 0px;
+    padding: 0px;
+    border: 0px solid transparent;
+    color: #5D5D5D;
+    text-shadow: #666 0px 0px 7px;
+
+}
+.rating-0{
+    color: rgba(255,255,255,0.8);
+}
+
+rating .quarter   {
+    color :gold;
+    width : 50%;
+    height:100%;
+    left:0px;
+    overflow: hidden;
+    position:absolute;
+    border: 0px solid transparent;
+    text-shadow: #FF9200 0px 0px 2px;
+} 
+/*http://stackoverflow.com/questions/20541306/how-to-write-a-css-hack-for-ie-11*/
+/*hack IE 9 and above*/
+@media screen and (min-width:0\0) and (min-resolution: +72dpi) {
+    .rating .half { 
+        /*correction décallage IE*/
+        margin-top: -1px;
+    }
+}
+
+/*--------------------------------------------*/
+/*      Affiches des bouton prec & suivant    */
+/*--------------------------------------------*/
+.previous img, .next img{
+    display:none;
+    background-color: white;
+    margin-right: 0px!important;
+    margin-bottom: 0px;
+
+    width: 320px;
+    height: 416px;
+    margin-top: 2px;
+
+
+    position:absolute;
+    z-index:80;
+
+}
+
+.previous:hover img, .next:hover img{
+    display:block;
+}
+
+/*callage à gauche*/
+.previous img{
+    left: 40px!important;
+}
+/*callage à droite*/
+.next img{
+    right: 40px!important;
+}
+/*pour ceux du bas, on décalle en hauteur*/
+.bulle-en-haut img{
+    margin-top: -438px;
+}
+/*divise par 2 la taille pour les petits ecrans*/
+@media (max-width: 400px) {
+    .previous img, .next img{
+        width: 160px;
+        height: 208px;
+    }
+    .bulle-en-haut img{
+        margin-top: -228px;
+    }
+
+
+}
+
+/*--------------------------------------------*/
+/*         Onglets (en dehors du menu)        */
+/*--------------------------------------------*/
+/*met une bordure qui permet de différencier du menu principal*/
+.onglets li a{
+    border: 1px solid black;
+    background-color: #3e444c;
+}
+/*met un espace en dessous*/
+.onglets{
+    margin-bottom: 16px;
+}
+/*utile dans la page parametrages.php*/
+.tab-pane.fade:not(.active){
+    background-color: red!important;
+    height: 0px;
+    overflow-y: hidden;
+}
+/*---------/
+/* DIVERS */
+/*--------*/
+.text-default{
+    color: #c8c8c8;
+}
+/*enlève le carré bleu sous Chrome*/
+input:focus, button:focus {
+    outline:  none;
+    /*color: #E0E0E0 !important;*/
+    /*opacity:1 !important;*/
+    /*outline:  1px solid ; *//*pour debugger*/
+}
+
+/*------------------------------------------------------------*/
+/*         CSS trick on word-wrap                             */
+/*         https://gist.github.com/prabhuramkumar/4491951     */
+/*------------------------------------------------------------*/
+table{ 
+    table-layout:fixed; 
+} 
+table td{ 
+    word-wrap:break-word; 
+    /*width:300px; */ /*retiré LC 02/08/2018 en test car posait pb dans la page detail.php (partie "Informations sur le média ")*/
+}
+
+/*-------------------------------------------*/
+/*       couleur des badge bootstrap         */
+/*-------------------------------------------*/
+.badge-default {
+    background-color: #3a3f44;
+}
+
+.badge-primary {
+    background-color: #7a8288;
+}
+
+.badge-success {
+    background-color: #62c462;
+}
+
+.badge-info {
+    background-color: #5bc0de;
+}
+
+.badge-warning {
+    background-color: #f89406;
+}
+
+.badge-danger {
+    background-color: #ee5f5b;
+}
+
+/*--------------------------*/
+/*    Centrage vertical     */
+/*--------------------------*/
+/*permet de centrer verticalement des éléments d'une row'*/
+/*utilisé pour l'affichage en liste*/
+/*https://stackoverflow.com/questions/20547819/vertical-align-with-bootstrap-3*/
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+
+/*xs*/
+@media (min-width:  385px) {
+    .vertical-align-xs {
+        display: flex;
+        align-items: center;
+    }
+}
+/*sm*/
+@media (min-width: 768px) {
+    .vertical-align-sm {
+        display: flex;
+        align-items: center;
+    }
+}
+
+/*md*/
+@media (min-width: 992px) {
+    .vertical-align-md {
+        display: flex;
+        align-items: center;
+    }
+}
+
+/*lg*/
+@media (min-width: 1200px) {
+    .vertical-align-lg {
+        display: flex;
+        align-items: center;
+    }
+}
+/*xl*/
+@media (min-width: 1600px) {
+    .vertical-align-xl {
+        display: flex;
+        align-items: center;
+    }
+}
