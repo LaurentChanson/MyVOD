@@ -4,7 +4,7 @@ Détails :
 
 Ce projet permet de répertorier les films comme Plex. Il permet d'aller chercher les informations issues d'Allociné ou DVDFr.
 Avec l'interface réseau de votre ordinateur, il permet de visualiser les vidéos sur une tablette, autre PC... sans ré-encodage.
-MyVOD est compatible avec PHP5 et PHP7.
+MyVOD est compatible avec PHP5 et PHP7. Testé avec un environnement Windows. Pas testé sous Linux. 
 
     Android : Je vous conseille d'installer BSPlayer FREE. Il permet de lire beaucoup de formats et gère les chemins réseau. Voir sur Google Play...
 
