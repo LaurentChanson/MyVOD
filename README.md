@@ -14,10 +14,10 @@ Installation :
 
 
 Ce projet est un projet php. Son installation est comme pour un site php. 
-Le point d'entrée est index.php à la racine.
+Le point d'entrée est index.php à la racine qui lancera MyVOD/app/index.php.
 Au 1er lancement, MyVOD demande de se connecter. Le mot de passe est 1234. Vous pourrez le changer après. 
 Une fois le mot de passe validé, la page principale de paramétrage va s'afficher.
-Veuillez remplir les différents champs. Enjoy!!!
+Veuillez remplir les différents champs. Les données se trouveront dans le répertoire MyVOD/data Enjoy!!!
 
 
 
