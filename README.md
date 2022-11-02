@@ -2,7 +2,7 @@
 
 Détails :
 
-Ce projet permet de répertorier les films. Il permet d'aller chercher les informations issues d'Allociné ou DVDFr.
+Ce projet permet de répertorier les films comme Plex. Il permet d'aller chercher les informations issues d'Allociné ou DVDFr.
 Avec l'interface réseau de votre ordinateur, il permet de visualiser les vidéos sur une tablette, autre PC... sans ré-encodage.
 MyVOD est compatible avec PHP5 et PHP7.
 
@@ -10,9 +10,20 @@ MyVOD est compatible avec PHP5 et PHP7.
 
     Android : Depuis une certaine mise à jour, Chrome sous Android ne propose plus BSPlayer pour lire les fichier m3u. Avec Firefox sous Android, il n'y a pas ce soucis. Vous pouvez toujours utiliser Chrome en choisissant Firefox comme lecteur puis depuis Firefox, prendre BSPlayer. Voir sur Google Play...
 
+Installation :
+
+
+Ce projet est un projet php. Son installation est comme pour un site php. 
+Le point d'entrée est index.php à la racine.
+Au 1er lancement, MyVOD demande de se connecter. Le mot de passe est 1234. 
+Une fois le mot de passe validé, la page principale de paramétrage va s'afficher.
+Veuillez remplir les différents champs. Enjoy!!!
+
 
 
 Ce projet utilise :
+
+    Ce projet est un projet php simple sans framework. Il est léger
 
     MediaInfo :
     MediaInfo fournit des informations techniques et les tags à propos de vos fichiers video et audio.
