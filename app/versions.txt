@@ -8,6 +8,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.4.x (Meilleures performances + support PHP7) - Version actuelle
 ========================================================================
 
+ <b>version V.2.4.5, 2023/02/08</b>
+--------------------
+
+ x Fix : Force download fichier m3u sur Android. Permet de passer à une appli tierce et evite d'avoir une erreur dans le navigateur.
+
+
  <b>version V.2.4.4, 2020/08/19</b>
 --------------------
 

@@ -105,7 +105,8 @@ if ($detail != false) {
                     <!--lien pour regarder la vidéo-->
                     <div style="width: 100%">
                         <a href="<?= $m3u_url; ?>" 
-                           class="btn btn-success "  type="audio/x-mpegurl" target="_blank">
+                           class="btn btn-success "  type="audio/x-mpegurl" target="_blank"
+                           download="<?= $m3u_url; ?>">
                             <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  Lire la vidéo</a>
                     </div>
                     <?php
@@ -364,7 +365,8 @@ if ($detail != false) {
                     <!--lien pour regarder la vidéo-->
                     <center>
                         <a href="<?= $m3u_url; ?>" 
-                           class="btn btn-success "  type="audio/x-mpegurl" target="_blank">
+                           class="btn btn-success "  type="audio/x-mpegurl" target="_blank"
+                           download="<?= $m3u_url; ?>">
                             <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  Lire la vidéo</a>
                     </center>
                     <br/>
@@ -610,7 +612,8 @@ function render_panel_liens($pour_panel_gauche = false) {
 
                 <!--lien pour regarder la vidéo-->
                 <a href="<?= $m3u_url; ?>" 
-                   class="btn btn-success center-block"  type="audio/x-mpegurl" target="_blank">
+                   class="btn btn-success center-block"  type="audio/x-mpegurl" target="_blank"
+                   download="<?= $m3u_url; ?>">
                     <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  Lire la vidéo (<?= $file_info->width . ' x ' . $file_info->height ?>)</a>
                 <p class="text-center" style="word-break: break-all;">
                     <small>

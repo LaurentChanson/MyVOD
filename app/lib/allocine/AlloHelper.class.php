@@ -355,6 +355,7 @@
                         
                         //var_dump($curl);
                         //var_dump($data);
+                        //var_dump($curlError);
                         
                 curl_close($curl);
                 
