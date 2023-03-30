@@ -8,6 +8,13 @@
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.4.x (Meilleures performances + support PHP7) - Version actuelle
 ========================================================================
 
+
+ <b>version V.2.4.6, 2023/03/30</b>
+--------------------
+
+ x Fix : "file_get_contents(): SSL operation failed with code 1, Failed to enable crypto" pendant la récupération d'affiche avec un seven.
+
+
  <b>version V.2.4.5, 2023/02/08</b>
 --------------------
 

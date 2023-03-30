@@ -9,6 +9,8 @@ class Recup_Affiche{
     // ou
     //http://vignette1.wikia.nocookie.net/akira/images/0/0e/Akira-Poster-akira-13827694-1013-1500.jpg/revision/latest?cb=20131117120052
     static function recuperer_fichier($url,$dossier_destination='.',$nouveau_nom=null){
+        
+        
         //enlève la partie de droite s'il y a un point d'interrogation dans l'url
         $pos=strpos($url,'?');
         $url0=$url;
@@ -16,7 +18,7 @@ class Recup_Affiche{
             $url0=substr($url,0,$pos);
         }
         //nettoie la partie apres l'extension
-        //".jpg/revision/latest" deviendre ".jpg"
+        //".jpg/revision/latest" deviendra ".jpg"
         $pos=strpos($url0,'.jpg');
         if($pos!==false){
             $url0=substr($url0,0,$pos+4);
@@ -34,12 +36,32 @@ class Recup_Affiche{
             $nom_fichier=$nouveau_nom;
         }
         
+        //var_dump($url,$dossier_destination='.',$nouveau_nom=null);
+        
+        
         try {
             
             //récupère le fichier
-            $fic=@file_get_contents($url);
+            //$fic=@file_get_contents($url);
+            //avec l'@, on n'affiche pas les warnings
+            //$fic=file_get_contents($url);
             
-            //var_dump($fic);
+            //30/03/2023 : Bug erreur sll de m...
+            //https://stackoverflow.com/questions/26148701/file-get-contents-ssl-operation-failed-with-code-1-failed-to-enable-crypto
+            
+            
+            $arrContextOptions=array(
+                "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                ),
+            );  
+            $fic=file_get_contents($url,false, stream_context_create($arrContextOptions));
+
+            /*
+            var_dump($fic);
+            exit();
+            */
             
             
             if($fic==FALSE){
