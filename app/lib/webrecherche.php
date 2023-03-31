@@ -228,7 +228,21 @@ class WebGetFilmData {
         }
     }
 
-    public function init_from_result_tmdb($movie_result){
+    public function init_from_result_tmdb($res){
+       $this->code_tmdb =  '' . $res->id;
+       $this->title = '' . $res->title;
+       $this->originalTitle = $res->original_title;
+       
+       $this->keywords = $this->title;
+       $this->releaseDate = '' . $res->release_date;
+       $this->productionYear = substr($this->releaseDate,0,4); ;
+       
+       
+       
+       $this->synopsisShort = $res->tagline;
+       $this->synopsis = $res->overview;
+       $this->runtime =  $res->runtime;
+       $this->href = 'https://www.themoviedb.org/movie/'.$this->code_tmdb.'?language=fr';
         
         
         
