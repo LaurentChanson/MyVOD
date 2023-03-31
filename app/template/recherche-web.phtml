@@ -21,6 +21,10 @@ if (strlen($recherche_ori) > 0) {
     aficher_formulaire('Rechercher sur Allociné.fr');
 
     aficher_formulaire('Rechercher sur Dvdfr.com (quota restant ' . DVDFRAPIWrapper::GetQuotasRestant() . ')', type_recherche::RECHERCHE_DVDFR);
+    
+    
+    aficher_formulaire('Rechercher sur TheMoviedb.org', type_recherche::RECHERCHE_TMDB);
+    
     ?>
 </div>
 
@@ -118,6 +122,7 @@ if (isset($donnees)) {
                                         <p>Réalisateur : <?= $film->directors ?></p>
                                         <p>Année : <?= $film->productionYear ?></p>
                                         <p>Acteurs : <?= $film->actors ?></p>
+                                        <p>Aperçu : <?= $film->resume ?></p>
                                         <?php
                                         if (strlen($film->href) > 0) {
                                             ?>
@@ -127,7 +132,7 @@ if (isset($donnees)) {
                                             </p>
                                             <?php
                                         } else {
-                                            echo "<center>Pas de fiche détaillé</center>\n";
+                                            echo "<center>Pas de fiche détaillée</center>\n";
                                         }
                                         ?>
                                         <br>

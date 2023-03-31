@@ -2,7 +2,7 @@
 
 require_once 'api-allocine-wrapper.php';
 require_once 'api-dvdfr-wrapper.php';
-
+require_once 'api-tmdb-wrapper.php';
 
 
 
@@ -17,7 +17,8 @@ class type_recherche {
 
     const RECHERCHE_ALLOCINE = 0;
     const RECHERCHE_DVDFR = 1;
-
+    const RECHERCHE_TMDB = 2;
+    
     public $numero;
 
     //constructeur avec le numéro de type recherche
@@ -31,7 +32,9 @@ class type_recherche {
             case type_recherche::RECHERCHE_DVDFR:
                 return 'DvdFr.com';
                 break;
-
+            case type_recherche::RECHERCHE_TMDB:
+                return 'TheMoviedb.org';
+                break;
             default:
                 return 'Allociné.fr';
                 break;
@@ -48,7 +51,9 @@ class WebRecherche {
             case type_recherche::RECHERCHE_DVDFR:
                 return DVDFRAPIWrapper::Rechercher($motsCles, $error_retour);
                 break;
-
+            case type_recherche::RECHERCHE_TMDB:
+                return TMDBWrapper::Rechercher($motsCles, $error_retour);
+                break;
             default:
                 return AllocineAPIWrapper::Rechercher($motsCles, $error_retour);
                 break;
@@ -61,7 +66,9 @@ class WebRecherche {
             case type_recherche::RECHERCHE_DVDFR:
                 return DVDFRAPIWrapper::GetFilm($code, $error_retour);
                 break;
-
+            case type_recherche::RECHERCHE_TMDB:
+                return TMDBWrapper::GetFilm($code, $error_retour);
+                break;
             default:
                 return AllocineAPIWrapper::GetFilm($code, $error_retour);
                 break;
@@ -84,7 +91,8 @@ class WebRechercheData {
     public $href;
     public $posterURL;
     public $poster;
-
+    public $resume;
+    
     public function __construct() {
         //exemple sur : http://www.santerref.com/blogue/2011/07/21/constructeurs-multiples-en-php/
         $ctp = func_num_args();
@@ -119,6 +127,33 @@ class WebRechercheData {
         $this->poster = $t['poster'];
     }
 
+    
+    
+    public function init_from_result_tmdb_dot_org($res) {
+        //var_dump($res);
+        $this->code = '' . $res->id;
+        $this->title = '' . $res->title;
+        
+        $this->releaseDate = ''. $res->release_date;
+        $this->productionYear = substr($this->releaseDate,0,4);
+        $this->originalTitle = $res->original_title;
+        
+        $this->userRating = $res->vote_average;
+        
+        $this->resume = $res->overview;
+        //limitation
+        $this->resume=substr($this->resume,0,80);
+        
+        
+        $this->poster = $res->poster_path;
+        $this->posterURL = $res->poster_url;
+        
+        $this->href = 'https://www.themoviedb.org/movie/'.$this->code.'?language=fr';
+        //var_dump($this);
+        
+    }
+    
+    
     public function init_from_result_dvdfr($res) {
         $this->code = '' . $res->id;
         $edition = '' . $res->edition;
@@ -144,6 +179,7 @@ class WebGetFilmData {
 
     public $code_allocine;
     public $code_dvdfr;
+    public $code_tmdb;
     public $movieType;
     public $originalTitle;
     public $title;
@@ -192,6 +228,15 @@ class WebGetFilmData {
         }
     }
 
+    public function init_from_result_tmdb($movie_result){
+        
+        
+        
+        
+    }
+    
+    
+    
     public function init_from_result_dvdfr($res) {
         $this->code_dvdfr = '' . $res->id;
 
