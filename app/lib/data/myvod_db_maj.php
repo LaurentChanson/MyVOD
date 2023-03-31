@@ -40,7 +40,7 @@ class MyVOD_DB_MAJ extends sqlite_db {
         //récupère le numéro de version
         $version = $this->get_version();
 
-        if ($version > 27) {
+        if ($version > 28) {
             //var_dump($_POST);
             //var_dump($version);
             //exit();
@@ -591,6 +591,26 @@ AND
 
             $this->maj_commit($version);
         }
+        
+        
+        /*
+         * Ajout de la colonne 'NumFicheTmdb' dans la table 'Video'
+         */
+        if ($version == 28) {
+            
+            $this->maj_begin();
+
+            $this->execute('ALTER TABLE Video ADD COLUMN NumFicheTmdb INTEGER;');
+
+            $this->maj_commit($version);
+           
+        } 
+        
+        
+        
+        
+        
+        
         /*
 
 

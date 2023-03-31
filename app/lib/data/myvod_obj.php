@@ -145,6 +145,7 @@ class MyVOD_Details {
     public $MovieLink;
     public $NumFicheAllocine;
     public $NumFicheDvdFr;
+    public $NumFicheTmdb;
     public $UrlImageSource;
     public $BandeAnnonceUrl;
     public $BandeAnnonceCode;
