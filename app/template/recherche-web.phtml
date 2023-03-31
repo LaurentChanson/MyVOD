@@ -201,7 +201,7 @@ if (isset($donnees)) {
 <script>
     //remet les champs de saisie à l'origine
 function raz_champs_recherche(){
-    for (var i = 0; i <= 1; i++) {
+    for (var i = 0; i <= 2; i++) {
         var element = document.getElementById('recherche_web'+i);
         element.value="<?=Helper_misc::chaine_pour_js($recherche_ori)?>";
         //alert('recherche_web'+i);
