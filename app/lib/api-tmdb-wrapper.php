@@ -66,8 +66,6 @@ class TMDBWrapper{
             return $t; 
             
             
-            
-            
         }
         catch (ErrorException $e) {
             // Affichage des informations sur la requête
@@ -98,6 +96,10 @@ class TMDBWrapper{
             
             $i=(object)self::$tmdb->getMovieTrailers($code, 'fr');
             var_dump($i);
+            
+            //$k=(object)self::$tmdb->getMovieKeywords($code, 'fr');
+            //var_dump($k);
+            //c'est en anglais bof
             
             //Get image URL for the backdrop image in its original size
             //$image_url = $tmdb->getImageUrl($filepath, TMDb::IMAGE_POSTER, 'original');
