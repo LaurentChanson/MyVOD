@@ -103,6 +103,12 @@ class TMDb
 			'year' => $year,
 		);
 		return $this->_makeCall('search/movie', $params);
+                
+                //ci dessous pour les séries en tests
+                /*$r= $this->_makeCall('search/tv', $params);
+                var_dump($r);
+                exit();*/
+                
 	}
 
 	/**
@@ -166,6 +172,10 @@ class TMDb
 		$params = array(
 			'language' => ($lang !== NULL) ? $lang : $this->getLang(),
 		);
+                
+                var_dump($params);
+                
+                
 		return $this->_makeCall('movie/'.$id, $params);
 	}
 

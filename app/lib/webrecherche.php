@@ -3,7 +3,7 @@
 require_once 'api-allocine-wrapper.php';
 require_once 'api-dvdfr-wrapper.php';
 require_once 'api-tmdb-wrapper.php';
-
+require_once 'countries.iso-3166-1.inc.php';
 
 
 
@@ -148,7 +148,8 @@ class WebRechercheData {
         $this->poster = $res->poster_path;
         $this->posterURL = $res->poster_url;
         
-        $this->href = 'https://www.themoviedb.org/movie/'.$this->code.'?language=fr';
+        //$this->href = 'https://www.themoviedb.org/movie/'.$this->code.'?language=fr';
+        $this->href=TMDBWrapper::GetHRefFromId($this->code);
         //var_dump($this);
         
     }
@@ -228,7 +229,7 @@ class WebGetFilmData {
         }
     }
 
-    public function init_from_result_tmdb($res){
+    public function init_from_result_tmdb($res,$casts){
        $this->code_tmdb =  '' . $res->id;
        $this->title = '' . $res->title;
        $this->originalTitle = $res->original_title;
@@ -236,17 +237,61 @@ class WebGetFilmData {
        $this->keywords = $this->title;
        $this->releaseDate = '' . $res->release_date;
        $this->productionYear = substr($this->releaseDate,0,4); ;
-       
-       
-       
-       $this->synopsisShort = $res->tagline;
+       $this->movieType = 'Long-métrage';
+
        $this->synopsis = $res->overview;
+       $this->synopsisShort = $res->tagline;
+       if(strlen($this->synopsisShort)==0)$this->synopsisShort  = $this->synopsis;
+       
        $this->runtime =  $res->runtime;
        $this->href = 'https://www.themoviedb.org/movie/'.$this->code_tmdb.'?language=fr';
         
-        
-        
-        
+       $this->userRating = $res->vote_average;
+       
+       //les genres
+       foreach ($res->genres as $g) {
+            array_push($this->genres, $g['name']);
+       }
+       $this->genre = $this->genres[0];
+       
+       //nationalité : on concatène la liste
+       $s = "";
+       if(isset($res->production_countries)){
+           $countries = countries();
+           foreach ($res->production_countries as $n) {
+               $pays = $countries[$n['iso_3166_1']];
+  
+               $s = $s . (strlen($s) == 0 ? '' : ', ') . $pays;
+           }        }
+       $this->nationality = $s;
+       
+       //les acteurs
+       $s = "";
+       foreach ($casts->cast as $acteur) {
+           if($acteur['known_for_department']=='Acting'){
+              $s = $s . (strlen($s) == 0 ? '' : ', ') . $acteur['name']; 
+           }
+       }
+       $this->actors = $s;
+       
+       //réalisateurs
+       $s = "";
+       foreach ($casts->crew as $crew) {
+           if($crew['job']=='Director' ){
+              $s = $s . (strlen($s) == 0 ? '' : ', ') . $crew['name']; 
+           }
+       }
+       $this->directors = $s;
+       
+       //Le poster
+       $this->href=TMDBWrapper::GetHRefFromId($this->code_tmdb);
+       $this->poster = $res->poster_path;
+       $this->posterURL = $res->poster_url;      
+         
+       //poster_path
+       
+       
+       
     }
     
     

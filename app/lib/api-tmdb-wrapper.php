@@ -9,6 +9,9 @@ require_once 'webrecherche.php';
 
 //documentation sur
 //https://github.com/glamorous/TMDb-PHP-API
+//et
+//https://developers.themoviedb.org/3/search/search-tv-shows
+
 
 class TMDBWrapper{
     
@@ -21,6 +24,17 @@ class TMDBWrapper{
         //on veut 8810
         
         return false;
+    }
+    
+    public static function GetHRefFromId($id){
+        
+        return 'https://www.themoviedb.org/movie/'.$id.'?language=fr';
+    }
+    
+    public static function get_poster_path_Url($poster_path){
+        self::instancier_tmdb_si_pas_instancie();
+        $image_url = self::$tmdb->getImageUrl($poster_path, TMDb::IMAGE_POSTER, 'original');
+        return $image_url;
     }
     
     
@@ -50,10 +64,10 @@ class TMDBWrapper{
                 $f = new WebRechercheData();
                 $res=(object)$res;
                 
-                $image_url = self::$tmdb->getImageUrl($res->poster_path, TMDb::IMAGE_POSTER, 'original');
-                
-                
+                //$image_url = self::$tmdb->getImageUrl($res->poster_path, TMDb::IMAGE_POSTER, 'original');
+                $image_url = self::get_poster_path_Url($res->poster_path);
                 $res->poster_url=$image_url;
+                
                 $f->init_from_result_tmdb_dot_org($res);
                 
                 array_push($t, $f);
@@ -87,7 +101,9 @@ class TMDBWrapper{
             
             //Get Movie with other return format than the default and with an IMDb-id
             $movie_result = (object)self::$tmdb->getMovie($code);
-
+                            
+            $image_url = self::get_poster_path_Url($movie_result->poster_path);
+            $movie_result->poster_url=$image_url;
             var_dump($movie_result);
 
             $c= (object)self::$tmdb->getMovieCast($code);
@@ -106,9 +122,13 @@ class TMDBWrapper{
 	
             //var_dump($image_url);
             
+            
+            $o=(object)self::$tmdb->getMovieTranslations($code);
+            var_dump($o);
+            
             $film=new WebGetFilmData;
             
-            $film->init_from_result_tmdb($movie_result);
+            $film->init_from_result_tmdb($movie_result,$c);
             
             var_dump($film);
             
