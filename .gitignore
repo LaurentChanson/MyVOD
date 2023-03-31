@@ -1,5 +1,6 @@
 #repertoires sur le poste de dev
-data/
+#bien mettre le / devant
+/data/
 _archives_misc/
 app_02112022/
 import/

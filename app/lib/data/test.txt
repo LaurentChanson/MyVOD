@@ -1,0 +1,55 @@
+-- A TESTER A LA PLACE DES REQUETES IMBRIQUEES
+
+SELECT 
+-- t.Nom as NomTypePublicAutorise,
+Detail.*, 1 as Autorise FROM Detail
+LEFT JOIN TypePublicAutorise t ON t.Nom=Detail.TypePublic
+INNER JOIN Genre g1 ON Detail.GenreID1=g1.ID 
+LEFT JOIN Genre g2 ON Detail.GenreID2=g2.ID 
+LEFT JOIN Genre g3 ON Detail.GenreID3=g3.ID
+WHERE
+filename NOT IN (
+               SELECT filename2 FROM Liaison
+           )
+/*AND 
+        Detail.TypePublic IN (
+               SELECT t.Nom FROM TypePublicAutorise t
+           )*/
+AND t.Nom IS NOT NULL
+AND ((
+/*
+       Detail.GenreID1 IN ( 
+               SELECT g.ID FROM Genre g WHERE g.Autorise <> 0
+           )*/
+           g1.Autorise <> 0
+AND 
+       (
+  /*     
+Detail.GenreID2 IN (
+                SELECT g.ID  FROM Genre g WHERE g.Autorise <> 0
+            )*/ g2.Autorise <> 0 OR Detail.GenreID2 IS NULL)
+AND 
+       (
+       /*Detail.GenreID3 IN (
+                SELECT g.ID FROM Genre g WHERE g.Autorise <> 0
+            ) */  g3.Autorise <> 0 OR Detail.GenreID3 IS NULL)
+   )
+   OR 
+       /*Detail.GenreID1 IN ( 
+               SELECT g.ID FROM Genre g WHERE g.ListeBlanche <> 0
+           )
+           */
+           g1.ListeBlanche <> 0 
+   OR 
+       /*Detail.GenreID2 IN ( 
+               SELECT g.ID FROM Genre g WHERE g.ListeBlanche <> 0
+           )*/
+          g2.ListeBlanche <> 0  
+   OR 
+   /*
+       Detail.GenreID3 IN ( 
+               SELECT g.ID FROM Genre g WHERE g.ListeBlanche <> 0
+           )*/
+          g3.ListeBlanche <> 0  
+)
+order by Filename
