@@ -8,3 +8,4 @@ _git/
 
 test.php
 Sauvegarde MyVOD 02112022.zip
+app/lib/tmdb/api-tmdb-key-config.php
