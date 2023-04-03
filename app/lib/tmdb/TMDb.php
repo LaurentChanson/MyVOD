@@ -173,7 +173,7 @@ class TMDb
 			'language' => ($lang !== NULL) ? $lang : $this->getLang(),
 		);
                 
-                var_dump($params);
+                //var_dump($params);
                 
                 
 		return $this->_makeCall('movie/'.$id, $params);

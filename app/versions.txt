@@ -3,13 +3,21 @@
     - api TMDB : idem.
 </small>
 
+========================================================================
+&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) 
+========================================================================
+
+TODO : Paramétrer la key (mdb) depuis la config
+TODO : Ajout lien desc wrapper api
+TODO : Ajouter les séries dans TMDB
+
+
+ + Ajout API Tmdb (attention mettre la key en dehors de git
 
 ========================================================================
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.4.x (Meilleures performances + support PHP7) - Version actuelle
 ========================================================================
 
-
- + Ajout API Tmdb (attention mettre la key en dehors de git
 
  <b>version V.2.4.6, 2023/03/30</b>
 --------------------

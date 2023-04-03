@@ -50,8 +50,8 @@ $MyVOD_DB = new MyVOD_DB();
 $liste_type_films=$MyVOD_DB->get_liste_type_film();
 $liste_nationalite=$MyVOD_DB->get_liste_nationalites();
 */
-
 /*
+var_dump($filename_or_id);
 var_dump($_POST);
 exit();
 */
@@ -59,7 +59,7 @@ exit();
 
 
 //traitement du formulaire post (sauvegarde)
-//rq : s'il y a une recherche via le net, 'action' n'est pas dédini
+//RQ : s'il y a une recherche via le net, 'action' n'est pas dédini
 if (isset($_POST['action'])) {
     
         
@@ -117,6 +117,9 @@ if (isset($_POST['action'])) {
         
         $fichefilm->NumFicheAllocine=$_POST['code_allocine'];
         $fichefilm->NumFicheDvdFr=$_POST['code_dvdfr'];
+        
+        $fichefilm->NumFicheTmdb=$_POST['code_tmdb'];
+        
         $fichefilm->HD720=0;
         $fichefilm->HD1080=0;
         if(isset($_POST['resolution'])){
@@ -314,6 +317,9 @@ if (($code_allocine != false ) && ( isset($_POST['action'])==false)  ) {
     $fiche = new WebGetFilmData();
     $fiche = WebRecherche::GetFilm($code_allocine, $type_recherche, $error_retour);
 
+//    var_dump($fiche);
+    //exit();
+    
     if ($fiche == false) {
         message::ajouter_alerte_ko($error_retour);
         //html_bootstrap_alert_danger($error_retour);
@@ -335,8 +341,8 @@ if (($code_allocine != false ) && ( isset($_POST['action'])==false)  ) {
         message::ajouter_alerte_info('<i class="fa fa-thumbs-up" aria-hidden="true"></i>
  Les données sont récupérées du net. <b><i>Pensez à sauvegarder</i></b> cette fiche en cliquant sur le bouton <b><i>\'Valider\'</i></b>.');
         //message::ajouter_alerte_warning('test');
-        //var_dump($fichefilm);
-        //exit();
+//        var_dump($fichefilm);
+//        exit();
     }  
 }
 
@@ -345,9 +351,11 @@ $file_info = new FileInfos();
 
 gerer_cache($fichefilm->Filename, $file_info);
 
-$code_allocine = AllocineAPIWrapper::GetIDFromURL($fichefilm->MovieLink);
-$code_dvdfr = DVDFRAPIWrapper::GetIDFromURL($fichefilm->MovieLink);
-
+//$code_allocine = AllocineAPIWrapper::GetIDFromURL($fichefilm->MovieLink);
+//$code_dvdfr = DVDFRAPIWrapper::GetIDFromURL($fichefilm->MovieLink);
+$code_allocine = $fichefilm->NumFicheAllocine;
+$code_dvdfr = $fichefilm->NumFicheDvdFr;
+$code_tmdb=$fichefilm->NumFicheTmdb;
 //var_dump($fichefilm);
 
 require_once 'template/detail-modif.phtml';

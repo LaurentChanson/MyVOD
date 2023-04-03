@@ -442,6 +442,17 @@ if (strlen($fichefilm->MessageModif) > 0) {
                                 value="<?= $fichefilm->Titre ?>">
          <!--                <span class="help-block">titre du film</span>  -->
 
+                        <a id="a_recherche_tmdb" 
+                           href="recherche-web.php?recherche_web=<?= $fichefilm->Filename ?>&type_recherche=<?= type_recherche::RECHERCHE_TMDB; ?>"  
+                           class="pull-right">
+                            <button type="button" name="bt_recherche_tmdb" id="bt_recherche_tmdb" 
+                                    class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                sur TMDb
+                            </button>
+                        </a>
+                        
+                        <div class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         <a id="a_recherche_dvdfr" 
                            href="recherche-web.php?recherche_web=<?= $fichefilm->Filename ?>&type_recherche=<?= type_recherche::RECHERCHE_DVDFR; ?>"  
                            class="pull-right">
@@ -496,7 +507,7 @@ if (strlen($fichefilm->MessageModif) > 0) {
                 <div class="form-group">
                     <label class="col-sm-4 control-label" for="movieLink">Rechercher les informations sur Dvdfr par le code fiche</label> 
                     <div class="col-sm-6">
-                        <input  name="code_dvdfr" id="txt_recherche_id_allocine" placeholder="identifiant DvdFr" 
+                        <input  name="code_dvdfr" id="txt_recherche_id_dvdfr" placeholder="identifiant DvdFr" 
                                 class="form-control input-sm"  type="text"
                                 onblur="document.getElementById('a_recup_dvdfr').href = 'detail-modif.php?web_fiche_code=' + this.value + '&type_recherche=1';"
                                 value="<?= $code_dvdfr ?>">
@@ -514,6 +525,28 @@ if (strlen($fichefilm->MessageModif) > 0) {
 
                 <?php
 //}
+                ?>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="movieLink">Rechercher les informations sur The Movie Database par le code fiche</label> 
+                    <div class="col-sm-6">
+                        <input  name="code_tmdb" id="txt_recherche_id_tmdb" placeholder="identifiant TMDb" 
+                                class="form-control input-sm"  type="text"
+                                onblur="document.getElementById('a_recup_tmdb').href = 'detail-modif.php?web_fiche_code=' + this.value + '&type_recherche=2';"
+                                value="<?= $code_tmdb ?>">
+         <!--                <span class="help-block">titre du film</span>  -->
+
+                        <a id="a_recup_tmdb"
+                           href="detail-modif.php?web_fiche_code=<?= $code_tmdb; ?>&type_recherche=2"  
+                           class="pull-right">
+                            Renseigner la fiche en allant chercher les informations sur The Movie Database (TMDB)
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+
+                        </a>
+                    </div>
+                </div> 
+
+                <?php
+                
                 ?>
 
 

@@ -17,7 +17,7 @@ class TMDBWrapper{
     
     static $tmdb;
     
-    
+    /*
     public static function GetIDFromURL($url) {
         //TODO
         //exemple : https://www.themoviedb.org/movie/8810-mad-max-2?language=fr
@@ -25,7 +25,7 @@ class TMDBWrapper{
         
         return false;
     }
-    
+    */
     public static function GetHRefFromId($id){
         
         return 'https://www.themoviedb.org/movie/'.$id.'?language=fr';
@@ -104,14 +104,29 @@ class TMDBWrapper{
                             
             $image_url = self::get_poster_path_Url($movie_result->poster_path);
             $movie_result->poster_url=$image_url;
-            var_dump($movie_result);
+            //var_dump($movie_result);
 
             $c= (object)self::$tmdb->getMovieCast($code);
-            var_dump($c);
+            //var_dump($c);
             
             
-            $i=(object)self::$tmdb->getMovieTrailers($code, 'fr');
-            var_dump($i);
+            $t=(object)self::$tmdb->getMovieTrailers($code, 'fr-FR');
+            //var_dump($t->youtube);
+            
+            $media=array();
+            //on classe les médias dans l'ordre alfabetique
+            foreach ($t->youtube as $m){
+                $media[$m['name']] = $m;
+            }
+            ksort($media);
+            //var_dump($media);
+            
+         
+            //
+            //
+            //ksort
+            //$media
+            
             
             //$k=(object)self::$tmdb->getMovieKeywords($code, 'fr');
             //var_dump($k);
@@ -123,17 +138,17 @@ class TMDBWrapper{
             //var_dump($image_url);
             
             
-            $o=(object)self::$tmdb->getMovieTranslations($code);
-            var_dump($o);
+            //$o=(object)self::$tmdb->getMovieTranslations($code);
+            //var_dump($o);
             
             $film=new WebGetFilmData;
             
-            $film->init_from_result_tmdb($movie_result,$c);
+            $film->init_from_result_tmdb($movie_result,$c,$media);
             
-            var_dump($film);
+            //var_dump($film);
+            return $film;
             
-            
-            exit();
+            //exit();
             
         }
         catch (ErrorException $e) {

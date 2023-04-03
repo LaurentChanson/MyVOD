@@ -482,7 +482,7 @@ class MyVOD_Details {
 
         $this->NumFicheAllocine = $fiche_web->code_allocine;
         $this->NumFicheDvdFr = $fiche_web->code_dvdfr;
-
+        $this->NumFicheTmdb = $fiche_web->code_tmdb;
 
 
 
@@ -511,6 +511,10 @@ class MyVOD_Details {
         //car le filename est le pilier 
         foreach ($this->BandesAnnonces as $ba) {
             $ba->filename=$this->Filename;
+            
+            var_dump($ba);
+            
+
         }
         
         
