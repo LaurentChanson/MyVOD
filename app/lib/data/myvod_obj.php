@@ -52,6 +52,7 @@ class BandeAnnonce {
     }
     
     public function GetEmbedHTML() {
+        $this->FixHrefYoutube();
         if (strlen($this->embed) > 0) {
             //$ba = $this->embed;
             //ajoute scrolling="no"
@@ -72,7 +73,6 @@ class BandeAnnonce {
                  alt="<?= $this->GetTypeAvecLangue(); ?>"
                  >
 
-            
         </a>
                 
                 
@@ -115,6 +115,25 @@ class BandeAnnonce {
 
     }
 
+    
+    public function FixHrefYoutube(){
+        if(strpos($this->url, 'youtube')){
+            $this->embed='<div class="video-embarquee">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/'. $this->code. '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>';
+            
+            //exemple d'intégration youtube
+            //https://www.lewebpourlesanes.com/comment-ajouter-video-youtube-iframe-responsive/
+            /*
+            <div class="video-embarquee">
+            <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" src="https://www.youtube.com/embed/7Bd93IZWj0k" width="560" height="315" frameborder="0"></iframe>
+          </div>
+            
+            */ 
+        }
+        
+    }
+    
 }
 
 class MyVOD_Details {
@@ -511,15 +530,20 @@ class MyVOD_Details {
         //car le filename est le pilier 
         foreach ($this->BandesAnnonces as $ba) {
             $ba->filename=$this->Filename;
-            
-            var_dump($ba);
-            
+            $ba->FixHrefYoutube();
+            //var_dump($ba);
+            //exit();
 
+            
         }
         
         
     }
 
+
+    
+    
+    
     public static function duree_en_heure_minutes_html5($total_secondes) {
         $total_secondes='0'.$total_secondes;
         //exit();
