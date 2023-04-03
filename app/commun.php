@@ -14,6 +14,11 @@ require_once 'lib/fileTools.php';
 //démarrage de la session
 session_start();
 
+//enlève les limite du var_dump
+//https://stackoverflow.com/questions/34342777/how-to-see-full-content-of-long-strings-with-var-dump-in-php
+ini_set("xdebug.var_display_max_children", '-1');
+ini_set("xdebug.var_display_max_data", '-1');
+ini_set("xdebug.var_display_max_depth", '-1');
 
 //pour le chrono
 $startTime = microtime(true);
@@ -53,6 +58,7 @@ require_once 'lib/message.php';
 //besoin pour les dates
 date_default_timezone_set("UTC");
 setlocale(LC_ALL, 'fr_FR');
+
 
 
 
