@@ -10,9 +10,10 @@
 
 TODO : Paramétrer la key (mdb) depuis la config
 TODO : 2 vidéos sur une même ligne bande annonce youtube (c'est bon je crois)
+(ex film novembre)
 
-
- + Ajout API Tmdb (attention mettre la key en dehors de git
+ + Ajout API Tmdb (attention mettre la key en dehors de git.
+ + Meilleure intégration des bandes annonces Youtube lors d'un résultat de recherche.
  - detail-modif.php : bouton "rechercher sur le web" enlevé.
 
 ========================================================================

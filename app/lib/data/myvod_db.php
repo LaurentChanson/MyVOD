@@ -65,7 +65,7 @@ LENGTH(ba.titre),
   ba.*, tba.Nom as Type FROM BandeAnnonce ba ,BandeAnnonceType tba
             WHERE ba.Filename LIKE " . sql::chaine_vers_sql($filename) . "
             AND tba.ID=ba.TypeID
-            ORDER BY ba.Langue DESC,LENGTH(ba.titre), ba.Titre";
+            ORDER BY  ba.TypeID, ba.Langue DESC, LENGTH(ba.titre), ba.Titre";
 
 
 

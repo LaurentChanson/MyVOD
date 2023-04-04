@@ -252,7 +252,7 @@ class WebGetFilmData {
         foreach ($res->genres as $g) {
              array_push($this->genres, $g['name']);
         }
-        $this->genre = $this->genres[0];
+        if(count($this->genres)>0)$this->genre = $this->genres[0];
 
         //nationalité : on concatène la liste
         $s = "";
@@ -299,24 +299,41 @@ class WebGetFilmData {
         $this->poster = $res->poster_path;
         $this->posterURL = $res->poster_url;      
 
-        //les médias
+        //les médias (bandes annonces)
         foreach ($medias as $media){
             $media=(object)$media;
+            
+            //var_dump($media);
+            /* exemple : 
+            object(stdClass)[61]
+  public 'name' => string 'Bruce tout-puissant (2003) | Bande-annonce VF (HD | 1080p)' (length=58)
+  public 'size' => string 'HD' (length=2)
+  public 'source' => string 'l5eK3q4JXZo' (length=11)
+  public 'type' => string 'Trailer' (length=7)*/
+            
             $ba=new BandeAnnonce();
             $ba->filename=$this->title;
             $ba->code=$media->source;
             $ba->titre=$media->name;
-            //$ba->embed=
+            if(strpos($ba->titre,'VF'))$ba->langue='VF';
+            if(strpos($ba->titre,'VOSTF'))$ba->langue='VOSTF';
+            if(strpos($ba->titre,'VOST'))$ba->langue='VOST';
+            
             $ba->type=$media->type;
+            if($ba->type=='Trailer')$ba->type='Bande-annonce';
+            
             $ba->url="https://www.youtube.com/watch?feature=player_embedded&v=".$ba->code;
             
             //langue à définir (VF,VO...)
             
             //ajout de la bande annonce dans le tableau
             array_push($this->bandes_annonces, $ba);
+            
+            //var_dump($media);
+            //var_dump($ba);
         }
        
-       
+       //exit();
        
     }
     

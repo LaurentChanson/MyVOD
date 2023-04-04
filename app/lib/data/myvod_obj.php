@@ -81,7 +81,7 @@ class BandeAnnonce {
 
     public function GetTypeAvecLangue(){
         if ($this->IsVF()){
-            return $this->type.' (VF)';
+            return $this->type;//.' (VF)';
         }
          return $this->type.' (VO)';
     }
@@ -96,13 +96,24 @@ class BandeAnnonce {
     }
     
     public function IsVF(){
-        if($this->langue=='Français'||$this->langue=='VF')return true;
-        if(stripos($this->titre,'VF')!==false)return true;
-        return false;
+        if($this->langue=='Français'||$this->langue=='VF')return TRUE;
+        if(strpos($this->titre,'VF'))return TRUE;
+        //return false;
+        
+        //LC: 4/03/2023 on mets par défaut vrai sauf exception
+        //VOSTF 
+        if(strpos($this->titre,'VO'))return FALSE;
+        
+        return TRUE; 
+        
+        
     }
     
     public function IsTypeBandeAnnonce(){
         if($this->type=='Bande-annonce')return true;
+        //var_dump($this);
+        //var_dump(stripos($this->titre,'Bande'));
+        if(stripos($this->titre,'Bande')>0)return true;
         return false;
     }
     
@@ -289,7 +300,13 @@ class MyVOD_Details {
         
         //var_dump($this->BandesAnnonces);
         $ba=new BandeAnnonce(); //pour auto completion
+        
+        //var_dump($this->BandesAnnonces);
         foreach ($this->BandesAnnonces as $ba) {
+            
+            
+            
+            
             if($ba->IsTypeBandeAnnonce()){
                 if($ba->IsVF()){
                     array_push($tbafr, $ba) ;
@@ -303,9 +320,16 @@ class MyVOD_Details {
                     array_push($tvidvo, $ba) ;
                 }
             }
+            
+            //tri des autres vidéos en fonction du type
+            //$tvidvo
+            
+            
+            
+            
         }
     
-        $this->BandesAnnonces=array_merge($tbafr,$tbavo,$tvidfr,$tvidvo);
+        $this->BandesAnnonces=array_merge($tbafr,$tvidfr,$tbavo,$tvidvo);
         
         
         //var_dump($this->BandesAnnonces);
