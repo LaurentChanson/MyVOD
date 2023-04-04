@@ -1,7 +1,7 @@
 <small> <b>A FAIRE :  </b>
-    - api sens critique en php : on verra plus tard quand il y aura une API.
-    - remettre bouton recherche tmdb
-TODO : bouton sur le web et tmdb
+    - TODO : api sens critique en php : on verra plus tard quand il y aura une API.
+    - TODO : remettre bouton recherche tmdb( avec gestion tmdb dedans)
+    - TODO : Ajouter les séries dans TMDB
 </small>
 
 ========================================================================
@@ -9,10 +9,7 @@ TODO : bouton sur le web et tmdb
 ========================================================================
 
 TODO : Paramétrer la key (mdb) depuis la config
-TODO : Ajout lien desc wrapper api
-TODO : Ajouter les séries dans TMDB
-
-TODO : 2 vidéos sur une même ligne bande annonce youtube (c'est bon)
+TODO : 2 vidéos sur une même ligne bande annonce youtube (c'est bon je crois)
 
 
  + Ajout API Tmdb (attention mettre la key en dehors de git
