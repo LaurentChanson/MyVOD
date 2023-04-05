@@ -12,7 +12,7 @@ class config_db_MAJ extends sqlite_db {
 
         
         
-        if ($version > 8)
+        if ($version > 9)
             return;
 
         /*
@@ -118,7 +118,18 @@ class config_db_MAJ extends sqlite_db {
             $this->maj_commit($version);
         }
         
-        
+         /*
+         * Ajout de la colonne 'tmdb_api_key' dans la table 'config'
+         */
+        if ($version == 9) {
+
+            $this->maj_begin();
+
+            $this->execute("ALTER TABLE config ADD COLUMN tmdb_api_key TEXT DEFAULT '';");
+
+            $this->maj_commit($version);
+        }
+ 
         
         //var_dump("version=" . $version);
     }

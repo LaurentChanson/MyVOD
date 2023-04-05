@@ -41,9 +41,11 @@ if ($action != false) {
             //change le tri par défaut de la page d'accueil
             $_SESSION['tri']=$tri_recherche_def;
             
+            $tmdb_api_key=Helper_var::post_var('tmdb_api_key','');
+            
             config::set_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms,$affichage_gallerie,$controle_parental,
                     $code_parental,$nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,$taille_fichiers_64_bits,
-                    $mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def);
+                    $mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key);
             message::ajouter_alerte_ok("Paramètres enregistrés.");
             
             break;

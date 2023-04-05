@@ -144,7 +144,16 @@ onglets_render_code_js_persistant_tabs();
                         </div>
                     </div>
 
-
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >API-Key de TMDB :</label> 
+                        <div class="col-sm-6">
+                            <input id="tmdb_api_key" name="tmdb_api_key"  
+                                   class="form-control input-sm" required="" type="text"
+                                   value="<?= config::tmdb_api_key() ?>" >
+                            <small>Plus d'infos pour obtenir l'API-Key sur <a href="https://developers.themoviedb.org/3/getting-started/introduction" target="_blank">https://developers.themoviedb.org/3/getting-started/introduction</a></small>
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
                         <label class="col-sm-4 control-label" >Mots clés supplémentaires pour les recherches google :</label> 
                         <div class="col-sm-6">
@@ -155,9 +164,16 @@ onglets_render_code_js_persistant_tabs();
                         </div>
                     </div>
 
+                    
+                    
+
+
+                    
 
                 </div>
                 <?php
+
+                
                 generer_bouton_enregistrer_parametres();
                 ?>
             </div>

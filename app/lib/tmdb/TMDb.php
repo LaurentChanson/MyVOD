@@ -84,6 +84,12 @@ class TMDb
 		}
 	}
 
+        public function getDebugMode(){
+            return true;
+            
+        }
+        
+        
 	/**
 	 * Search a movie by querystring
 	 *
@@ -527,7 +533,7 @@ class TMDb
 		{
 			if($this->getDebugMode())
 			{
-				throw new TMDbException('No valid request token from TMDb');
+				throw new Exception('No valid request token from TMDb. Mauvaise clé');
 			}
 			else
 			{

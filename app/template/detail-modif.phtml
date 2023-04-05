@@ -698,6 +698,7 @@ if (strlen($fichefilm->MessageModif) > 0) {
 
 
                 <?php
+                $fichefilm->TrierBandesAnnonces();
                 render_bandes_annonces_modif($fichefilm->BandesAnnonces);
 //pour tests
 //

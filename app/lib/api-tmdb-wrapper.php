@@ -1,8 +1,8 @@
 <?php
-require_once 'tmdb/TMDb.php';
-require_once 'tmdb/api-tmdb-key-config.php';
-// dedans mettre : define("tmdb_key",'your key');
 
+define("tmdb_key",config::tmdb_api_key());
+
+require_once 'tmdb/TMDb.php';
 require_once 'webrecherche.php';
 
 
@@ -49,8 +49,11 @@ class TMDBWrapper{
         
         
         try {
-            self::instancier_tmdb_si_pas_instancie();
-
+            $error_retour=self::instancier_tmdb_si_pas_instancie();
+           // var_dump($error_retour);
+            if(strlen($error_retour)>0)return FALSE;
+            
+            
             $movies = (object)self::$tmdb->searchMovie($motsCles);
             $t = array();
             
@@ -97,7 +100,10 @@ class TMDBWrapper{
     public static function GetFilm($code, &$error_retour) {
         $error_retour = "";
         try {
-            self::instancier_tmdb_si_pas_instancie();
+            $error_retour=self::instancier_tmdb_si_pas_instancie();
+            
+            if(strlen($error_retour)>0)return FALSE;
+            
             
             //Get Movie with other return format than the default and with an IMDb-id
             $movie_result = (object)self::$tmdb->getMovie($code);
@@ -168,18 +174,28 @@ class TMDBWrapper{
      * instancie le membre static allohelper
      */
     private static function instancier_tmdb_si_pas_instancie() {
+        try {
 
-        if (!isset(self::$tmdb)) {
-            // Créer un objet $tmdb.
-            
-            self::$tmdb = new TMDb(tmdb_key, 'fr', TRUE);
-            $token = self::$tmdb->getAuthToken();
-            //on verra plus tard pour le token
-            //peut être pour rediriger l'utilisateur avec identification
-            //var_dump($token);
-            //exit();
-            
+            if (!isset(self::$tmdb) || (self::$tmdb == null)) {
+                // Créer un objet $tmdb.
+
+                self::$tmdb = new TMDb(tmdb_key, 'fr', TRUE);
+                $token = self::$tmdb->getAuthToken();
+                //on verra plus tard pour le token
+                //peut être pour rediriger l'utilisateur avec identification
+                //var_dump($token);
+                //exit();
+
+            }
+        
+        
+        } catch (Exception $ex) {
+            self::$tmdb = null;
+            return("Mauvaise clé TMDB");
         }
+        
+        return '';
+        
     }
     
 }

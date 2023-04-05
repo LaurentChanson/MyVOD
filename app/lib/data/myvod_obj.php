@@ -305,8 +305,6 @@ class MyVOD_Details {
         foreach ($this->BandesAnnonces as $ba) {
             
             
-            
-            
             if($ba->IsTypeBandeAnnonce()){
                 if($ba->IsVF()){
                     array_push($tbafr, $ba) ;

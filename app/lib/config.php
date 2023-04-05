@@ -70,10 +70,14 @@ class config {
         return $_SESSION['config_tri_recherche_def'];
     }
     
+    public static function tmdb_api_key(){
+        self::check();
+        return $_SESSION['tmdb_api_key'];
+    }
     
     public static function set_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms, 
             $affichage_gallerie,$controle_parental,$code_parental,$nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,
-            $taille_fichiers_64_bits,$mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def) {
+            $taille_fichiers_64_bits,$mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key) {
         /*var_dump($taille_fichiers_64_bits);
         exit();*/
         self::check();
@@ -91,12 +95,13 @@ class config {
         $_SESSION['taille_fichiers_64_bits'] =$taille_fichiers_64_bits;
         $_SESSION['config_mots_cles_suppl_google_search']=$mots_cles_suppl_google_search;
         $_SESSION['config_tri_recherche_def']=$tri_recherche_def;
+        $_SESSION['tmdb_api_key']=$tmdb_api_key;
         
         //enregistrement dans la bdd
         $config_db = new config_db();
         $config_db->update_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms, $affichage_gallerie,
                 $controle_parental,$code_parental,$nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,$taille_fichiers_64_bits,
-                $mots_cles_suppl_google_search,$affichage_liste_tablette,$tri_recherche_def);
+                $mots_cles_suppl_google_search,$affichage_liste_tablette,$tri_recherche_def,$tmdb_api_key);
     }
 
     public static function mot_de_pass_admin() {
@@ -153,6 +158,7 @@ class config {
             $_SESSION['taille_fichiers_64_bits']  = $config->taille_fichiers_64_bits;
             $_SESSION['config_mots_cles_suppl_google_search']=$config->mots_cles_suppl_google_search;
             $_SESSION['config_tri_recherche_def']=$config->tri_recherche_def;
+            $_SESSION['tmdb_api_key']=$config->tmdb_api_key;
             //var_dump($_SESSION);
         }
     }

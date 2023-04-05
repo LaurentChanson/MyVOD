@@ -5,20 +5,25 @@
 </small>
 
 ========================================================================
-&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) 
+&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) - Version actuelle
 ========================================================================
 
-TODO : Paramétrer la key (mdb) depuis la config
-TODO : 2 vidéos sur une même ligne bande annonce youtube (c'est bon je crois)
-(ex film novembre)
 
- + Ajout API Tmdb (attention mettre la key en dehors de git.
+
+ <b>version V.2.5.0, 2023/0x/xx</b>
+--------------------
+
+ + <b>Ajout API Tmdb pour les recherches d'informations sur les films.</b>
  + Meilleure intégration des bandes annonces Youtube lors d'un résultat de recherche.
  - detail-modif.php : bouton "rechercher sur le web" enlevé.
 
+
+
+
 ========================================================================
-&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.4.x (Meilleures performances + support PHP7) - Version actuelle
+&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.4.x (Meilleures performances + support PHP7)
 ========================================================================
+
 
 
  <b>version V.2.4.6, 2023/03/30</b>
