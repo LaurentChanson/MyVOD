@@ -2,7 +2,7 @@
 <div class="panel-group" id="accordionAnnees" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default navbar" style="z-index: 99;">
         <div class="panel-heading" role="tab" id="heading2">
-            <div class="row panel-title form-group">
+            <div class="row panel-title form-group" style="margin-right: -60px;">
 
                 <a data-toggle="collapse" 
                    data-parent="#accordionAnnees" 
@@ -46,7 +46,7 @@
 
                 </div>
 
-                <div class="checkbox">
+                <div class="row checkbox">
                     <?php
                     $idx = 0;
 
@@ -57,7 +57,7 @@
                         ?>
 
 
-                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-4">
+                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-6">
                             <label>
                                 <INPUT type= "CHECKBOX" 
                                        id="annee_filtre_<?= $idx ?>"

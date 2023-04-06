@@ -2,7 +2,7 @@
 <div class="panel-group" id="accordionNationalite" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default navbar" style="z-index: 99;">
         <div class=" panel-heading" role="tab" id="heading4">
-            <div class="row panel-title  " >
+            <div class="row panel-title  " style="margin-right: -60px;">
 
                 <a data-toggle="collapse" 
                    data-parent="#accordionNationalite" 
@@ -15,7 +15,7 @@
                     ?>
 
 
-                    <div class=" col-xs-7 "  >
+                    <div class=" col-xs-9 "  >
                         <h4>
                             <div id="titre_nationalite">Nationalités</div>
                         </h4>
@@ -52,7 +52,7 @@
                     </div>
 
                 </div>
-                <div class="checkbox">
+                <div class="row checkbox">
 
                     <?php
                     //                   var_dump($nationalite_filtre);
@@ -65,7 +65,7 @@
                             $checked = 'CHECKED';
                         }
                         ?>
-                        <div class="col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-6">
+                        <div class="col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-6" style="padding-right: 2px;">
                             <label>
                                 <INPUT type= "CHECKBOX" 
                                        id="nationalite_filtre_<?= $idx ?>"

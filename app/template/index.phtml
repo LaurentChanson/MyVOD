@@ -12,7 +12,7 @@ require_once 'header.php';
 
 <div class="row" >
     <!--Sidebar content-->
-    <div id="side_bar_parent" class="col-lg-4 col-xl-3">
+    <div id="side_bar_parent" class="col-lg-3 col-xl-2">
         <div id="side_bar"  >
             <form   method="post" name="frmaction" >
 
@@ -128,25 +128,25 @@ require_once 'header.php';
                                     <div class="checkbox col-xs-offset-1">
 
 
-                                        <div class="col-xs-6 col-sm-4">
+                                        <div class="col-xs-6 col-sm-4 col-lg-6">
                                             <input type="hidden" name="rech_titre" value="0" />
                                             <label>
                                             <INPUT type= "CHECKBOX" id="rech_titre" name="rech_titre" value=1 
                                                    <?= $rech_titre ? ' checked' : ''; ?>> le titre</label>
                                         </div>
-                                        <div class="col-xs-6 col-sm-4">
+                                        <div class="col-xs-6 col-sm-4 col-lg-6">
                                             <input type="hidden" name="rech_synopsis" value="0" />
                                             <label>
                                             <INPUT type= "CHECKBOX" id="rech_synopsis" name="rech_synopsis" value=1 
                                                    <?= $rech_synopsis ? ' checked' : ''; ?>> le synopsis</label>
                                         </div>
-                                        <div class="col-xs-6 col-sm-4">
+                                        <div class="col-xs-6 col-sm-4 col-lg-6">
                                             <input type="hidden" name="rech_acteurs" value="0" />
                                             <label>
                                             <INPUT type= "CHECKBOX" id="rech_acteurs" name="rech_acteurs" value=1 
                                                    <?= $rech_acteurs ? ' checked' : ''; ?>> les acteurs</label>
                                         </div>
-                                        <div class="col-xs-6 col-sm-4 col-md-8">
+                                        <div class="col-xs-6 col-sm-4 col-md-8 col-lg-6">
                                             <input type="hidden" name="rech_nom_fichier" value="0" />
                                             <label>
                                             <INPUT type= "CHECKBOX" id="rech_nom_fichier" name="rech_nom_fichier" value=1 
@@ -381,7 +381,7 @@ require_once 'header.php';
 
 
 <!--Body content-->
-<div id="body_content" class="col-lg-8 col-xl-9" >
+<div id="body_content" class="col-lg-9 col-xl-10" >
     <?php
 //var_dump($description_filtre);
     if ($nombre_films_trouves >= 0) {

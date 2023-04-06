@@ -15,7 +15,7 @@
                     ?>
 
 
-                    <div class=" col-xs-7 "  >
+                    <div class=" col-xs-9"  >
                         <h4>
                             <div id="titre_public">Publiques</div>
                         </h4>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="checkbox">
+                <div class="row checkbox">
                 
                 <?php
                 $idx_public = 0;
@@ -61,7 +61,7 @@
                     $checked = isset($public_filtre[$idx_public]) ? 'checked' : '';
                     ?>
 
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-12">
+                    <div class="full_32 col-xs-12 col-sm-12 col-md-6 col-lg-12">
                         <label>
                         <INPUT type= "CHECKBOX" 
                                id="public_filtre_<?= $idx_public ?>"
