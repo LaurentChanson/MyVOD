@@ -8,6 +8,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) - Version actuelle
 ========================================================================
 
+ + Petits changements dans le panel d'export
 
 
  <b>version V.2.5.0, 2023/04/06</b>
