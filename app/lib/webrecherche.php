@@ -274,8 +274,11 @@ class WebGetFilmData {
             //var_dump($acteur);
             if($acteur['known_for_department']=='Acting' ){
                 if($nb<=$nb_acteurs_maxi){
-                $s = $s . (strlen($s) == 0 ? '' : ', ') . $acteur['name'].' ('.$acteur['character'].')'; 
-                //$s = $s .','.$nb;
+                    $s = $s . (strlen($s) == 0 ? '' : ', ') . $acteur['name'];
+                    if ( strlen($acteur['character'])>0) {
+                        $s = $s . ' ('.$acteur['character'].')';
+                    }
+                    //$s = $s .','.$nb;
                 }
                $nb++;
             }

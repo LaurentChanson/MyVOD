@@ -9,6 +9,7 @@
 ========================================================================
 
  + Petits changements dans le panel d'export
+ x Fix : Recherche dans TMDB dans la liste des acteur dont le role est vide.
 
 
  <b>version V.2.5.0, 2023/04/06</b>
