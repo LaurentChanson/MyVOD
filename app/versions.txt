@@ -10,7 +10,7 @@
 
 
 
- <b>version V.2.5.0, 2023/0x/xx</b>
+ <b>version V.2.5.0, 2023/04/06</b>
 --------------------
 
  + <b>Ajout API Tmdb pour les recherches d'informations sur les films.</b>
