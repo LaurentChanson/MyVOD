@@ -67,6 +67,7 @@ require_once 'header.php';
                                            id="search_query" name="search_query" 
                                            value="<?= $recherche; ?>" 
                                            placeholder="Utilisez ' * ' comme joker"
+                                           title="Utilisez ' * ' comme joker"
                                            autocomplete="<?= Helper_system::user_agent_contient('Presto') ? 'on' : 'off'; ?>"
                                            <?=
                                            (Helper_system::user_agent_contient('Presto')) || ($nb_derniers_ajouts_prec != count($derniers_ajouts) || ($nb_derniers_lus_prec != count($derniers_lus))) ? '' : 'autofocus';

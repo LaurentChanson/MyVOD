@@ -8,7 +8,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) - Version actuelle
 ========================================================================
 
- + Petits changements dans le panel d'export
+
+ + Petits changements dans le panel d'export.
+ + Ajout infobulle dans le texte de recherche.
  x Fix : Recherche dans TMDB dans la liste des acteur dont le role est vide.
 
 
@@ -44,7 +46,7 @@
  <b>version V.2.4.4, 2020/08/19</b>
 --------------------
 
- x Fix : Erreur lors d'une recherche Allociné.
+ x Fix : Erreur lors d'une recherche Allociné (MAJ de la clé).
  x Page maintenance-fichiers.php, quelques petits bugs d'affichage corrigés.
  x Prise en compte du "directory separator" lors d'une recherche de fichiers.
 
