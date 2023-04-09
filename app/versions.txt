@@ -9,6 +9,10 @@
 ========================================================================
 
 
+ <b>version V.2.5.1, 2023/04/09</b>
+--------------------
+
+ + Ajout Filtre recherche sur le réalisateur.
  + Petits changements dans le panel d'export.
  + Ajout infobulle dans le texte de recherche.
  x Fix : Recherche dans TMDB dans la liste des acteur dont le role est vide.

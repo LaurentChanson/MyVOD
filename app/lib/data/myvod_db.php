@@ -386,7 +386,7 @@ LIMIT 1";
         return false;
     }
 
-    function get_liste($recherche = '', $rech_titre = false, $rech_acteurs = false, $rech_synopsis = false, $rech_nom_fichier = false, $array_genre_filtre = false, $array_annee_filtre = false, $type_tri = 0, $sens_tri = '', $filtre_qualite = 0, $array_public_filtre = false, $filtre_recherche_parental = 0, $rech_genres_etendus = false, $array_nationalite_filtre = false, $taille_fichier_mini = 0, $taille_fichier_maxi = 0, $filtre_jamais_vu = 0) {
+    function get_liste($recherche = '', $rech_titre = false, $rech_acteurs = false, $rech_realisateur = false, $rech_synopsis = false, $rech_nom_fichier = false, $array_genre_filtre = false, $array_annee_filtre = false, $type_tri = 0, $sens_tri = '', $filtre_qualite = 0, $array_public_filtre = false, $filtre_recherche_parental = 0, $rech_genres_etendus = false, $array_nationalite_filtre = false, $taille_fichier_mini = 0, $taille_fichier_maxi = 0, $filtre_jamais_vu = 0) {
 
         $attach_cache = false;
         //démarre la session si pas démarrée
@@ -416,7 +416,7 @@ LIMIT 1";
         $filtre = trim($recherche);
         $where2 = '';
 
-        if (($rech_titre != false || $rech_acteurs != false || $rech_synopsis != false || $rech_nom_fichier != false) && (strlen($filtre) > 0)) {
+        if (($rech_titre != false || $rech_acteurs != false || $rech_realisateur != false ||  $rech_synopsis != false || $rech_nom_fichier != false) && (strlen($filtre) > 0)) {
 
             //il y a une recherche (filtre sur titre, acteurs ou synopsis)
             //recherche regexp
@@ -460,6 +460,11 @@ LIMIT 1";
             if ($rech_acteurs != false) {
                 sql::add_where_OR($where2, "Acteurs regexp '" . $filtre . "'");
             }
+            
+            if ($rech_realisateur != false) {
+                sql::add_where_OR($where2, "Realisateur regexp '" . $filtre . "'");
+            }
+            
             if ($rech_synopsis != false) {
                 sql::add_where_OR($where2, "Synopsis regexp '" . $filtre . "'");
             }

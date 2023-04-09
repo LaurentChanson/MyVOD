@@ -25,13 +25,14 @@ $recherche = Helper_var::post_or_session('search_query', '');
 $rech_titre = Helper_var::post_or_session('rech_titre', false);
 $rech_synopsis = Helper_var::post_or_session('rech_synopsis', false);
 $rech_acteurs = Helper_var::post_or_session('rech_acteurs', false);
+$rech_realisateur = Helper_var::post_or_session('rech_realisateur', false);
 $rech_nom_fichier = Helper_var::post_or_session('rech_nom_fichier', false);
 $action = strtolower(Helper_var::post_get_or_session('action', ''));
 
 $rech_genres_etendus = Helper_var::post_or_session('rech_genres_etendus', false);
 
 //coche le $rech_titre par défaut s'il y a aucun de coché
-if ($rech_acteurs == false && $rech_synopsis == false && $rech_nom_fichier == false) {
+if ($rech_acteurs == false && $rech_synopsis == false && $rech_nom_fichier == false && $rech_realisateur == false) {
     $rech_titre = true;
 }
 
@@ -269,7 +270,7 @@ if ($action == 'recherche') {
     /*    RECHERCHE    */
     
     //Lancement de la recherche
-    $result = $MyVOD_DB->get_liste($recherche, $rech_titre, $rech_acteurs, $rech_synopsis, $rech_nom_fichier, 
+    $result = $MyVOD_DB->get_liste($recherche, $rech_titre, $rech_acteurs, $rech_realisateur , $rech_synopsis, $rech_nom_fichier, 
             $lst_genres, $lst_annees, $type_tri, '', $filtre_qualite, $lst_publics, $filtre_recherche_parental, $rech_genres_etendus,
             $lst_nationalites,$taille_min, $taille_max,$filtre_jamais_vu);
 
@@ -294,6 +295,11 @@ if ($action == 'recherche') {
             array_push($t_description_filtre, 'le nom de ficher');
         }
 
+        if($rech_realisateur !=false){
+            array_push($t_description_filtre, 'le nom du réalisateur');
+        }
+        
+        
         $description_filtre = '<strong>' . implode(', ', $t_description_filtre) . '</strong>' . " contient <strong>'$recherche'</strong>";
 
         $t_description_filtre = array();
