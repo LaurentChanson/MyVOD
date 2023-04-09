@@ -24,7 +24,7 @@
  + <b>Ajout API Tmdb pour les recherches d'informations sur les films.</b>
  + Meilleure intégration des bandes annonces Youtube lors d'un résultat de recherche.
  - detail-modif.php : bouton "rechercher sur le web" enlevé.
- - Petites modifications CSS
+ - Petites modifications CSS.
 
 
 
