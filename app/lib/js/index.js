@@ -96,7 +96,7 @@ function raz_all_sauf_recherche() {
     document.getElementById('rech_synopsis').checked = '';
     document.getElementById('rech_acteurs').checked = '';
     document.getElementById('rech_nom_fichier').checked = '';
-    
+    document.getElementById('rech_realisateur').checked = '';
     /*
     //toutes qualités coches
     document.getElementById('qualite_tous').checked = 'checked';
