@@ -23,6 +23,7 @@ class config_data {
     public $affichage_liste_tablette = 1;
     public $tri_recherche_def = 0;
     public $tmdb_api_key = '';
+    public $type_recherche_def = 2;
 }
 
 class mot_cle {
@@ -53,7 +54,7 @@ class config_db extends config_db_MAJ {
     public function update_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms, $affichage_gallerie,$controle_parental,$code_parental,
             $nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,
             $taille_fichiers_64_bits,$mots_cles_suppl_google_search,$affichage_liste_tablette,
-            $tri_recherche_def,$tmdb_api_key) {
+            $tri_recherche_def,$tmdb_api_key, $type_recherche_def) {
         $sql = sprintf("UPDATE config 
                 SET rep_films_local=%s,
                 rep_films_lan=%s,
@@ -68,7 +69,8 @@ class config_db extends config_db_MAJ {
                 mots_cles_suppl_google_search=%s,
                 affichage_liste_tablette=%s,
                 tri_recherche_def=%s,
-                tmdb_api_key=%s", 
+                tmdb_api_key=%s,
+                type_recherche_def=%s", 
                 sql::chaine_vers_sql($repertoireFilmsLocal), 
                 sql::chaine_vers_sql($repertoireWebPartage), 
                 sql::chaine_vers_sql($repertoireWebFilms),
@@ -80,7 +82,8 @@ class config_db extends config_db_MAJ {
                 sql::chaine_vers_sql($mots_cles_suppl_google_search),
                 sql::entier_vers_sql($affichage_liste_tablette),
                 sql::entier_vers_sql($tri_recherche_def),
-                sql::chaine_vers_sql($tmdb_api_key)
+                sql::chaine_vers_sql($tmdb_api_key),
+                sql::entier_vers_sql($type_recherche_def)
         );
 
         //var_dump($sql);

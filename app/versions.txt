@@ -8,7 +8,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) - Version actuelle
 ========================================================================
 
- x Fix : RAZ champs recherche, la checkbox recherche par réalisateur restait cochée
+
+ + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
+ x Fix : RAZ champs recherche, la checkbox recherche par réalisateur restait cochée.
 
 
  <b>version V.2.5.1, 2023/04/09</b>

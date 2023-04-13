@@ -12,7 +12,7 @@ class config_db_MAJ extends sqlite_db {
 
         
         
-        if ($version > 9)
+        if ($version > 10)
             return;
 
         /*
@@ -130,6 +130,18 @@ class config_db_MAJ extends sqlite_db {
             $this->maj_commit($version);
         }
  
+        
+                /*
+         * Ajout de la colonne 'type_recherche_def' dans la table 'config'
+         */
+        if ($version == 10) {
+
+            $this->maj_begin();
+
+            $this->execute('ALTER TABLE config ADD COLUMN type_recherche_def INT DEFAULT (2);');
+            //2=TMDB par défaut car Allociné Down
+            $this->maj_commit($version);
+        }
         
         //var_dump("version=" . $version);
     }

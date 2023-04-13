@@ -35,7 +35,7 @@ exit;
 $ignore_dictionnaire = Helper_var::post_get_or_session('ignore_dictionnaire', 'ON');
 $enleve_dernier_mot_si_non_trouve= Helper_var::post_get_or_session('enleve_dernier_mot_si_non_trouve', 'ON');
 
-$type_recherche = Helper_var::post_get_or_session('type_recherche', 0);
+$type_recherche = Helper_var::post_get_or_session('type_recherche', config::type_recherche_def());
 $type_recherche = new type_recherche($type_recherche);
 
 $page_retour = Helper_var::session_var('page_retour', 'detail-modif.php');

@@ -43,9 +43,12 @@ if ($action != false) {
             
             $tmdb_api_key=Helper_var::post_var('tmdb_api_key','');
             
+            
+            $type_recherche_def=Helper_var::post_var('type_recherche_def','2');
+            
             config::set_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms,$affichage_gallerie,$controle_parental,
                     $code_parental,$nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,$taille_fichiers_64_bits,
-                    $mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key);
+                    $mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key, $type_recherche_def  );
             message::ajouter_alerte_ok("Paramètres enregistrés.");
             
             break;

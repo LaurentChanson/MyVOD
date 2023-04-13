@@ -121,8 +121,21 @@ onglets_render_code_js_persistant_tabs();
                             }
                             ?>
                         </div>
+                        
+                        
                     </div>  
 
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Type de recherche par défaut :</label> 
+                        <div class="col-sm-6">
+                            <select name="type_recherche_def" id="type_recherche_def">
+                                <?php $choix_type_recherche=config::type_recherche_def(); ?>
+                                <option value="2" <?= $choix_type_recherche==2?'SELECTED':'' ?>>The Movie Database.org (recommandé)</option>
+                                <option value="1" <?= $choix_type_recherche==1?'SELECTED':'' ?>>DVD-FR.com</option>
+                                <option value="0" <?= $choix_type_recherche==0?'SELECTED':'' ?>>Allociné.fr</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="col-sm-4 control-label" >
