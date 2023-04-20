@@ -11,8 +11,9 @@
 
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
  x Fix : RAZ champs recherche, la checkbox recherche par réalisateur restait cochée.
- x Fix :  Fatal error: Call to undefined method MyVOD_DB::maj_initiale2() in myvod_db.php on line 1260 à la première install.
- 
+ x Fix : Fatal error: Call to undefined method MyVOD_DB::maj_initiale2() in myvod_db.php on line 1260 à la première install.
+ x Fix : Parse error: syntax error, unexpected '=' dans le fichier detail-modif.phtml. 
+
 
  <b>version V.2.5.1, 2023/04/09</b>
 --------------------
