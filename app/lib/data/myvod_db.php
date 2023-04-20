@@ -1255,9 +1255,12 @@ ORDER BY UPPER(i.Filename)';
      */
     public function maj_initiale() {
         require_once 'myvod_db_maj.php';
-
+        parent::begin_trans();
+        parent::maj_initiale();
+        parent::commit();
+        
         //MyVOD_DB_MAJ::maj_initiale($this);
-        $this->maj_initiale2();
+      
     }
 
     function __construct() {
