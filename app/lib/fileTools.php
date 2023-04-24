@@ -234,7 +234,7 @@ function recherche_et_retourne_chemin_complet($chemin_repertoire, $filname) {
     
     //var_dump($chemin_repertoire);
     
-    $filname = mb_strtolower($filname, 'UTF-8');
+    //$filname = mb_strtolower($filname, 'UTF-8');
     
     //var_dump($chemin_repertoire);
     
@@ -246,7 +246,8 @@ function recherche_et_retourne_chemin_complet($chemin_repertoire, $filname) {
 
     
     while ($entree = utf8_encode_si_php5(readdir($dossier))) {
-        $entree = mb_strtolower($entree, 'UTF-8');
+        //$entree = mb_strtolower($entree, 'UTF-8');
+        
         //var_dump($entree.'   '.$filname);
 
 
@@ -272,8 +273,9 @@ function recherche_et_retourne_chemin_complet($chemin_repertoire, $filname) {
             //var_dump($filname.' '. utf8_encode( $entree));
             // Traitement du chemin d'accès
             //utf8_encode
-            
-            if (($entree) === $filname) {
+            //var_dump($filname.' '. $entree);
+            //if (($entree) === $filname) {
+            if(strcasecmp($entree,$filname)==0){
                 //on a trouvé le fichier
                 return $cheminEntree;
             }

@@ -1,20 +1,33 @@
 <?php
 
 class media_info {
-
+    //sur linux, il faut que media info soit installé
+    //https://synocommunity.com/
+    
+    
     public $width;
     public $height;
     public $duration_sec;
 
     public function media_info_fichier($fichier) {
-        $fichier = str_replace('/', '\\', utf8_decode($fichier));
-        $cmd = realpath(".");
-        if (substr($cmd, -3) != 'lib') {
-            $cmd.='\\lib';
+        if(Helper_system::serv_OS_is_windows()){
+            $fichier = str_replace('/', '\\', utf8_decode($fichier));
+            $cmd = realpath(".");
+            if (substr($cmd, -3) != 'lib') {
+                $cmd.='\\lib';
+            }
+            $cmd = $cmd . '\media_info\MediaInfo.exe "' . $fichier . '" "--Inform=Video;%Width% %Height% %Duration%"';
+        }else{
+            $fichier = str_replace('\\', '/', utf8_decode($fichier));
+            $cmd =  'mediainfo "' . $fichier . '" "--Inform=Video;%Width% %Height% %Duration%"';
         }
-        $cmd = $cmd . '\media_info\MediaInfo.exe "' . $fichier . '" "--Inform=Video;%Width% %Height% %Duration%';
-
+        //var_dump($cmd);
+        
+        
         $output = shell_exec($cmd);
+        
+        //var_dump($output);
+        //exit();
         //enleve le retour chariot
         $output = str_replace("\n", '', $output);
         //parse les résultats
@@ -32,14 +45,27 @@ class media_info {
 
     public static function get_media_info_HTML($fichier) {
 
-        $fichier = str_replace('/', '\\', utf8_decode($fichier));
-        $cmd = realpath(".");
-        if (substr($cmd, -3) != 'lib') {
-            $cmd.='\\lib';
+        //var_dump($fichier);
+        
+        if(Helper_system::serv_OS_is_windows()){
+            $fichier = str_replace('/', '\\', utf8_decode($fichier));
+            $cmd = realpath(".");
+            if (substr($cmd, -3) != 'lib') {
+                $cmd.='\\lib';
+            }
+            $cmd = $cmd . '\media_info\MediaInfo.exe "' . $fichier . '" --output=HTML';
+        }else{
+            $fichier = str_replace('\\', '/', utf8_decode($fichier));
+            $cmd =  'mediainfo "' . $fichier . '" --output=HTML';
         }
-        $cmd = $cmd . '\media_info\MediaInfo.exe "' . $fichier . '" --output=HTML';
-        $output = shell_exec($cmd);
 
+  
+        //var_dump($cmd);
+        //exit();
+        
+        $output = shell_exec($cmd);
+        //var_dump($output);
+        
         //récupère que la partie body
         preg_match('`<body[^>]*>(.*)</body[^>]*>`isU', $output, $matches);
 

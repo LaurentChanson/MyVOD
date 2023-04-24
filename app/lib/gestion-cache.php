@@ -140,6 +140,8 @@ function gerer_media_info(FileInfos &$file_info) {
     require_once './lib/media-info.php';
     global $cache_db;
     
+    //var_dump($file_info);
+    
     if ($file_info->media_info_html == null || strlen($file_info->media_info_html) < 100) {
         //var_dump($file_info->media_info_html);
         //var_dump('UPDATE INFOS HTML');
