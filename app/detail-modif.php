@@ -317,7 +317,7 @@ if (($code_allocine != false ) && ( isset($_POST['action'])==false)  ) {
     $fiche = new WebGetFilmData();
     $fiche = WebRecherche::GetFilm($code_allocine, $type_recherche, $error_retour);
 
-//    var_dump($fiche);
+    //var_dump($fiche);
     //exit();
     
     if ($fiche == false) {

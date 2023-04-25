@@ -67,7 +67,7 @@ class WebRecherche {
                 return DVDFRAPIWrapper::GetFilm($code, $error_retour);
                 break;
             case type_recherche::RECHERCHE_TMDB:
-                return TMDBWrapper::GetFilm($code, $error_retour);
+                return TMDBWrapper::GetFilmOrSerie($code, $error_retour);
                 break;
             default:
                 return AllocineAPIWrapper::GetFilm($code, $error_retour);
@@ -153,7 +153,30 @@ class WebRechercheData {
         //var_dump($this);
         
     }
-    
+    public function init_from_result_series_tmdb_dot_org($res) {
+        //var_dump($res);
+        $this->code = 's' . $res->id;
+        $this->title = '(Série) ' . $res->name ;
+        
+        $this->releaseDate = ''. $res->first_air_date;
+        $this->productionYear = substr($this->releaseDate,0,4);
+        $this->originalTitle = $res->original_name;
+        
+        $this->userRating = $res->vote_average;
+        
+        $this->resume = $res->overview;
+        //limitation
+        $this->resume=substr($this->resume,0,80);
+        
+        
+        $this->poster = $res->poster_path;
+        $this->posterURL = $res->poster_url;
+        
+        //$this->href = 'https://www.themoviedb.org/tv/'.$this->code.'?language=fr';
+        $this->href=TMDBWrapper::GetHRefFromId($this->code,true);
+        //var_dump($this);
+        
+    }
     
     public function init_from_result_dvdfr($res) {
         $this->code = '' . $res->id;
@@ -229,6 +252,146 @@ class WebGetFilmData {
         }
     }
 
+    public function init_from_result_tmdb_serie($res, $casts,$videos){
+        $this->code_tmdb =  's' . $res->id;
+        $this->title = '' . $res->name;
+        $this->originalTitle = $res->original_name;
+
+        $this->keywords = $this->title;
+        $this->releaseDate = '' . $res->first_air_date;
+        $this->productionYear = substr($this->releaseDate,0,4); 
+        $this->movieType = $res->type ;
+
+        
+        // stocker ces infos dans le type
+        /*
+         public 'number_of_episodes' => int 8
+        public 'number_of_seasons' => int 1
+         */
+        $nb_saisons = $res->number_of_seasons;
+        $nb_saisons = $nb_saisons . ' saison' . ($res->number_of_seasons==1 ? '' : 's');
+        
+        $nb_episodes =  $res->number_of_episodes;
+        $nb_episodes = $nb_episodes . ' épsode' . ($res->number_of_episodes==1 ? '' : 's');
+        
+        $this->movieType = $this->movieType . ' (' . $nb_saisons . ' - ' . $nb_episodes.')';
+        
+        $this->synopsis = $res->overview;
+        $this->synopsisShort = $res->tagline;
+        if(strlen($this->synopsisShort)==0)$this->synopsisShort  = $this->synopsis;
+
+        $this->runtime =  $res->last_episode_to_air['runtime'] * 60;
+        $this->href = 'https://www.themoviedb.org/tv/'.$res->id.'?language=fr';
+
+        $this->userRating = $res->vote_average / 2; //car dans les fiches, on est sur 5
+        
+        
+        //les genres
+        foreach ($res->genres as $g) {
+             array_push($this->genres, $g['name']);
+        }
+        if(count($this->genres)>0)$this->genre = $this->genres[0];
+        
+
+        //nationalité : on concatène la liste
+        $s = "";
+        if(isset($res->origin_country)){
+            $countries = countries();
+            foreach ($res->production_countries as $n) {
+                $pays = $countries[$n['iso_3166_1']];
+
+                $s = $s . (strlen($s) == 0 ? '' : ', ') . $pays;
+            }        
+        }
+        $this->nationality = $s;
+        
+        //les acteurs
+        $nb_acteurs_maxi=16; //limite à 15 acteurs maxi
+        $s = "";
+        $nb=1;
+        //var_dump($casts);
+        foreach ($casts->cast as $acteur) {
+            //var_dump($acteur);
+            if($acteur['known_for_department']=='Acting' ){
+                if($nb<=$nb_acteurs_maxi){
+                    $s = $s . (strlen($s) == 0 ? '' : ', ') . $acteur['name'];
+                    if ( strlen($acteur['character'])>0) {
+                        $s = $s . ' ('.$acteur['character'].')';
+                    }
+                }
+               $nb++;
+            }
+        }
+        if($nb>$nb_acteurs_maxi) $s.="...";
+        $this->actors = $s;
+        
+        //réalisateurs
+        //var_dump($res->created_by);
+            
+        $s = "";
+        foreach ($res->created_by as $created_by) {
+            $s = $s . (strlen($s) == 0 ? '' : ', ') . $created_by['name']; 
+        }
+        $this->directors = $s;
+        
+        
+        
+        
+        //Le poster
+       
+        $this->poster = $res->poster_path;
+        $this->posterURL = $res->poster_url;      
+
+        //les médias (bandes annonces) 
+        //var_dump($videos);
+
+        foreach ($videos->results as $media){
+            $media=(object)$media;
+            
+            //var_dump($media);
+            /* exemple : 
+            'iso_639_1' => string 'fr' (length=2)
+          'iso_3166_1' => string 'FR' (length=2)
+          'name' => string 'LES COMBATTANTES Bande Annonce (2022) Audrey Fleurot, Camille Lou, Sofia Essaïdi' (length=81)
+          'key' => string 'oyzPb-gH9l4' (length=11)
+          'site' => string 'YouTube' (length=7)
+          'size' => int 1080
+          'type' => string 'Trailer' (length=7)
+          'official' => boolean false
+          'published_at' => string '2022-07-27T16:06:04.000Z' (length=24)
+          'id' => string '6349a909f1759c007af03f4a' (length=24)*/
+            
+            $ba=new BandeAnnonce();
+            $ba->filename=$this->title;
+            $ba->code=$media->key;
+            $ba->titre=$media->name;
+            if($media->iso_3166_1 == 'FR')$ba->langue='VF';
+            if(strpos($ba->titre,'VF'))$ba->langue='VF';
+            if(strpos($ba->titre,'VOSTF'))$ba->langue='VOSTF';
+            if(strpos($ba->titre,'VOST'))$ba->langue='VOST';
+            
+            $ba->type=$media->type;
+            if($ba->type=='Trailer')$ba->type='Bande-annonce';
+            
+            $ba->url="https://www.youtube.com/watch?feature=player_embedded&v=".$ba->code;
+            
+            //langue à définir (VF,VO...)
+            
+            //ajout de la bande annonce dans le tableau
+            array_push($this->bandes_annonces, $ba);
+            
+            //var_dump($media);
+            //var_dump($ba);
+        }
+        
+        
+        
+        
+    }
+    
+    
+    
+    
     public function init_from_result_tmdb($res,$casts,$medias){
         $this->code_tmdb =  '' . $res->id;
         $this->title = '' . $res->title;

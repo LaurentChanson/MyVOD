@@ -1,7 +1,7 @@
 <small> <b>A FAIRE :  </b>
     - TODO : api sens critique en php : on verra plus tard quand il y aura une API.
     - TODO : remettre bouton recherche tmdb( avec gestion tmdb dedans)
-    - TODO : Ajouter les séries dans TMDB
+    - TODO : Ajout de nouveaux fichier et assembler fiche
 </small>
 
 ========================================================================
@@ -9,6 +9,7 @@
 ========================================================================
 
 
+ + Ajout de la recherche des séries sur TMDB
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
  + Ajout de la compatibilité de mediaInfo avec un OS type Linux.
  x Fix : RAZ champs recherche, la checkbox recherche par réalisateur restait cochée.

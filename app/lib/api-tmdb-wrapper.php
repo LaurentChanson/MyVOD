@@ -26,9 +26,14 @@ class TMDBWrapper{
         return false;
     }
     */
-    public static function GetHRefFromId($id){
-        
-        return 'https://www.themoviedb.org/movie/'.$id.'?language=fr';
+    public static function GetHRefFromId($id, $is_serie=false){
+        $type = $is_serie ? 'tv' : 'movie';
+        $id_tmdb = $id;
+        //enleve le 's' si c'est une série (le 's' permet de distinguer des séris des films)
+        if(substr($id, 0,1) == 's'){
+            $id_tmdb=substr($id, 1);
+        }
+        return 'https://www.themoviedb.org/'.$type.'/'.$id_tmdb.'?language=fr';
     }
     
     public static function get_poster_path_Url($poster_path){
@@ -57,12 +62,10 @@ class TMDBWrapper{
             $movies = (object)self::$tmdb->searchMovie($motsCles);
             $t = array();
             
-            if (count($movies->results) == 0) {
-                $error_retour = "Pas de résultat pour ".'"'.$motsCles.'"';
-            }
+
             
             
-            //parcourt des résultats
+            //parcours des résultats pour les films
             foreach ($movies->results as $res) {
                 $f = new WebRechercheData();
                 $res=(object)$res;
@@ -76,9 +79,37 @@ class TMDBWrapper{
                 array_push($t, $f);
             }
             
+            
+
             //var_dump($movies);
             //var_dump($t);
             //exit();
+            
+            //tests pour les séries
+            $series = (object)self::$tmdb->searchTV($motsCles);
+        
+            //parcours des résultats pour les séries
+            foreach ($series->results as $res) {
+                $f = new WebRechercheData();
+                $res=(object)$res;
+                
+                $image_url = self::get_poster_path_Url($res->poster_path);
+                $res->poster_url=$image_url;
+                
+                $f->init_from_result_series_tmdb_dot_org($res);
+                
+                array_push($t, $f);
+            }
+            
+            
+            //var_dump($series);
+            //var_dump($t);
+            //exit();
+            
+            if ( count($movies->results) + count($series->results) == 0)  {
+                $error_retour = "Pas de résultat pour ".'"'.$motsCles.'"';
+            }
+            
             
             return $t; 
             
@@ -97,14 +128,44 @@ class TMDBWrapper{
         
     }
     
-    public static function GetFilm($code, &$error_retour) {
+    public static function GetFilmOrSerie($code, &$error_retour) {
         $error_retour = "";
         try {
             $error_retour=self::instancier_tmdb_si_pas_instancie();
             
             if(strlen($error_retour)>0)return FALSE;
             
+            //Utilise l'API partie Série
+            if(substr($code,0,1)=='s'){
+                $code_tmdb=substr($code,1);
+                $tv_result = (object)self::$tmdb->getTV($code_tmdb);
+                
+                $image_url = self::get_poster_path_Url($tv_result->poster_path);
+                $tv_result->poster_url=$image_url;
             
+                //les employés
+                $c= (object)self::$tmdb->getTVCredit($code_tmdb);
+                //var_dump($c);
+            
+                // movie trailer
+                $t=(object)self::$tmdb->getTVVideos($code_tmdb, 'fr-FR');
+                //var_dump($t);
+
+                $film=new WebGetFilmData;
+                //var_dump($tv_result);
+                
+                $film->init_from_result_tmdb_serie($tv_result,$c, $t);
+
+                //var_dump($film);
+                //exit();
+                return $film;
+                
+            }
+            
+            
+            
+            
+            //Utilise l'API partie Film
             //Get Movie with other return format than the default and with an IMDb-id
             $movie_result = (object)self::$tmdb->getMovie($code);
                             

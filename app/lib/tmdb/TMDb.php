@@ -117,6 +117,27 @@ class TMDb
                 
 	}
 
+        
+        
+        public function searchTV($query, $page = 1, $adult = FALSE, $year = NULL, $lang = NULL)
+	{
+		$params = array(
+			'query' => $query,
+			'page' => (int) $page,
+			'language' => ($lang !== NULL) ? $lang : $this->getLang(),
+			'include_adult' => (bool) $adult,
+			'year' => $year,
+		);
+		return $this->_makeCall('search/tv', $params);
+                
+                //ci dessous pour les séries en tests
+                /*$r= $this->_makeCall('search/tv', $params);
+                var_dump($r);
+                exit();*/
+                
+	}
+        
+        
 	/**
 	 * Search a person by querystring
 	 *
@@ -185,6 +206,20 @@ class TMDb
 		return $this->_makeCall('movie/'.$id, $params);
 	}
 
+        
+        	 
+	public function getTV($id, $lang = NULL)
+	{
+		$params = array(
+			'language' => ($lang !== NULL) ? $lang : $this->getLang(),
+		);
+                
+                //var_dump($params);
+                
+                
+		return $this->_makeCall('tv/'.$id, $params);
+	}
+        
 	/**
 	 * Retrieve alternative titles for a particular movie
 	 *
@@ -211,6 +246,11 @@ class TMDb
 		return $this->_makeCall('movie/'.$id.'/casts');
 	}
 
+        public function getTVCredit($id)
+	{
+		return $this->_makeCall('tv/'.$id.'/credits');
+	}
+        
 	/**
 	 * Retrieve all of the keywords for a particular movie
 	 *
@@ -259,6 +299,14 @@ class TMDb
 		return $this->_makeCall('movie/'.$id.'/trailers', $params);
 	}
 
+        public function getTVVideos($id, $lang = NULL)
+	{
+		$params = array(
+			'language' => ($lang !== NULL) ? $lang : $this->getLang(),
+		); //videos
+		return $this->_makeCall('tv/'.$id.'/videos', $params);
+	}
+        
 	/**
 	 * Retrieve all images for a particular movie
 	 *
