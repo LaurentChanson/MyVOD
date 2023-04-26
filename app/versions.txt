@@ -2,6 +2,11 @@
     - TODO : api sens critique en php : on verra plus tard quand il y aura une API.
     - TODO : remettre bouton recherche tmdb( avec gestion tmdb dedans)
     - TODO : Ajout de nouveaux fichier et assembler fiche
+
+ - TODO : mettre FR avant BE pour tmdb
+ - Aspergirl : pas de notation
+ - mettre un badge 'serie'
+ 
 </small>
 
 ========================================================================
@@ -12,9 +17,11 @@
  + Ajout de la recherche des séries sur TMDB
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
  + Ajout de la compatibilité de mediaInfo avec un OS type Linux.
+ + Ignore la recherche dans '#recycle' pour les corbeilles synology. 
  x Fix : RAZ champs recherche, la checkbox recherche par réalisateur restait cochée.
  x Fix : Fatal error: Call to undefined method MyVOD_DB::maj_initiale2() in myvod_db.php on line 1260 à la première install.
- 
+ x Fix : fix case 'video_ts' dans les recherches (Compatible OS type Linux) 
+
 
  <b>version V.2.5.1, 2023/04/09</b>
 --------------------

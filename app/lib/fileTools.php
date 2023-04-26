@@ -120,10 +120,30 @@ function filesize_64($file) {
      */
 }
 
-function file_exists_utf8($file_path) {
+//https://stackoverflow.com/questions/3964793/php-case-insensitive-version-of-file-exists
+function fileExists($fileName, $caseSensitive = true) {
+
+    if(file_exists($fileName)) {
+        return $fileName;
+    }
+    if($caseSensitive) return false;
+
+    // Handle case insensitive requests            
+    $directoryName = dirname($fileName);
+    $fileArray = glob($directoryName . '/*', GLOB_NOSORT);
+    $fileNameLowerCase = strtolower($fileName);
+    foreach($fileArray as $file) {
+        if(strtolower($file) == $fileNameLowerCase) {
+            return $file;
+        }
+    }
+    return false;
+}
+
+function file_exists_utf8($file_path, $caseSensitive = true) {
     // var_dump($file_path);
 
-    return file_exists(utf8_decode($file_path));
+    return fileExists(utf8_decode($file_path), $caseSensitive);
 }
 
 function create_dir_if_not_exists($rep_path) {
@@ -178,7 +198,7 @@ function recherche_fichiers_avec_fonction_de_rappel($chemin_repertoire, $callabl
         
         
         
-        if ($entree == "." || $entree == "..") { // on ne regarde pas . ( lien vers le dossier courant ) et .. ( lien vers le dossier parent )
+        if ($entree == "." || $entree == ".." || $entree == "#recycle") { // on ne regarde pas . ( lien vers le dossier courant ) et .. ( lien vers le dossier parent )
             continue;
         }
         $cheminEntree = $chemin_repertoire . DIRECTORY_SEPARATOR . $entree;
@@ -187,10 +207,11 @@ function recherche_fichiers_avec_fonction_de_rappel($chemin_repertoire, $callabl
         if (is_dir($cheminEntree)) { // on est sur un repertoire
             $video_ts = $cheminEntree . '/video_ts';
 
-            if (file_exists_utf8($video_ts)) {
+            if (file_exists_utf8($video_ts,false)) {
                 // on est dans un répertoire qui contient 'video_ts'
                 //c'est la structure typique d'un DVD
                 //var_dump("ici ".$video_ts.", '".$entree."'");
+                //exit();
                 if(is_php7()){
                     call_user_func($callable_function_avec_2_parametres, $entree, $video_ts);
                 }else{
