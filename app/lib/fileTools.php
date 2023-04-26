@@ -95,7 +95,8 @@ function filesize_64($file) {
         return 0;
     }
     if (!(strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')) {
-        $size = trim(`stat -c%s $file`);
+        //$size = trim(`stat -c%s $file`);
+        $size = trim(`stat -c%s "$file"`);
     } else {
         $fsobj = new COM("Scripting.FileSystemObject");
         $f = $fsobj->GetFile($file);

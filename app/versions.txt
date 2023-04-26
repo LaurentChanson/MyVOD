@@ -3,8 +3,7 @@
     - TODO : remettre bouton recherche tmdb( avec gestion tmdb dedans)
     - TODO : Ajout de nouveaux fichier et assembler fiche
     - mettre un badge 'serie' ou une recherche dessus
-
-
+    - ajouter nbepisodes et nb saison pour les séries
 </small>
 
 ========================================================================
@@ -23,6 +22,7 @@
  x Fix : Fatal error: Call to undefined method MyVOD_DB::maj_initiale2() in myvod_db.php on line 1260 à la première install.
  x Fix : fix case 'video_ts' dans les recherches (Compatible OS type Linux).
  x Fix : FR avant BE pour tmdb.
+ x Fix : Exception dans la gestion du cache avec des noms de fichier avec espaces (avec un serveur Linux).
 
 
 
