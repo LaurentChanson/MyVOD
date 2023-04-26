@@ -2,17 +2,18 @@
     - TODO : api sens critique en php : on verra plus tard quand il y aura une API.
     - TODO : remettre bouton recherche tmdb( avec gestion tmdb dedans)
     - TODO : Ajout de nouveaux fichier et assembler fiche
+    - mettre un badge 'serie' ou une recherche dessus
 
- - TODO : mettre FR avant BE pour tmdb
- - Aspergirl : pas de notation
- - mettre un badge 'serie'
- 
+
 </small>
 
 ========================================================================
-&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) - Version actuelle
+&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
 ========================================================================
 
+
+ <b>version V.2.6.0, 2023/04/xx</b>
+--------------------
 
  + Ajout de la recherche des séries sur TMDB
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
@@ -20,7 +21,16 @@
  + Ignore la recherche dans '#recycle' pour les corbeilles synology. 
  x Fix : RAZ champs recherche, la checkbox recherche par réalisateur restait cochée.
  x Fix : Fatal error: Call to undefined method MyVOD_DB::maj_initiale2() in myvod_db.php on line 1260 à la première install.
- x Fix : fix case 'video_ts' dans les recherches (Compatible OS type Linux) 
+ x Fix : fix case 'video_ts' dans les recherches (Compatible OS type Linux).
+ x Fix : FR avant BE pour tmdb.
+
+
+
+
+
+========================================================================
+&nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.5.x (Support API TMDB) - Version actuelle
+========================================================================
 
 
  <b>version V.2.5.1, 2023/04/09</b>
@@ -37,8 +47,9 @@
 
  + <b>Ajout API Tmdb pour les recherches d'informations sur les films.</b>
  + Meilleure intégration des bandes annonces Youtube lors d'un résultat de recherche.
+ + Petites modifications CSS.
  - detail-modif.php : bouton "rechercher sur le web" enlevé.
- - Petites modifications CSS.
+
 
 
 

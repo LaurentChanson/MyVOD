@@ -276,6 +276,9 @@ class WebGetFilmData {
         
         $this->movieType = $this->movieType . ' (' . $nb_saisons . ' - ' . $nb_episodes.')';
         
+        $this->title = $this->title . ' (' . $res->number_of_seasons . ' sais. - ' . $res->number_of_episodes.' ep.)';
+        
+        
         $this->synopsis = $res->overview;
         $this->synopsisShort = $res->tagline;
         if(strlen($this->synopsisShort)==0)$this->synopsisShort  = $this->synopsis;
@@ -296,6 +299,8 @@ class WebGetFilmData {
         //nationalité : on concatène la liste
         $s = "";
         if(isset($res->origin_country)){
+            
+            //var_dump($res);
             $countries = countries();
             foreach ($res->production_countries as $n) {
                 $pays = $countries[$n['iso_3166_1']];
@@ -303,8 +308,13 @@ class WebGetFilmData {
                 $s = $s . (strlen($s) == 0 ? '' : ', ') . $pays;
             }        
         }
-        $this->nationality = $s;
         
+        $s=  str_replace($countries['BE'].', '.$countries['FR'], $countries['FR'].', '.$countries['BE'], $s);
+        
+        $this->nationality = $s;
+        //exit();
+        //var_dump($s);
+        //            exit();
         //les acteurs
         $nb_acteurs_maxi=16; //limite à 15 acteurs maxi
         $s = "";
