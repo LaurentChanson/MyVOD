@@ -18,6 +18,7 @@
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
  + Ajout de la compatibilité de mediaInfo avec un OS type Linux.
  + Ignore la recherche dans '#recycle' pour les corbeilles synology. 
+ + Meilleure compatibilité pour la génération des m3u avec un NAS et Android.
  x Fix : RAZ champs recherche, la checkbox recherche par réalisateur restait cochée.
  x Fix : Fatal error: Call to undefined method MyVOD_DB::maj_initiale2() in myvod_db.php on line 1260 à la première install.
  x Fix : fix case 'video_ts' dans les recherches (Compatible OS type Linux).

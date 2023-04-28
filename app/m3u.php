@@ -12,30 +12,20 @@ require_once 'lib/gestion-cache.php';
 require_once 'lib/derniers-lus.php';
 require_once 'lib/gestion-admin.php';
 
-$type_mime_m3u = 'audio/x-mpegurl';
-
-
 
 if (isset($_GET['path'])) {
     //on recoit directement le "path", on met le path dans le fichier m3u directement
-
-    header('Content-type: '.$type_mime_m3u);
-
+    //
     //via $m3u_data
     $fichier = new FileInfos();
     $fichier->full_path = urldecode($_GET['path']);
     $fichier->file_name = basename($fichier->full_path);
-    $nom_fichier_m3u = $fichier->file_name;
+    $m3u_nom_fichier = $fichier->file_name;
 
-    if (Helper_system::nav_OS_is_windows()) {
-        header('Content-Disposition: inline; attachment; filename="' . $nom_fichier_m3u);
-    } else {
-        header(' filename="' . $nom_fichier_m3u);
-    }
+
     //var_dump($fichier);       
     $m3u_data = path_local_to_distant($fichier->full_path);
 } else {
-
 
     $nom_fichier = urldecode($_GET['file']);
     //on ne sait pas si c'est un nombre (id) ou le filename
@@ -43,7 +33,6 @@ if (isset($_GET['path'])) {
 
     $detail_film = new MyVOD_Details();
     $myvod_db->fiche_get_details($nom_fichier, $detail_film);
-
 
     if($detail_film->Filename==null ){
 
@@ -53,29 +42,24 @@ if (isset($_GET['path'])) {
         afficher_erreur( "La fiche dans la base de données n'existe plus.");
         
     }
-    
-    
 
     $nom_fichier = $detail_film->Filename;
 
     //on regarde s'il y des fichiers associés
-    $nom_fichier_m3u = substr($nom_fichier, 0, strrpos($nom_fichier, '.')) . '.m3u';
+    $m3u_nom_fichier = substr($nom_fichier, 0, strrpos($nom_fichier, '.')) . '.m3u';
 
-    
-    
+
     //récup des données du cache  
     $file_info = new FileInfos();
     gerer_cache($nom_fichier, $file_info);
 
     
     //var_dump(file_exists_utf8($file_info->full_path));
-    
-    
+
     //test de l'existance du fichier
     if (file_exists_utf8($file_info->full_path) == false) {
         //on ne retrouve pas
         afficher_erreur( "Le fichier est introuvable ou n'existe plus...");
-
     }
 
     //enregistre dans les derniers lus si non admin(car l'admin peut faire des tests et poluer les derniers lus)
@@ -83,29 +67,8 @@ if (isset($_GET['path'])) {
         derniers_lus::ajouter($detail_film->Filename);
     }
     
-   
-    //pour tester (voir le résultat dans le navigateur (debug))
-    //il suffit de mettre en commentaire la ligne suivante
-    header('Content-type: '.$type_mime_m3u);
-    //header("Content-Type:text/html; charset=utf-8"); //pour debug
-    //var_dump(Gestion_admin::est_connecte());
-
-    //efface la 1ere ligne vide
-    //ob_clean();
-    //header("Content-Disposition: inline; filename=listeDeLecture.m3u");
-    // le nom du fichier par défaut et propose telechargement m3u ,pour windows
-
-    if (Helper_system::nav_OS_is_windows()) {
-        header('Content-Disposition: inline; attachment; filename="' . $nom_fichier_m3u);
-    } else {
-        header(' filename="' . $nom_fichier_m3u);
-    }
-
-
-
-
-//récupération des fichiers liés
-//$myvod_db->liaison_get_liste_from_filename($nom_fichier, $liaisons);
+    //récupération des fichiers liés
+    //$myvod_db->liaison_get_liste_from_filename($nom_fichier, $liaisons);
     if (strtolower(substr($file_info->full_path, -4)) == '.wpl') {
         //le wpl est window media playlist
         //on récupère le contenu
@@ -114,12 +77,9 @@ if (isset($_GET['path'])) {
 
         $dossier = dirname($file_info->full_path);
 
-
         $m3u_data = '';
         foreach ($tfichiers as $f) {
-
             $f = path_local_to_distant($dossier . '/' . $f);
-
             $m3u_data = $m3u_data . (strlen($m3u_data) > 0 ? "\n" : '') . $f;
         }
     } else {
@@ -138,6 +98,29 @@ if (isset($_GET['path'])) {
         }
     }
 }
+
+
+$m3u_type_mime = 'audio/x-mpegurl';
+
+//pour tester (voir le résultat dans le navigateur (debug))
+//il suffit de mettre en commentaire la ligne suivante
+header('Content-type: '.$m3u_type_mime);
+//header("Content-Type:text/html; charset=utf-8"); //pour debug
+//var_dump(Gestion_admin::est_connecte());
+
+//efface la 1ere ligne vide
+//ob_clean();
+//header("Content-Disposition: inline; filename=listeDeLecture.m3u");
+// le nom du fichier par défaut et propose telechargement m3u ,pour windows
+
+/*
+if (Helper_system::nav_OS_is_windows()) {
+    header('Content-Disposition: inline; attachment; filename="' . $m3u_nom_fichier);
+} else {
+    header(' filename="' . $m3u_nom_fichier);
+}
+*/
+header('Content-Disposition: inline; attachment; filename="' . $m3u_nom_fichier);
 
 //un fichier m3u est en ansi
 echo(utf8_decode($m3u_data));
@@ -185,9 +168,6 @@ header("Content-Type:text/html; charset=utf-8");
     
     
 }
-
-
-
 
 
 

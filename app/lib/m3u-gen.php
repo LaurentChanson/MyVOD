@@ -157,6 +157,12 @@ function path_local_to_distant($fichier) {
         }
     }
 
+    if(substr($url,0,4)=='smb:'){
+        $url=  str_replace('\\', '/', $url);
+    }else{
+        $url=  str_replace( '/','\\', $url);
+    }
+    
     return $url;
 }
 
