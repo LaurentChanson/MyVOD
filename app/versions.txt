@@ -4,6 +4,12 @@
     - TODO : Ajout de nouveaux fichier et assembler fiche
     - mettre un badge 'serie' ou une recherche dessus
     - ajouter nbepisodes et nb saison pour les séries
+    - Grossir affiche sur téléphone comme dans détails (css)
+pourquoi the batman sort du filtre parental?
+Marlowe & tmdb : apercu youtube ne nfonctionne pas
+update des films visionnés par rapport à l'ip (perso lc)
+ajout option films visionnés après ceux qui sont ajoutés
+Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan)
 </small>
 
 ========================================================================
