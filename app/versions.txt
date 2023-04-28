@@ -4,6 +4,7 @@
     - TODO : Ajout de nouveaux fichier et assembler fiche
     - mettre un badge 'serie' ou une recherche dessus
     - ajouter nbepisodes et nb saison pour les séries
+    - Grossir affiche sur téléphone comme dans détails (css)
 </small>
 
 ========================================================================
