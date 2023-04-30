@@ -5,9 +5,7 @@
     - TODO : ajouter nbepisodes et nb saison pour les séries
     - TODO : mettre un badge 'serie' ou une recherche dessus
     - TODO : Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan)
-    - Fix : Arrondi sur la taille total du disque (admin.php)
-
-Marlowe & tmdb : apercu youtube ne nfonctionne pas
+    - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas
 
 </small>
 
@@ -30,6 +28,7 @@ Marlowe & tmdb : apercu youtube ne nfonctionne pas
  x Fix : fix case 'video_ts' dans les recherches (Compatible OS type Linux).
  x Fix : FR avant BE pour tmdb.
  x Fix : Exception dans la gestion du cache avec des noms de fichier avec espaces (avec un serveur Linux).
+ x Fix : (admin.php) Arrondi sur la taille total du disque.
 
 
 
