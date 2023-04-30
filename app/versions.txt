@@ -6,7 +6,7 @@
     - TODO : mettre un badge 'serie' ou une recherche dessus
     - TODO : Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan)
     - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas
-
+    - TODO : Pouvoir éteindre avec un serveur Linux
 </small>
 
 ========================================================================
