@@ -63,10 +63,13 @@ $sdu = taille_fichier_en_texte($du);
 $sdf = taille_fichier_en_texte($df);
 
 //conversion en Gb
-$df=round($df/1024/1024/1024,2);
-$dt=round($dt/1024/1024/1024,2);
-$du=round($du/1024/1024/1024,2);
+$nb_virg = 2;
+$tot = round($dt/1024/1024/1024,$nb_virg);
+if($tot>3000){$nb_virg = 0;}
 
+$dt=round($dt/1024/1024/1024,$nb_virg);
+$df=round($df/1024/1024/1024,$nb_virg);
+$du=round($du/1024/1024/1024,$nb_virg);
 
 $series = new ChartSeries();
 $series->name = "Total $sdt<br><div style=\"text-transform: none; \">(libre $sdf)</div>";
