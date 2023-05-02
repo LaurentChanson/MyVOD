@@ -525,6 +525,13 @@ function render_titre(MyVOD_Details $detail) {
         <span class="text-muted"
               title="<?= $detail_infos_dhCreation ?>">
                   <?= $detail->is_fiche_non_renseignee() ? '<br><br>(Fiche non renseignée)' : '(' . $detail->TitreOriginal . ')'; ?>
+            <?php
+                //nombre de saisons et d'épisodes
+                $detail_serie_str=$detail->get_infos_details_serie();
+                if(strlen($detail_serie_str)>0){
+                    echo ('<br><br> ' . $detail_serie_str );
+                }
+            ?>
         </span>
     </h3>
     <?php

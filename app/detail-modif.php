@@ -96,6 +96,10 @@ if (isset($_POST['action'])) {
         $fichefilm->TypePublic = $_POST['publicType'];
         //$fichefilm->DureeSec =
         $fichefilm->duree_from_html5($_POST['duree']);
+        
+        $fichefilm->NbSaisons = $_POST['nbSaisons'];
+        $fichefilm->NbEpisodes = $_POST['nbEpisodes'];
+        
         $fichefilm->GenreNom1 = $_POST['genre1'];
         $fichefilm->GenreNom2 = $_POST['genre2'];
         $fichefilm->GenreNom3 = $_POST['genre3'];

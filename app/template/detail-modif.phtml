@@ -296,6 +296,23 @@ if (strlen($fichefilm->MessageModif) > 0) {
                 </div>
 
 
+                <!-- Text input (Nb Saisons et episodes)-->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="nbSaisons">Nombre saisons</label>  
+                    <div class="col-sm-2">
+                        <input id="nbSaisons" name="nbSaisons" placeholder="" class="form-control input-sm"  
+                               type="number"
+                               value="<?= $fichefilm->NbSaisons; ?>">
+                    </div>
+
+                    <label class="col-sm-3 control-label" for="nbEpisodes">Nombre épisodes</label>
+                    <div class="col-sm-2">
+                        <input id="nbEpisodes" name="nbEpisodes"
+                               type="number" class="form-control input-sm"
+                               value="<?= $fichefilm->NbEpisodes; ?>">
+                    </div>
+                </div>
+                
                 <!-- Text input (Durée)-->
                 <div class="form-group">
                     <label class="col-sm-4 control-label" for="duree">Durée</label>  
@@ -383,20 +400,19 @@ if (strlen($fichefilm->MessageModif) > 0) {
 
                 <!-- Text input (Note de la presse)-->
                 <div class="form-group">
-                    <label class="col-sm-4 control-label" for="notePresse">Note de la presse (sur 10)</label>  
+                    <label class="col-sm-4 control-label" for="notePresse">Note presse (sur 10)</label>  
                     <div class="col-sm-2">
                         <input id="notePresse" name="notePresse" placeholder="note de la presse sur 10" class="form-control input-sm" type="text"
                                value="<?= $fichefilm->NotePresse * 10 ?>">
                     </div>
-                </div>
+                
 
                 <!-- Text input (Note des spectateurs)-->
-                <div class="form-group">
-                    <label class="col-sm-4 control-label" for="noteSpec">Note des spectateurs (sur 10)</label>  
+               
+                    <label class="col-sm-3 control-label" for="noteSpec">Note spectateurs (sur 10)</label>  
                     <div class="col-sm-2">
                         <input id="noteSpec" name="noteSpec" placeholder="note sur 10 spectateurs" class="form-control input-sm" type="text"
                                value="<?= $fichefilm->NoteSpec * 10 ?>">
-
                     </div>
                 </div>
 

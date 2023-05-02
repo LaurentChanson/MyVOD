@@ -977,7 +977,13 @@ function AfficherDetailsFiche($film, $flag_ordre_derniers_ajouts) {
         <center>
             <strong>
                 <?= $film->AnneeSortie . ' - ' . $film->Duree(); ?>
-
+                <?php
+                //Gestion des saisons et épisodes
+                $detail_serie_str=$film->get_infos_details_serie();
+                if(strlen($detail_serie_str)>0){
+                    echo (' (' . $detail_serie_str . ')');
+                }
+                ?>
                 <br>
             </strong>
             <div>

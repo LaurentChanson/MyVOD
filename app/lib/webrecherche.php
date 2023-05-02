@@ -228,7 +228,8 @@ class WebGetFilmData {
     public $runtime;
     public $publicType;
     public $bandes_annonces = array();
-    
+    public $NbSaisons=0;
+    public $NbEpisodes=0;
     
     public function duree_en_heure_minutes() {
         $total_secondes = $this->runtime;
@@ -268,6 +269,9 @@ class WebGetFilmData {
          public 'number_of_episodes' => int 8
         public 'number_of_seasons' => int 1
          */
+        $this->NbSaisons = $res->number_of_seasons;
+        $this->NbEpisodes = $res->number_of_episodes;
+    
         $nb_saisons = $res->number_of_seasons;
         $nb_saisons = $nb_saisons . ' saison' . ($res->number_of_seasons==1 ? '' : 's');
         
@@ -276,7 +280,7 @@ class WebGetFilmData {
         
         $this->movieType = $this->movieType . ' (' . $nb_saisons . ' - ' . $nb_episodes.')';
         
-        $this->title = $this->title . ' (' . $res->number_of_seasons . ' sais. - ' . $res->number_of_episodes.' ep.)';
+        $this->title = $this->title; // . ' (' . $res->number_of_seasons . ' sais. - ' . $res->number_of_episodes.' ep.)';
         
         
         $this->synopsis = $res->overview;

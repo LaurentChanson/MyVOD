@@ -40,7 +40,7 @@ class MyVOD_DB_MAJ extends sqlite_db {
         //récupère le numéro de version
         $version = $this->get_version();
 
-        if ($version > 28) {
+        if ($version > 30) {
             //var_dump($_POST);
             //var_dump($version);
             //exit();
@@ -600,17 +600,38 @@ AND
             
             $this->maj_begin();
 
-            $this->execute('ALTER TABLE Video ADD COLUMN NumFicheTmdb INTEGER;');
+            $this->execute('ALTER TABLE Video ADD COLUMN NumFicheTmdb INTEGER DEFAULT (0);');
 
             $this->maj_commit($version);
            
         } 
+             
         
+         /*
+         * Ajout de la colonne 'NbSaisons' dans la table 'Video'
+         */
+        if ($version == 29) {
+            
+            $this->maj_begin();
+
+            $this->execute('ALTER TABLE Video ADD COLUMN NbSaisons INTEGER DEFAULT (0);');
+
+            $this->maj_commit($version);
+           
+        }
         
-        
-        
-        
-        
+         /*
+         * Ajout de la colonne 'NbEpisodes' dans la table 'Video'
+         */
+        if ($version == 30) {
+            
+            $this->maj_begin();
+
+            $this->execute('ALTER TABLE Video ADD COLUMN NbEpisodes INTEGER DEFAULT (0);');
+
+            $this->maj_commit($version);
+           
+        }
         /*
 
 
@@ -618,10 +639,6 @@ AND
 
 
          */
-
-
-
-
 
 
 

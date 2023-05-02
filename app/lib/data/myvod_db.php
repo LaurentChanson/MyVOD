@@ -858,7 +858,8 @@ Remarques,
 DHCreation,
 HD720,HD1080,
 MessageModif,
-NumFicheTmdb)
+NumFicheTmdb,
+NbSaisons,NbEpisodes)
 VALUES(
 (SELECT ID FROM Video WHERE Filename = %s),
 %s,
@@ -878,9 +879,11 @@ VALUES(
 ifnull((SELECT DHCreation FROM Video WHERE Filename = %s),datetime('now')),
 %s,%s,
 %s,
-%s
+%s,
+%s,%s
 )", sql::chaine_vers_sql($myvod_detail->Filename), sql::chaine_vers_sql($myvod_detail->Filename), sql::chaine_vers_sql($myvod_detail->TitleKey, "''"), sql::chaine_vers_sql($myvod_detail->Titre, "''"), sql::chaine_vers_sql($myvod_detail->TitreOriginal, "''"), sql::chaine_vers_sql($myvod_detail->TypeFilm, "''"), sql::date_vers_sql($myvod_detail->DateSortie), sql::entier_vers_sql($myvod_detail->AnneeSortie), sql::entier_vers_sql($myvod_detail->DureeSec), sql::chaine_vers_sql($myvod_detail->Nationalite, "''"), sql::chaine_vers_sql($myvod_detail->TypePublic, "'Tous publics'"), sql::entier_vers_sql($myvod_detail->GenreID1), sql::entier_vers_sql($myvod_detail->GenreID2), sql::entier_vers_sql($myvod_detail->GenreID3), sql::chaine_vers_sql($myvod_detail->Realisateur, "''"), sql::chaine_vers_sql($myvod_detail->Acteurs, "''"), sql::float_vers_sql($myvod_detail->NotePresse), sql::float_vers_sql($myvod_detail->NoteSpec), sql::chaine_vers_sql($myvod_detail->Synopsis, "''"), sql::chaine_vers_sql($myvod_detail->Affiche, "''"), sql::chaine_vers_sql($myvod_detail->MovieLink, "''"), sql::chaine_vers_sql($myvod_detail->NumFicheAllocine), sql::chaine_vers_sql($myvod_detail->NumFicheDvdFr), sql::chaine_vers_sql($myvod_detail->UrlImageSource, "''"), sql::chaine_vers_sql($myvod_detail->BandeAnnonceUrl, "''"), sql::chaine_vers_sql($myvod_detail->BandeAnnonceCode, "''"), sql::chaine_vers_sql($myvod_detail->BandeAnnonceEmbed, "''"), sql::chaine_vers_sql($myvod_detail->Remarques, "''"), sql::chaine_vers_sql($myvod_detail->Filename), $myvod_detail->HD720, $myvod_detail->HD1080, 
-                sql::chaine_vers_sql($myvod_detail->MessageModif, "''"),sql::chaine_vers_sql($myvod_detail->NumFicheTmdb));
+                sql::chaine_vers_sql($myvod_detail->MessageModif, "''"),sql::chaine_vers_sql($myvod_detail->NumFicheTmdb),
+                sql::entier_vers_sql($myvod_detail->NbSaisons), sql::entier_vers_sql($myvod_detail->NbEpisodes));
 
 
 //update date heure création pour la 1ere fois
@@ -920,6 +923,8 @@ ifnull((SELECT DHCreation FROM Video WHERE Filename = %s),datetime('now')),
             HD1080 = " . $myvod_detail->HD1080 . ",
             MessageModif = " . sql::chaine_vers_sql($myvod_detail->MessageModif, "''") . ",
             NumFicheTmdb = " . sql::chaine_vers_sql($myvod_detail->NumFicheTmdb) . ",
+            NbSaisons = " . sql::entier_vers_sql($myvod_detail->NbSaisons) . ",
+            NbEpisodes = " . sql::entier_vers_sql($myvod_detail->NbEpisodes) . ",
             DHModification = datetime('now', 'localtime')
     WHERE Filename = " . sql::chaine_vers_sql($myvod_detail->Filename) . ";";
 

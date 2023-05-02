@@ -204,6 +204,9 @@ class MyVOD_Details {
     
     public $MessageModif='';
     
+    public $NbSaisons=0;
+    public $NbEpisodes=0;
+    
     public function get_args_search_google(){
         //construction de l'argument de recherche
         $args = $this->Titre;
@@ -321,21 +324,11 @@ class MyVOD_Details {
             
             //tri des autres vidéos en fonction du type
             //$tvidvo
-            
-            
-            
-            
         }
     
         $this->BandesAnnonces=array_merge($tbafr,$tvidfr,$tbavo,$tvidvo);
-        
-        
+
         //var_dump($this->BandesAnnonces);
-        
-       
-        
-        
-        
         
     }
     
@@ -472,7 +465,17 @@ class MyVOD_Details {
         return $txt_creation_modif;
     }
     
-    
+    public function get_infos_details_serie(){
+        $detail_nb_serie='';
+        if($this->NbSaisons>1){
+            $detail_nb_serie =  $this->NbSaisons . ' Sais.';
+        }
+        if($this->NbEpisodes>0){
+            if(strlen($detail_nb_serie)>0)$detail_nb_serie.=' - ';
+            $detail_nb_serie.= $this->NbEpisodes . ' Ep.';
+        }
+        return $detail_nb_serie;
+    }
     
     
     //utilisé lors d'un résultat de requête
@@ -509,7 +512,9 @@ class MyVOD_Details {
         $this->TypePublic = $fiche_web->publicType;
         $this->DureeSec = $fiche_web->runtime;
 
-
+        $this->NbSaisons = $fiche_web->NbSaisons;
+        $this->NbEpisodes = $fiche_web->NbEpisodes;
+    
         $this->GenreNom1 = $fiche_web->genre;
         //idem pour les  2 & 3
         $n = count($fiche_web->genres);
@@ -556,10 +561,7 @@ class MyVOD_Details {
             //var_dump($ba);
             //exit();
 
-            
-        }
-        
-        
+        } 
     }
 
 
