@@ -60,6 +60,12 @@ class config {
         self::check();
         return $_SESSION['affichage_visionnes_apres_ajouts']<>0;
     }
+    
+    public static function tri_par_ip_derniers_lus() {
+        self::check();
+        return $_SESSION['tri_par_ip_derniers_lus']<>0;
+    }
+    
     public static function mots_cles_suppl_google_search() {
         self::check();
         return $_SESSION['config_mots_cles_suppl_google_search'];
@@ -85,9 +91,10 @@ class config {
     
     public static function set_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms, 
             $affichage_gallerie,$controle_parental,$code_parental,$nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,
-            $taille_fichiers_64_bits,$mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key, $type_recherche_def) {
+            $taille_fichiers_64_bits,$mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key, $type_recherche_def, $tri_par_ip_derniers_lus) {
         /*var_dump($taille_fichiers_64_bits);
         exit();*/
+        
         self::check();
         $_SESSION['config_repertoireFilmsLocal'] = $repertoireFilmsLocal;
         $_SESSION['config_repertoireFilmsWeb'] = $repertoireWebFilms;
@@ -105,12 +112,14 @@ class config {
         $_SESSION['config_tri_recherche_def']=$tri_recherche_def;
         $_SESSION['tmdb_api_key']=$tmdb_api_key;
         $_SESSION['type_recherche_def']=$type_recherche_def;
+        $_SESSION['tri_par_ip_derniers_lus']=$tri_par_ip_derniers_lus;
         
         //enregistrement dans la bdd
         $config_db = new config_db();
         $config_db->update_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms, $affichage_gallerie,
                 $controle_parental,$code_parental,$nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,$taille_fichiers_64_bits,
-                $mots_cles_suppl_google_search,$affichage_liste_tablette,$tri_recherche_def,$tmdb_api_key,$type_recherche_def);
+                $mots_cles_suppl_google_search,$affichage_liste_tablette,$tri_recherche_def,$tmdb_api_key,$type_recherche_def,  $tri_par_ip_derniers_lus);
+    
     }
 
     public static function mot_de_pass_admin() {
@@ -169,6 +178,7 @@ class config {
             $_SESSION['config_tri_recherche_def']=$config->tri_recherche_def;
             $_SESSION['tmdb_api_key']=$config->tmdb_api_key;
             $_SESSION['type_recherche_def']=$config->type_recherche_def;
+            $_SESSION['tri_par_ip_derniers_lus']=$config->tri_par_ip_derniers_lus;
             //var_dump($_SESSION);
         }
     }

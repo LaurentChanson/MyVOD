@@ -12,7 +12,7 @@ class config_db_MAJ extends sqlite_db {
 
         
         
-        if ($version > 10)
+        if ($version > 11)
             return;
 
         /*
@@ -131,7 +131,7 @@ class config_db_MAJ extends sqlite_db {
         }
  
         
-                /*
+         /*
          * Ajout de la colonne 'type_recherche_def' dans la table 'config'
          */
         if ($version == 10) {
@@ -143,6 +143,17 @@ class config_db_MAJ extends sqlite_db {
             $this->maj_commit($version);
         }
         
+         /*
+         * Ajout de la colonne 'tri_par_ip_derniers_lus' dans la table 'config'
+         */
+        if ($version == 11) {
+
+            $this->maj_begin();
+
+            $this->execute('ALTER TABLE config ADD COLUMN tri_par_ip_derniers_lus INT DEFAULT (1);');
+
+            $this->maj_commit($version);
+        }
         //var_dump("version=" . $version);
     }
 

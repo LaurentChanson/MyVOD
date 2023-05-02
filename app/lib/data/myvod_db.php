@@ -1226,12 +1226,16 @@ ORDER BY UPPER(i.Filename)';
         }
     }
 
-    function dernier_lu_get_liste($ip_navigateur, $nb = 0) {
+    function dernier_lu_get_liste($ip_navigateur='', $nb = 0) {
         //var_dump($nb);
+        $filtre_ip = '';
+        if(strlen($ip_navigateur)){
+            $filtre_ip = " AND dl.IP = '$ip_navigateur'";
+        }
         $sql = "SELECT d.* , dl.DHCreation as DateLu, 1 as Lu
             FROM $this->table_details_sans_doublons d
             INNER JOIN DernierLu dl ON d.Filename=dl.Filename
-            WHERE dl.IP = '$ip_navigateur'
+            WHERE 1 $filtre_ip
             ORDER BY dl.DHCreation DESC";
         //var_dump($nb);
         if ($nb > 0) {

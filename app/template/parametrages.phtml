@@ -225,6 +225,12 @@ onglets_render_code_js_persistant_tabs();
                                 <input type="checkbox" name="affichage_visionnes_apres_ajouts" value="1" <?= config::affichage_visionnes_apres_ajouts() ? 'checked' : ''; ?>/>
                                 Affichage des derniers films visionnés après les derniers ajouts.
                             </label>
+                            
+                            <input type="hidden" name="tri_par_ip_derniers_lus" value="0" />
+                            <label>
+                                <input type="checkbox" name="tri_par_ip_derniers_lus" value="1" <?= config::tri_par_ip_derniers_lus() ? 'checked' : ''; ?>/>
+                                Trier par adresse IP pour les derniers lus (Voir que ceux qui sont lus que sur mon poste).
+                            </label>
                         </div>
 
                     </div>  

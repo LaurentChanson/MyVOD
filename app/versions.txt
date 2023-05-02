@@ -4,7 +4,7 @@
     - TODO : Ajout de nouveaux fichier et assembler fiche
     
     - TODO : mettre un badge 'serie' ou une recherche dessus
-    - TODO : Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan)
+    
     - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
     - TODO : Pouvoir éteindre avec un serveur Linux
     - TODO : Verifier la langue des dates de sortie avec un Synology
@@ -14,6 +14,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
 ========================================================================
 
+- TODO : Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan)
 
  <b>version V.2.6.0, 2023/05/xx</b>
 --------------------
