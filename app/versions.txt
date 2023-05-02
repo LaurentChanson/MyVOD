@@ -7,6 +7,8 @@
     - TODO : Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan)
     - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
     - TODO : Pouvoir éteindre avec un serveur Linux
+    - TODO : Verifier la langue des dates de sortie avec un Synology
+    - TODO : Lors de la recherche auto, pas de validation si 1 seul résultat
 </small>
 
 ========================================================================
@@ -14,7 +16,7 @@
 ========================================================================
 
 
- <b>version V.2.6.0, 2023/04/xx</b>
+ <b>version V.2.6.0, 2023/05/xx</b>
 --------------------
 
  + Ajout de la recherche des séries sur TMDB.
