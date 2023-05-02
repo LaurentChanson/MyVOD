@@ -22,7 +22,6 @@ if (strlen($recherche_ori) > 0) {
 
     aficher_formulaire('Rechercher sur Dvdfr.com (quota restant ' . DVDFRAPIWrapper::GetQuotasRestant() . ')', type_recherche::RECHERCHE_DVDFR);
     
-    
     aficher_formulaire('Rechercher sur TheMoviedb.org', type_recherche::RECHERCHE_TMDB);
     
     ?>
@@ -209,7 +208,7 @@ function raz_champs_recherche(){
 }
 </script>
 <?php
-
+//    var_dump($validation_auto, $donnees);
 //validation auto si le nombre de résultat = 1 et actif 
 if($validation_auto!=0 && count($donnees)==1){
     //on valide automatiquement via du js

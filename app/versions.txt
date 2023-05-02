@@ -8,7 +8,6 @@
     - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
     - TODO : Pouvoir éteindre avec un serveur Linux
     - TODO : Verifier la langue des dates de sortie avec un Synology
-    - TODO : Lors de la recherche auto, pas de validation si 1 seul résultat
 </small>
 
 ========================================================================
@@ -31,6 +30,7 @@
  x Fix : fix case 'video_ts' dans les recherches (Compatible OS type Linux).
  x Fix : FR avant BE pour tmdb.
  x Fix : Exception dans la gestion du cache avec des noms de fichier avec espaces (avec un serveur Linux).
+ x Fix : Lors de la recherche auto, pas de validation si 1 seul résultat.
  x Fix : (admin.php) Arrondi sur la taille total du disque.
 
 

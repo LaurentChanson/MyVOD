@@ -23,12 +23,14 @@ define("PARAM_VALIDATION_AUTO",'validation_auto');
 $action = Helper_var::get_var('action', false);
 $param = Helper_var::get_var('param', false);
 
-$validation_auto = Helper_var::get_var(PARAM_VALIDATION_AUTO, 0);
-
-$chk_j_ai_chance_checked = Helper_var::session_var(PARAM_VALIDATION_AUTO, 1);
+//$validation_auto = Helper_var::get_var(PARAM_VALIDATION_AUTO, 0);
+//LC : 02/05/2023
+$validation_auto = Helper_var::get_or_session(PARAM_VALIDATION_AUTO, 1);
+//LC : 02/05/2023
+//$chk_j_ai_chance_checked = Helper_var::session_var(PARAM_VALIDATION_AUTO, 1);
 //mise en forme pour le code HTML
-$chk_j_ai_chance_checked= $chk_j_ai_chance_checked !=0?'checked':'';
-      
+//$chk_j_ai_chance_checked= $chk_j_ai_chance_checked !=0?'checked':'';
+$chk_j_ai_chance_checked= $validation_auto!=0?'checked':'';     
 
 $fichiers_doublons_ou_deplaces = array();
 $fichiers_detectes = array();
@@ -70,8 +72,13 @@ if ($action != false && $param != false) {
             $detail = new MyVOD_Details();
             $exists = $MyVOD_DB->fiche_get_details($param, $detail);
             var_dump(urlencode($param));
-
+/*
             var_dump($exists);
+            var_dump($_GET);
+            var_dump($_POST);
+            var_dump($validation_auto);
+            exit();
+            */
             //si la fiche n'est pas encore crée, on la crée
             if ($exists == false) {
                 $MyVOD_DB->liste_ajouter($param);
@@ -81,11 +88,11 @@ if ($action != false && $param != false) {
 
             //gestion PARAM_VALIDATION à re transmettre
             $param=urlencode($param);
-            if($validation_auto!=0){
+            /*if($validation_auto!=0){
                 $param.='&'.PARAM_VALIDATION_AUTO.'=1';
-            }  
+            }*/  
             $url="recherche-web.php?recherche_web=".$param;
-            //var_dump($url);
+            //var_dump($validation_auto);
             //exit();
             Helper_var::set_session(PARAM_VALIDATION_AUTO, $validation_auto);
             Helper_redirection::redirige($url);

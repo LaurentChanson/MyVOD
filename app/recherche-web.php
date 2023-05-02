@@ -23,7 +23,9 @@ if(strlen($recherche_ori)>0){
     $recherche_ori=  Helper_var::session_var('recherche_web_ori', $recherche);
 }
 
-$validation_auto=Helper_var::get_var(PARAM_VALIDATION_AUTO, 0);
+//$validation_auto=Helper_var::get_var(PARAM_VALIDATION_AUTO, 0);
+$validation_auto=Helper_var::get_or_session(PARAM_VALIDATION_AUTO, 0);
+
 
 /*
 var_dump($recherche);
