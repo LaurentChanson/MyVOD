@@ -429,7 +429,7 @@ require_once 'header.php';
             <div id="derniers_films_ajoutes" class="alert alert-info alert-block">  
                 <div class="row">
                     <div class="col-xs-12">
-                        <h4>Les <?= $nb_derniers_ajouts; ?> derniers films ajoutés
+                        <h4>Les <?= $nb_derniers_ajouts; ?> dernières vidéos ajoutées
                             <a href="index.php?nb_derniers_ajouts=<?= ($nb_derniers_ajouts + 25); ?>#last_added_movies"> + de résultats</a>
 
                             <select style="color: black;" name="forma" onchange="location = this.options[this.selectedIndex].value;">
@@ -627,7 +627,7 @@ function render_dernier_lus() {
         <div id="derniers_films_visionnes" class="alert alert-warning text-warning "> 
             <div class="row">
                 <div class="col-xs-12">
-                    <h4 class="row col-xs-12">Derniers films visionnés 
+                    <h4 class="row col-xs-12">Dernières vidéos visionnées 
                         <?php
                         if (config::nb_visu_histo() < count($derniers_lus)) {
                             ?>

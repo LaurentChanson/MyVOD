@@ -13,7 +13,11 @@ class derniers_lus{
 
     public static function get_derniers_lus($nb_max){
         
-        $ip=  Helper_system::nav_ip();
+        $ip='';
+        if(config::tri_par_ip_derniers_lus()){
+            $ip=  Helper_system::nav_ip();
+        }
+        
         $myvod_db = new MyVOD_DB();
         //var_dump("greergergergerg");
         //exit();
