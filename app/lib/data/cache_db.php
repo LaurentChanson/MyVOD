@@ -39,7 +39,7 @@ class cache_db extends cache_db_MAJ{
     }
     public function update_info_media($file_name,$width,$height,$duration){
         //var_dump($width);
-        $sql="UPDATE file SET width=$width ,height=$height,duration=$duration WHERE file_name=".sql::chaine_vers_sql($file_name, "'++++'");
+        $sql="UPDATE file SET width=$width ,height=$height,duration=". sql::float_vers_sql( $duration)." WHERE file_name=".sql::chaine_vers_sql($file_name, "'++++'");
         $this->execute( $sql);
         
     }

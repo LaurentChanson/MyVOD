@@ -25,7 +25,7 @@ class sql {
     
     public static function float_vers_sql($i) {
         if ($i==null){return 'NULL';}
-        return ''. $i;
+        return ''. str_replace(',','.',$i);
     }
     
     
