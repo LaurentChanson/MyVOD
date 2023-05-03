@@ -1236,6 +1236,7 @@ ORDER BY UPPER(i.Filename)';
             FROM $this->table_details_sans_doublons d
             INNER JOIN DernierLu dl ON d.Filename=dl.Filename
             WHERE 1 $filtre_ip
+            GROUP BY d.ID
             ORDER BY dl.DHCreation DESC";
         //var_dump($nb);
         if ($nb > 0) {
