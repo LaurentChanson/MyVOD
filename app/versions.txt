@@ -1,20 +1,18 @@
 <small> <b>A FAIRE :  </b>
     - TODO : api sens critique en php : on verra plus tard quand il y aura une API.
     - TODO : remettre bouton recherche tmdb( avec gestion tmdb dedans)
+    - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
+    - TODO : mettre un badge 'serie' ou une recherche dessus
+    - TODO : Pouvoir éteindre avec un serveur Linux
+
     - TODO : Ajout de nouveaux fichier et assembler fiche
     
-    - TODO : mettre un badge 'serie' ou une recherche dessus
-    
-    - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
-    - TODO : Pouvoir éteindre avec un serveur Linux
-    - TODO : Verifier la langue des dates de sortie avec un Synology
 </small>
 
 ========================================================================
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
 ========================================================================
 
-- TODO : Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan)
 
  <b>version V.2.6.0, 2023/05/xx</b>
 --------------------
@@ -22,6 +20,7 @@
  + Ajout de la recherche des séries sur TMDB.
  + Ajout Nombre épisode et nombre saisons pour les séries.
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
+ + Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan). 
  + Ajout de la compatibilité de mediaInfo avec un OS type Linux.
  + Ignore la recherche dans '#recycle' pour les corbeilles synology. 
  + Meilleure compatibilité pour la génération des m3u avec un NAS et Android.
@@ -33,6 +32,7 @@
  x Fix : Exception dans la gestion du cache avec des noms de fichier avec espaces (avec un serveur Linux).
  x Fix : Lors de la recherche auto, pas de validation si 1 seul résultat.
  x Fix : (admin.php) Arrondi sur la taille total du disque.
+ x Fix : Dates de sortie qui étaient en anglais avec un Synology.
 
 
 

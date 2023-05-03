@@ -57,8 +57,12 @@ require_once 'lib/message.php';
 
 //besoin pour les dates
 date_default_timezone_set("UTC");
-setlocale(LC_ALL, 'fr_FR');
 
-
-
+//Pour les serveurs windows
+if(Helper_system::serv_OS_is_windows()){
+    setlocale(LC_ALL, 'fr_FR');
+}else{
+    setlocale(LC_ALL, 'fr_FR.UTF-8');
+}
+//var_dump(setlocale(LC_ALL, 0));
 

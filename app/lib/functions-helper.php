@@ -308,8 +308,13 @@ class Helper_system {
     static function eteindre_machine() {
         //note : vérifier que le service apache puisse interagir avec le bureau
         //http://vipulchaskar.blogspot.fr/2013/02/shut-down-windows-from-web-and-mobile.html
-
-        $output = shell_exec('shutdown /s /t 00');
+        if (Helper_system::serv_OS_is_windows()) {
+            $output = shell_exec('shutdown /s /t 00');
+        }else{
+            //marche pas (pb de droits)
+            $output = shell_exec('sudo shutdown -h now');
+        }
+        //var_dump($output);
         return utf8_encode($output);
     }
     
