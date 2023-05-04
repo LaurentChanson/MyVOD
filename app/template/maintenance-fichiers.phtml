@@ -141,8 +141,40 @@ onglets_render_code_js_persistant_tabs();
                                 <div class="text-center">
                                     <?php
                                         $nom_fichier_pour_js=urlencode($fic->nom);
-                                    ?>
-                                    <a href="#" onclick="aller_page_recherche(&quot?action=<?=ACTION_CREER_FICHE_ET_RECHERCHER . '&amp;param=' . $nom_fichier_pour_js; ?>&quot); return false;">Créer la fiche et rechercher les informations</a>
+                                        //var_dump($liste_fiches_myvod);
+                                        //var_dump(count($liste_fiches));
+                                        ?>
+                                    <a class="btn btn-primary" href="#" onclick="aller_page_recherche(&quot?action=<?=ACTION_CREER_FICHE_ET_RECHERCHER . '&amp;param=' . $nom_fichier_pour_js; ?>&quot); return false;">
+                                        <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                                        Créer la fiche et rechercher les informations
+                                    </a>
+                                </div>
+                                <br>
+                                <div class="text-center">
+                                    <form name="add-<?=$count;?>">
+                                        
+                                        Choisir un nouvel épisode à relier
+
+                                        <select name="choix_fiche_a_relier" id="choix_fiche_a_relier-select">
+                                            <option value="">    -- Choisir un titre --    </option>
+
+                                            <?php
+                                            //peut être un tri à faire
+                                            foreach ($liste_fiches_myvod as $key => $value) {
+                                            ?>
+                                            <option value="<?=  urlencode($key)?>"><?=$value->Titre?></option>
+                                            <?php
+                                            }
+                                            ?>    
+
+                                        </select>
+                                        <input type="hidden" name="param" value="<?=$fic->nom;?>">
+                                        <input type="hidden" name="action" value="<?=ACTION_RELIER_FICHE;?>">
+                                        <button type="submit" name="submit" 
+                                                class="btn btn-sm btn-primary" style="height: 100%">
+                                            <i class="fa fa-link" aria-hidden="true"></i> Relier
+                                        </button>
+                                    </form>
                                 </div>
                                 <br>
                                 <div class="pull-left"> &nbsp;&nbsp;&nbsp;&nbsp;		

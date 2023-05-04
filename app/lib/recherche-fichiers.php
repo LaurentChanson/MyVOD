@@ -2,12 +2,12 @@
 
 $fichiers_doublons_ou_deplaces = array();
 $fichiers_detectes = array();
-
+$liste_fiches_myvod = array();
 
 function recherche_videos_sur_disque_local(){
     global $fichiers_disque;
     global $fichiers_detectes;  //ceux qui sont détectés
-    
+    global $liste_fiches; // A SUPPRIMER
     $fichiers_disque = array();
 
     //réinit en tableau
@@ -27,6 +27,7 @@ function init_listes_fichiers_pour_tri(){
     global $liste_fiches;
     global $liaisons;
     global $noms_fichiers;
+    global $liste_fiches_myvod;
     
     $MyVOD_DB = new MyVOD_DB();
     
@@ -44,7 +45,7 @@ function init_listes_fichiers_pour_tri(){
         $liste_fiches_tmp[$f->Filename] = $f;
     }
     $liste_fiches = $liste_fiches_tmp;
-
+    $liste_fiches_myvod=$liste_fiches;
     //Helper_system::temps_ecoule('Après récup liste en bdd');
     //liste des liaisons en bdd
     $MyVOD_DB->liaison_get_liste($liaisons);

@@ -5,9 +5,7 @@
     - TODO : mettre un badge 'serie' ou une recherche dessus
     - TODO : Pouvoir éteindre avec un serveur Linux
     - TODO : fiche_get_details et get liste : pas filtrer sur IP si option IP pas choisi
-    - TODO : Scan de fichier trop long
 
-    - TODO : Ajout de nouveaux fichier et assembler fiche
     
 </small>
 
@@ -19,8 +17,9 @@
  <b>version V.2.6.0, 2023/05/xx</b>
 --------------------
 
- + Ajout de la recherche des séries sur TMDB.
- + Ajout Nombre épisode et nombre saisons pour les séries.
+ + Ajout de la <b>recherche des séries sur TMDB</b>.
+ + Ajout <b>Nombre épisode et nombre saisons</b> pour les séries.
+ + Possibilité ajouter un épisode sur une fiche existante depuis la recherche de fichier.
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
  + Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan). 
  + Ajout de la compatibilité de mediaInfo avec un OS type Linux.
@@ -49,7 +48,7 @@
  <b>version V.2.5.1, 2023/04/09</b>
 --------------------
 
- + Ajout Filtre recherche sur le réalisateur.
+ + Ajout Filtre <b>recherche sur le réalisateur</b>.
  + Petits changements dans le panel d'export.
  + Ajout infobulle dans le texte de recherche.
  x Fix : Recherche dans TMDB dans la liste des acteur dont le role est vide.

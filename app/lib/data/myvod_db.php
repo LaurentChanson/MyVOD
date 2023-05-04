@@ -316,7 +316,7 @@ WHERE $champ_where=" . sql::chaine_vers_sql($filename_OR_ID);
         //var_dump($filename_OR_ID);
 
         $detailtmp = $this->get_obj($sql);
-
+//        var_dump($sql);
         //var_dump($detailtmp);
 
         if ($detailtmp->ID != null) {
@@ -715,8 +715,8 @@ LIMIT 1";
         //on enregistre les 2 tableaux en session
         $_SESSION['idx_precedents'] = $precedents;
         $_SESSION['idx_suivants'] = $suivants;
-
-        // var_dump($myvod_liste);
+        //var_dump($sqlSelect);
+         //var_dump($myvod_liste);
 
         return $myvod_liste;
     }
