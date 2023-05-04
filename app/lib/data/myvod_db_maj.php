@@ -40,7 +40,7 @@ class MyVOD_DB_MAJ extends sqlite_db {
         //récupère le numéro de version
         $version = $this->get_version();
 
-        if ($version > 30) {
+        if ($version > 31) {
             //var_dump($_POST);
             //var_dump($version);
             //exit();
@@ -632,6 +632,63 @@ AND
             $this->maj_commit($version);
            
         }
+        
+        
+        
+         /**
+         * Modofocation de la vue Detail
+         */
+        if ($version == 31) {
+            $this->maj_begin();
+            $this->execute("DROP VIEW Detail;");
+
+            $this->execute('CREATE VIEW Detail AS
+            SELECT
+                t.Nom IS NOT NULL AS TypePublicAutorise,
+                 v.*,
+                       g1.Nom AS GenreNom1,
+                       g2.Nom AS GenreNom2,
+                       g3.Nom AS GenreNom3,
+
+                       g1.Autorise AS GenreAutorise1,
+                       g2.Autorise AS GenreAutorise2,
+                       g3.Autorise AS GenreAutorise3,
+                       g1.ListeBlanche AS GenreListeBlanche1,
+                       g2.ListeBlanche AS GenreListeBlanche2,
+                       g3.ListeBlanche AS GenreListeBlanche3,
+                       IFNULL(t.Nom IS NOT NULL AND 
+                              ( (g1.Autorise <> 0 AND 
+                                 (g2.Autorise <> 0 OR 
+                                  v.GenreID2 IS NULL) AND 
+                                 (g3.Autorise <> 0 OR 
+                                  v.GenreID3 IS NULL) ) OR 
+                                g1.ListeBlanche <> 0 OR 
+                                g2.ListeBlanche <> 0 OR 
+                                g3.ListeBlanche <> 0), 0) AS Autorise
+                  FROM Video v
+                       LEFT JOIN
+                       TypePublicAutorise t ON t.Nom = v.TypePublic
+                       LEFT JOIN
+                       Genre g1 ON v.GenreID1 = g1.ID
+                       LEFT JOIN
+                       Genre g2 ON v.GenreID2 = g2.ID
+                       LEFT JOIN
+                       Genre g3 ON v.GenreID3 = g3.ID
+            WHERE v.Filename NOT IN (
+                select s.Filename2 from Liaison s
+            );');
+
+
+
+
+            $this->maj_commit($version);
+        }
+        
+        
+        
+        
+        
+        
         /*
 
 

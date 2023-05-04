@@ -4,6 +4,8 @@
     - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
     - TODO : mettre un badge 'serie' ou une recherche dessus
     - TODO : Pouvoir éteindre avec un serveur Linux
+    - TODO : fiche_get_details et get liste : pas filtrer sur IP si option IP pas choisi
+    - TODO : Scan de fichier trop long
 
     - TODO : Ajout de nouveaux fichier et assembler fiche
     
@@ -33,6 +35,7 @@
  x Fix : Lors de la recherche auto, pas de validation si 1 seul résultat.
  x Fix : (admin.php) Arrondi sur la taille total du disque.
  x Fix : Dates de sortie qui étaient en anglais avec un Synology.
+ x Fix : Doublons dans les résultats de recherches pour les fiches liées (Les fiches liées sont ignorés du résultat de recherche).
 
 
 
