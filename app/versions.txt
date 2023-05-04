@@ -7,7 +7,6 @@
 (https://stackoverflow.com/questions/11955298/use-sudo-with-password-as-parameter
 https://community.synology.com/enu/forum/1/post/132609)
 
- - TODO : cache.file fichier myvod.php ligne 701 environ
     
 </small>
 
@@ -37,6 +36,7 @@ https://community.synology.com/enu/forum/1/post/132609)
  x Fix : (admin.php) Arrondi sur la taille total du disque.
  x Fix : Dates de sortie qui étaient en anglais avec un Synology.
  x Fix : Doublons dans les résultats de recherches pour les fiches liées (Les fiches liées sont ignorés du résultat de recherche).
+ x Fix : Exception : unable to open database quand il y avait des critères sur la taille des vidéos avec une install autre que wamp.
 
 
 

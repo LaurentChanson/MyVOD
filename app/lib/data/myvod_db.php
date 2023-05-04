@@ -697,8 +697,10 @@ LIMIT 1";
         //lance le attach cache si besoin car les tailles des fichiers sont dans le fichier de cache
         if ($attach_cache) {
             //var_dump('attach');
-            //TODO : trouver le chemin de cache.db
-            $this->execute("ATTACH DATABASE 'C:\wamp\www\MyVOD\data\cache.db' as cache");
+            $data_dir=sqlite_db::repertoire_data();
+            //var_dump($data_dir);
+            //$this->execute("ATTACH DATABASE 'C:\wamp\www\MyVOD\data\cache.db' as cache");
+            $this->execute("ATTACH DATABASE '".$data_dir."cache.db' as cache");
         }
         
         $sqlSelect.="\n".$group_by_id;
