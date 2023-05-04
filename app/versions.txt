@@ -4,8 +4,10 @@
     - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
     - TODO : mettre un badge 'serie' ou une recherche dessus
     - TODO : Pouvoir éteindre avec un serveur Linux
-    - TODO : fiche_get_details et get liste : pas filtrer sur IP si option IP pas choisi
+(https://stackoverflow.com/questions/11955298/use-sudo-with-password-as-parameter
+https://community.synology.com/enu/forum/1/post/132609)
 
+ - TODO : cache.file fichier myvod.php ligne 701 environ
     
 </small>
 
