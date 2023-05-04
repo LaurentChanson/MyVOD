@@ -284,7 +284,7 @@ ORDER By  d.Titre
         FROM $this->table_details_sans_doublons v
         LEFT JOIN DernierLu dl
         ON v.Filename=dl.Filename $jointure_par_ip
-        ORDER BY v.DHCreation DESC
+        ORDER BY dl.DHCreation DESC
         LIMIT " . $n_derniers;
 
 
@@ -426,8 +426,8 @@ LIMIT 1";
             SELECT * FROM $this->table_details_sans_doublons l
             %1
             ) v
-        %3
-        ORDER BY %2 )v
+        %2
+         )v
     LEFT JOIN DernierLu dl
     ON v.Filename=dl.Filename  $jointure_par_ip
         ";
@@ -498,7 +498,7 @@ LIMIT 1";
             $where2 = str_replace("WHERE", "WHERE (", $where2) . ')';
             //var_dump($where2);
         }
-        $sqlSelect = str_replace('%3', $where2, $sqlSelect);
+        $sqlSelect = str_replace('%2', $where2, $sqlSelect);
 
         //les genres 
         //var_dump($array_genre_filtre);
@@ -658,7 +658,7 @@ LIMIT 1";
             //$sens_tri = $type_tri > 0 ? 'DESC' : 'ASC';
             $sens_tri = ($type_tri > 0) && ($type_tri < 4) ? 'DESC' : 'ASC';
         }
-        $order_by = "UPPER(Titre) $sens_tri, UPPER(Filename) $sens_tri";
+        $order_by = "UPPER(v.Titre) $sens_tri, UPPER(v.Filename) $sens_tri";
         //tri par ajout (donc par rowid)
         if ($type_tri == TYPE_TRI_D_AJOUT) {
             //ORDER BY l.DHCreation DESC 
@@ -680,10 +680,6 @@ LIMIT 1";
         if ($type_tri == TYPE_TRI_D_SORTIE_ASC) {
             $order_by = "AnneeSortie ASC, DateSortie ASC";
         }
-        //var_dump($order_by);
-
-        $sqlSelect = str_replace('%2', $order_by, $sqlSelect);
-
 
         /*filtre sur jamais lu*/
         if ($filtre_jamais_vu != 0) {
@@ -703,7 +699,12 @@ LIMIT 1";
             $this->execute("ATTACH DATABASE '".$data_dir."cache.db' as cache");
         }
         
-        $sqlSelect.="\n".$group_by_id;
+        $sqlSelect.="
+        $group_by_id
+        ORDER BY $order_by;";
+        //var_dump($order_by);
+        //ORDER BY %2
+        //$sqlSelect = str_replace('%2', $order_by, $sqlSelect);
         
         //pour débugger la requête
         /*
