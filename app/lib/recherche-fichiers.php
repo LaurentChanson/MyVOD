@@ -9,11 +9,12 @@ function recherche_videos_sur_disque_local(){
     global $fichiers_detectes;  //ceux qui sont détectés
     global $liste_fiches; // A SUPPRIMER
     $fichiers_disque = array();
-
+    
     //réinit en tableau
     $fichiers_detectes = array();
     //recherche sur le disque
     recherche_fichiers_avec_fonction_de_rappel(config::repertoireFilmsLocal(), 'traitement_fichier_trouve');
+    //var_dump(count($fichiers_detectes));
     return $fichiers_detectes;
     
 }

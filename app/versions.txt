@@ -7,7 +7,6 @@
 (https://stackoverflow.com/questions/11955298/use-sudo-with-password-as-parameter
 https://community.synology.com/enu/forum/1/post/132609)
 
-    
 </small>
 
 ========================================================================
@@ -15,7 +14,7 @@ https://community.synology.com/enu/forum/1/post/132609)
 ========================================================================
 
 
- <b>version V.2.6.0, 2023/05/xx</b>
+ <b>version V.2.6.0, 2023/05/05 (Joyeux anniv Laurent)</b>
 --------------------
 
  + Ajout de la <b>recherche des séries sur TMDB</b>.
