@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class media_info {
     //sur linux, il faut que media info soit installé
@@ -18,7 +18,8 @@ class media_info {
             }
             $cmd = $cmd . '\media_info\MediaInfo.exe "' . $fichier . '" "--Inform=Video;%Width% %Height% %Duration%"';
         }else{
-            $fichier = str_replace('\\', '/', utf8_decode($fichier));
+            //var_dump($fichier);
+            $fichier = str_replace('\\', '/',  $fichier);
             $cmd =  'mediainfo "' . $fichier . '" "--Inform=Video;%Width% %Height% %Duration%"';
         }
         //var_dump($cmd);

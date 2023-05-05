@@ -29,7 +29,12 @@ function filesize_php7($fichier) {
 
     if ($size_sur_64_bits) {
         //cette méthode est beaucoup + long
-        $taille = filesize_64(utf8_decode($fichier));
+        if(Helper_system::serv_OS_is_windows()){
+            $taille = filesize_64(utf8_decode($fichier));
+        }else{
+            $taille = filesize_64($fichier);
+        }
+
         /*$taille = filesize_64('C:\wamp\www\MyCinema\on.léappelle.jeeg.robot.french.bdrip.mkv');
         var_dump($taille);
         exit();*/
@@ -57,6 +62,7 @@ function filesize_utf8($fichier) {
     if(is_php7()){
         return filesize_php7($fichier);
     }
+    //en php5 (plus maintenu)
     $size_sur_64_bits=false;
     if(isset($_SESSION['taille_fichiers_64_bits'])){
         $size_sur_64_bits=$_SESSION['taille_fichiers_64_bits'];

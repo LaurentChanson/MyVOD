@@ -80,7 +80,8 @@ class cache_db extends cache_db_MAJ{
         //efface l'ancienne entrée (case insensitive)
         $sql = "DELETE FROM file WHERE UPPER(file_name) LIKE " .sql::chaine_vers_sql($file_name);
         $this->execute( $sql);
-
+        //var_dump($size);
+        if($size==null)$size=0;
         $sql = "INSERT INTO [file] (file_name,full_path,size) VALUES (" . sql::chaine_vers_sql($file_name) .
                 "," . sql::chaine_vers_sql($full_path) . ",$size)";
         $this->execute( $sql);

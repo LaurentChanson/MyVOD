@@ -63,6 +63,8 @@ if(Helper_system::serv_OS_is_windows()){
     setlocale(LC_ALL, 'fr_FR');
 }else{
     setlocale(LC_ALL, 'fr_FR.UTF-8');
+    putenv('LANG=fr_FR.UTF-8'); // Set this to the language you need
+    //putenv est pour shell exec
 }
 //var_dump(setlocale(LC_ALL, 0));
 
