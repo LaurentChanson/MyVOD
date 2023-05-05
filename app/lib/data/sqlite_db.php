@@ -22,7 +22,9 @@ class sqlite_db {
     public static $arr_fichiers=array();
     
     public static function repertoire_data(){
-        return dirname(dirname(dirname(__DIR__))).'/data/';
+        $dir= dirname(dirname(dirname(__DIR__))).'/data/';
+        $dir=str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $dir);
+        return $dir;
     }
 
     /**

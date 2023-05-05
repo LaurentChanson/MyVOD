@@ -312,6 +312,7 @@ class Helper_system {
             $output = shell_exec('shutdown /s /t 00');
         }else{
             //marche pas (pb de droits)
+            //echo mypassword | sudo -S command
             $output = shell_exec('sudo shutdown -h now');
         }
         //var_dump($output);

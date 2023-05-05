@@ -7,6 +7,9 @@ define('TYPE_TRI_NOTATION', 3);
 define('TYPE_TRI_DUREE', 4);
 define('TYPE_TRI_D_SORTIE_ASC', 5);
 
+
+define("COND_JOINTURE_DEF", 'GROUP BY ID');
+
 require_once 'myvod_db_maj.php';
 
 require_once 'sqlite_db.php';
@@ -264,15 +267,24 @@ ORDER By  d.Titre
         return $titres;
     }
 
+    
+    private function get_cond_derniers_lus_ip(){
+        if(config::tri_par_ip_derniers_lus()){
+            $ip = Helper_system::nav_ip();
+            return "AND dl.IP='$ip'";
+        }
+        return COND_JOINTURE_DEF;
+    }
+    
     function get_n_derniers_ajouts($n_derniers = 10) {
 
-        $ip = Helper_system::nav_ip();
-
+        //$ip = Helper_system::nav_ip();
+        $jointure_par_ip = $this->get_cond_derniers_lus_ip();
         $sql = "SELECT v.*,  dl.DHCreation as DateLu, CASE  WHEN dl.DHCreation is not null THEN 1 ELSE 0 END  as Lu
         FROM $this->table_details_sans_doublons v
         LEFT JOIN DernierLu dl
-        ON v.Filename=dl.Filename  AND dl.IP='$ip'
-        ORDER BY v.DHCreation DESC
+        ON v.Filename=dl.Filename $jointure_par_ip
+        ORDER BY dl.DHCreation DESC
         LIMIT " . $n_derniers;
 
 
@@ -304,19 +316,25 @@ ORDER By  d.Titre
             $champ_where = 'l.[Filename]';
         }
 
-        $ip = Helper_system::nav_ip();
-
+        //$ip = Helper_system::nav_ip();
+        $jointure_par_ip = $this->get_cond_derniers_lus_ip();
+        $group_by_id='';
+        if($jointure_par_ip==COND_JOINTURE_DEF){
+            $jointure_par_ip = '';
+            $group_by_id=COND_JOINTURE_DEF;
+        }
         $sql = "SELECT l.*, MAX(dl.DHCreation) as DateLu, COUNT(dl.DHCreation) as Lu
 FROM $this->table_details_sans_doublons l
 LEFT JOIN DernierLu dl
-ON l.Filename=dl.Filename AND dl.IP='$ip'
-WHERE $champ_where=" . sql::chaine_vers_sql($filename_OR_ID);
+ON l.Filename=dl.Filename $jointure_par_ip
+WHERE $champ_where=" . sql::chaine_vers_sql($filename_OR_ID)."
+    $group_by_id";
 
         //$detail=new MyCinemaDetails;
         //var_dump($filename_OR_ID);
-
+        //var_dump($sql);
         $detailtmp = $this->get_obj($sql);
-
+        
         //var_dump($detailtmp);
 
         if ($detailtmp->ID != null) {
@@ -394,7 +412,13 @@ LIMIT 1";
             session_start();
         }
 
-        $ip = Helper_system::nav_ip();
+        //$ip = Helper_system::nav_ip();
+        $jointure_par_ip = $this->get_cond_derniers_lus_ip();
+        $group_by_id='';
+        if($jointure_par_ip==COND_JOINTURE_DEF){
+            $jointure_par_ip = '';
+            $group_by_id=COND_JOINTURE_DEF;
+        }
         //construction de la requête en fonction des filtres
         $sqlSelect = "SELECT v.* ,  dl.DHCreation as DateLu, CASE  WHEN dl.DHCreation is not null THEN 1 ELSE 0 END  as Lu
     FROM(
@@ -402,10 +426,10 @@ LIMIT 1";
             SELECT * FROM $this->table_details_sans_doublons l
             %1
             ) v
-        %3
-        ORDER BY %2 )v
+        %2
+         )v
     LEFT JOIN DernierLu dl
-    ON v.Filename=dl.Filename  AND dl.IP='$ip'
+    ON v.Filename=dl.Filename  $jointure_par_ip
         ";
 
         $where = '';
@@ -474,7 +498,7 @@ LIMIT 1";
             $where2 = str_replace("WHERE", "WHERE (", $where2) . ')';
             //var_dump($where2);
         }
-        $sqlSelect = str_replace('%3', $where2, $sqlSelect);
+        $sqlSelect = str_replace('%2', $where2, $sqlSelect);
 
         //les genres 
         //var_dump($array_genre_filtre);
@@ -634,7 +658,7 @@ LIMIT 1";
             //$sens_tri = $type_tri > 0 ? 'DESC' : 'ASC';
             $sens_tri = ($type_tri > 0) && ($type_tri < 4) ? 'DESC' : 'ASC';
         }
-        $order_by = "UPPER(Titre) $sens_tri, UPPER(Filename) $sens_tri";
+        $order_by = "UPPER(v.Titre) $sens_tri, UPPER(v.Filename) $sens_tri";
         //tri par ajout (donc par rowid)
         if ($type_tri == TYPE_TRI_D_AJOUT) {
             //ORDER BY l.DHCreation DESC 
@@ -656,10 +680,6 @@ LIMIT 1";
         if ($type_tri == TYPE_TRI_D_SORTIE_ASC) {
             $order_by = "AnneeSortie ASC, DateSortie ASC";
         }
-        //var_dump($order_by);
-
-        $sqlSelect = str_replace('%2', $order_by, $sqlSelect);
-
 
         /*filtre sur jamais lu*/
         if ($filtre_jamais_vu != 0) {
@@ -670,20 +690,29 @@ LIMIT 1";
         }
 
 
-
-        //pour débugger la requête
-/*
-        echo('<pre>');
-        print_r($sqlSelect);
-        echo('</pre>');
-
-*/
         //lance le attach cache si besoin car les tailles des fichiers sont dans le fichier de cache
         if ($attach_cache) {
             //var_dump('attach');
-            $this->execute("ATTACH DATABASE 'C:\wamp\www\MyVOD\data\cache.db' as cache");
+            $data_dir=sqlite_db::repertoire_data();
+            //var_dump($data_dir);
+            //$this->execute("ATTACH DATABASE 'C:\wamp\www\MyVOD\data\cache.db' as cache");
+            $this->execute("ATTACH DATABASE '".$data_dir."cache.db' as cache");
         }
-
+        
+        $sqlSelect.="
+        $group_by_id
+        ORDER BY $order_by;";
+        //var_dump($order_by);
+        //ORDER BY %2
+        //$sqlSelect = str_replace('%2', $order_by, $sqlSelect);
+        
+        //pour débugger la requête
+        /*
+        echo('<pre>');
+        print_r($sqlSelect);
+        echo('</pre>');
+        */
+    
         //récupération des résultats
         $result = $this->get_array_obj($sqlSelect);
 
@@ -715,8 +744,8 @@ LIMIT 1";
         //on enregistre les 2 tableaux en session
         $_SESSION['idx_precedents'] = $precedents;
         $_SESSION['idx_suivants'] = $suivants;
-
-        // var_dump($myvod_liste);
+        //var_dump($sqlSelect);
+         //var_dump($myvod_liste);
 
         return $myvod_liste;
     }
