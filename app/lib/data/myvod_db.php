@@ -1221,7 +1221,7 @@ ORDER BY UPPER(i.Filename)';
         $sql = "SELECT Liaison.*,v.Titre, v.Affiche  
             FROM Liaison  
             LEFT JOIN Video v ON liaison.Filename1 = v.Filename
-            ORDER BY Filename1 , Filename2";
+            ORDER BY v.Titre, Filename1 , Filename2";
 
         $liaisons = $this->get_array_obj($sql);
     }
