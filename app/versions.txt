@@ -8,7 +8,6 @@
 https://community.synology.com/enu/forum/1/post/132609)
 
 
-
 </small>
 
 ========================================================================
@@ -21,6 +20,8 @@ https://community.synology.com/enu/forum/1/post/132609)
  + Fix : plusieurs-fichiers.php : fiches liés n'était pas dans l'ordre alphabetique.
  + Fix : plusieurs-fichiers.php : Fatal error: Uncaught PDOException: SQLSTATE[HY000]: General error: 1 near... avec Synology NAS.
  + Fix : media info sur un serveur Linux et fichiers avec accents. On ne pouvait pas récupérer les infos dessus. 
+ + Fix : fichiers avec accents et serveur Linux, le m3u n'était pas généré.
+ + Fix : Ordre derniers ajouts qui était confondus avec les derniers lus
 
 
  <b>version V.2.6.0, 2023/05/05 (Joyeux anniv Laurent)</b>

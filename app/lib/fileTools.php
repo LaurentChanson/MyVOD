@@ -149,8 +149,12 @@ function fileExists($fileName, $caseSensitive = true) {
 
 function file_exists_utf8($file_path, $caseSensitive = true) {
     // var_dump($file_path);
-
-    return fileExists(utf8_decode($file_path), $caseSensitive);
+    if(Helper_system::serv_OS_is_windows()){
+        return fileExists(utf8_decode($file_path), $caseSensitive);
+    }else{
+        return fileExists($file_path, $caseSensitive);
+    }
+    
 }
 
 function create_dir_if_not_exists($rep_path) {

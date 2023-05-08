@@ -284,7 +284,7 @@ ORDER By  d.Titre
         FROM $this->table_details_sans_doublons v
         LEFT JOIN DernierLu dl
         ON v.Filename=dl.Filename $jointure_par_ip
-        ORDER BY dl.DHCreation DESC
+        ORDER BY v.DHCreation DESC
         LIMIT " . $n_derniers;
 
 
