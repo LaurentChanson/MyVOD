@@ -38,11 +38,11 @@
 }
 #derniers_films_ajoutes{
     background-color:  rgba(91,192,222,0.8);  /*#5BC0DE;*/
-    border: 2px solid #3DCED8;
+    border: 1px solid #3DCED8;
 }
 #derniers_films_visionnes{
     /*background-color: rgba(110,220,110,0.8)*/
-    border: 2px solid rgb(233, 101, 6);
+    border: 1px solid rgb(233, 101, 6);
     background-color : transparent;
     background-color : rgba(52,73,89,0.5);
 }
@@ -753,6 +753,7 @@ label input[type="checkbox"],label input[type="radio"] {
     /*background-color: silver;*/ /* show me! */
     width : 100%;  
     height: 100% !important; 
+    padding: 3px;
 }
 /*effet de zoom quand on survole l'image en galerie'*/
 .gallerie:hover>img {
@@ -792,7 +793,7 @@ label input[type="checkbox"],label input[type="radio"] {
 
     background: rgba(255,255,255,.85);
     opacity: 1;
-    border: solid 2px;
+    border: solid 1px;
     border-color: #428BCA;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
