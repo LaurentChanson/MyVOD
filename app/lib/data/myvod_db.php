@@ -335,7 +335,7 @@ WHERE $champ_where=" . sql::chaine_vers_sql($filename_OR_ID)."
         //var_dump($sql);
         $detailtmp = $this->get_obj($sql);
         
-        //var_dump($detailtmp);
+        if($detailtmp === false){return false;}
 
         if ($detailtmp->ID != null) {
             $detail = new MyVOD_Details();
@@ -1218,6 +1218,16 @@ ORDER BY UPPER(i.Filename)';
         $this->execute($sql);
     }
 
+    
+    function liaison_exists($filename){
+        $sql="SELECT COUNT(*) FROM Liaison
+        WHERE Filename1 like " . sql::chaine_vers_sql($filename) . "
+        OR Filename2 like ". sql::chaine_vers_sql($filename) ;
+        $count = $this->get_value($sql);
+        return $count>0;
+    }
+    
+    
     function liaison_get_liste_from_filename($filename, &$liaisons) {
         $liaisons = array(); //new LiaisonFichier();
 

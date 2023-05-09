@@ -169,10 +169,13 @@ onglets_render_code_js_persistant_tabs();
 
                                         </select>
                                         <input type="hidden" name="param" value="<?=$fic->nom;?>">
-                                        <input type="hidden" name="action" value="<?=ACTION_RELIER_FICHE;?>">
-                                        <button type="submit" name="submit" 
+                                        <button type="submit" name="action" value="<?=ACTION_RELIER_FICHE;?>"
                                                 class="btn btn-sm btn-primary" style="height: 100%">
                                             <i class="fa fa-link" aria-hidden="true"></i> Relier
+                                        </button>
+                                        <button type="submit" name="action" value="<?=ACTION_RELIER_REPERTOIRE;?>"
+                                                class="btn btn-sm btn-primary" style="height: 100%">
+                                            <i class="fa fa-folder-open" aria-hidden="true"></i> <i class="fa fa-link" aria-hidden="true"></i> Relier le répertoire
                                         </button>
                                     </form>
                                 </div>

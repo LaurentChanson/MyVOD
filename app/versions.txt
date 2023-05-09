@@ -10,7 +10,6 @@ https://community.synology.com/enu/forum/1/post/132609)
 
 Choisir un nouvel épisode à relier : prévoir option filter que serie car la liste peut être longue
 Tester avec un & dans le nom de répertoire
-ajouter dossier complet en scannant un repertoire
 Noms de répertoires à ignorer en option pour la recherche
 
 </small>
@@ -22,6 +21,7 @@ Noms de répertoires à ignorer en option pour la recherche
  <b>version V.2.6.1, beta </b>
 --------------------
 
+ + Possibilité de relier le contenu d'un répertoire à une fiche (+pratique pour les séries).
  + Quand on ajoute un épisode d'une série, la fiche est remontée dans les derniers ajouts.
  + Fix : plusieurs-fichiers.php : fiches liés n'était pas dans l'ordre alphabetique.
  + Fix : plusieurs-fichiers.php : Fatal error: Uncaught PDOException: SQLSTATE[HY000]: General error: 1 near... avec Synology NAS.

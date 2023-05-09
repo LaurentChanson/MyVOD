@@ -79,21 +79,23 @@ if ($action != false && $param != false) {
             
             $detail = CheckFichiersARelier($param, $choix_fiche_parent);
             if($detail!==FALSE){
-                //change la date de création pour faire apparaitre dans les derniers ajouts
-                $MyVOD_DB->update_date_creation_now($detail);
-                //patche la clé avant de sauver
-                $detail->ID=0;
-                $detail->Filename=$param;
-                //sauvegarde de la nouvelle fiche
-                $MyVOD_DB->fiche_enregistrer($detail);
-                //une fois crée, on relie les deux fiches     
-                $liaison = new LiaisonFichier();
-                $liaison->Filename1 = $choix_fiche_parent;
-                $liaison->Filename2 = $param;
-                $MyVOD_DB->liaison_ajouter($liaison);
-                message::ajouter_alerte_ok("Fichier '$param' ajouté à la fiche '$detail->Titre'");
+                //LC: factorisation 09/05/2023
+//                //change la date de création pour faire apparaitre dans les derniers ajouts
+//                $MyVOD_DB->update_date_creation_now($detail);
+//                //patche la clé avant de sauver
+//                $detail->ID=0;
+//                $detail->Filename=$param;
+//                //sauvegarde de la nouvelle fiche
+//                $MyVOD_DB->fiche_enregistrer($detail);
+//                //une fois crée, on relie les deux fiches     
+//                $liaison = new LiaisonFichier();
+//                $liaison->Filename1 = $choix_fiche_parent;
+//                $liaison->Filename2 = $param;
+//                $MyVOD_DB->liaison_ajouter($liaison);
+                RelierFiche($param, $detail);
+                
             }
-            
+            //LC: factorisation 09/05/2023
 //            if(strlen($choix_fiche_parent)==0){
 //                message::ajouter_alerte_ko("Veuillez choisir une fiche à lier pour '$param'");
 //            }else{
@@ -130,13 +132,46 @@ if ($action != false && $param != false) {
             
             $detail = CheckFichiersARelier($param, $choix_fiche_parent);
             if($detail!==FALSE){
-            
+                //recherche du répertoire où il y a le fichier
+                $s0 = recherche_et_retourne_chemin_complet(config::repertoireFilmsLocal(), $param);
+                if (strlen($s0) == 0) { //un chemin a été retourné
+                    message::ajouter_alerte_ko("Impossible de trouver le repertoire contenant le fichier '$param'");
+                }else{
+                    //on scanne ce répertoire pour récupérer les fichiers à lier
+                    $dir=dirname($s0);
+                    $files1 = scandir($dir);
+                    $files2 = array();
+                    foreach ($files1 as $f) {
+                        //var_dump($dir.DIRECTORY_SEPARATOR.$f);
+                        if( $f!=='.' && $f!=='..' && file_exists_utf8($dir.DIRECTORY_SEPARATOR.$f)){
+                            //on a la liste des fichiers , on filtre ceux qui sont déjà en bdd
+                            $d=new MyVOD_Details();
+                            $exists = $MyVOD_DB->fiche_get_details($f, $d);
+                            if($exists==false){
+                                //var_dump($exists,$f);
+                                //on vérifie aussi dans les fichers liés s'il n'est pas dedans 
+                                if($MyVOD_DB->liaison_exists($f) == false){
+                                    array_push($files2, $f);
+                                }
+                            }
+                        }
+                    }
+                    
+                    $cpt=0;
+                    //on relie les fiches trouvées précédemment
+                    foreach ($files2 as $f) {
+                        RelierFiche($f, $detail);
+                        $cpt++;
+                    }
+                   
+                    if($cpt==0){
+                       message::ajouter_alerte_ko("Pas de fichier à reclier!") ;
+                    }                   
+                }
             }
             
-            exit();
-            
-            
-            
+            //exit();
+             
             break;
         case ACTION_CREER_FICHE_ET_RECHERCHER:
             //test si la fiche existe
@@ -315,6 +350,28 @@ require './template/maintenance-fichiers.phtml';
 /**
  * FIN
  */
+
+function RelierFiche($nom_fiche_a_relier,   MyVOD_Details $detail){
+    global $MyVOD_DB;   
+    
+    $detail_tmp = clone $detail;
+    $choix_fiche_parent=$detail_tmp->Filename;
+    //change la date de création pour faire apparaitre dans les derniers ajouts
+    $MyVOD_DB->update_date_creation_now($detail_tmp);
+    //patche la clé avant de sauver
+    $detail_tmp->ID=0;
+    $detail_tmp->Filename=$nom_fiche_a_relier;
+    //sauvegarde de la nouvelle fiche
+    $MyVOD_DB->fiche_enregistrer($detail_tmp);
+    //une fois crée, on relie les deux fiches     
+    $liaison = new LiaisonFichier();
+    $liaison->Filename1 = $choix_fiche_parent;
+    $liaison->Filename2 = $nom_fiche_a_relier;
+    $MyVOD_DB->liaison_ajouter($liaison);
+    
+    message::ajouter_alerte_ok("Fichier '$nom_fiche_a_relier' ajouté à la fiche '$detail_tmp->Titre'.");
+}
+
 
 function CheckFichiersARelier($fiche_enfant, $choix_fiche_parent){
     global $MyVOD_DB;
