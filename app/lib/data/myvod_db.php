@@ -836,6 +836,7 @@ ORDER BY  UPPER(l.TypePublic)");
         return $result;
     }
 
+
     public function fiche_enregistrer(MyVOD_Details $myvod_detail) {
         //var_dump('ENREGISTRE');
         //enregistre les genres
@@ -986,6 +987,19 @@ ifnull((SELECT DHCreation FROM Video WHERE Filename = %s),datetime('now')),
         }
     }
 
+    function update_date_creation_now(MyVOD_Details $myvod_detail){
+        $sql = "UPDATE Video 
+        SET
+            DHCreation = datetime('now', 'localtime')
+        WHERE ID = " . sql::chaine_vers_sql($myvod_detail->ID) . ";";
+        //var_dump($sql);
+        
+        self::execute($sql);
+        //exit();
+        
+    }
+    
+    
     function update_filename($old_filename, $new_filename, $update_dh_creation = false) {
         $set_dh_cration = '';
         if ($update_dh_creation) {
@@ -1225,7 +1239,7 @@ ORDER BY UPPER(i.Filename)';
 
         $liaisons = $this->get_array_obj($sql);
     }
-
+ 
     /*
      * 
      * Gestion des dernières vidéo visionnées
