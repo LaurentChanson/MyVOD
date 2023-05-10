@@ -11,7 +11,6 @@ https://community.synology.com/enu/forum/1/post/132609)
     - TODO : Choisir un nouvel épisode à relier : prévoir option filtrer que série car la liste peut être longue
     - TODO : Tester avec un & dans le nom de répertoire
     - TODO : Noms de répertoires à ignorer en option pour la recherche
-    - TODO : maintenance-fichiers.php à optimiser
 
 
 </small></small>
@@ -23,9 +22,10 @@ https://community.synology.com/enu/forum/1/post/132609)
  <b>version V.2.6.1, beta </b>
 --------------------
 
- + Possibilité de relier le contenu d'un répertoire à une fiche (+pratique pour les séries).
+ + Possibilité de <b>relier le contenu d'un répertoire à une fiche</b> (+pratique pour les séries).
  + Quand on ajoute un épisode d'une série, la fiche est remontée dans les derniers ajouts.
- + Noms de répertoires à ignorer en option pour le scan de nouveaux fichiers.
+ + <b>Noms de répertoires à ignorer</b> en option pour le scan de nouveaux fichiers.
+ + <b>maintenance-fichiers.php optimisée</b> (peut aller jusqu'à un facteur de 20 quand il y a environ 1200 fichiers).
  + Actualise les fichiers issues d'une série grâce à média info.
  + Fix : plusieurs-fichiers.php : fiches liés n'était pas dans l'ordre alphabétique.
  + Fix : plusieurs-fichiers.php : Fatal error: Uncaught PDOException: SQLSTATE[HY000]: General error: 1 near... avec Synology NAS.

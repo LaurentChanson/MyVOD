@@ -63,7 +63,9 @@ function init_listes_fichiers_pour_tri(){
 
 
 function traitement_fichier_trouve($fichier, $full_path) {
-    //affiche une ligne du tableau
+//cette fonction prends du temps (à voir pour optimiser)    
+
+//affiche une ligne du tableau
     global $noms_fichiers;
     //global $count;
     global $fichiers_ignores;         //fichiers black listes
@@ -96,7 +98,7 @@ function traitement_fichier_trouve($fichier, $full_path) {
         //var_dump($liste_fiches[$fichier]);
         $existe_dans_bdd = true;
         
-        //récupère l'élément à supprimer (peut être en majuscule)
+        //récupère l'élément à supprimer 
         $key_a_suppr = array_search($fichier, $liste_fiches); 
         //var_dump($key_a_suppr);
         unset($liste_fiches[$key_a_suppr]);

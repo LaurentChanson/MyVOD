@@ -289,11 +289,46 @@ if ($fichiers_disque === false || $force_recherche_disk == true) {
     //var_dump($fichiers_detectes);   //pour débug
 //    var_dump($liste_fiches);
 } else {
+    //LC: optimisation 11/05/2023
     //on restaure ceux de la session
-    //$fichiers_detectes = Helper_var::session_var('fichiers_detectes', $fichiers_detectes);
+    $fichiers_detectes = Helper_var::session_var('fichiers_detectes', $fichiers_detectes);
+    $liste_fiches = Helper_var::session_var('liste_fiches', $liste_fiches);
+    $fichiers_doublons_ou_deplaces = Helper_var::session_var('fichiers_doublons_ou_deplaces', $fichiers_detectes);
+    //var_dump($liste_fiches);
+    //var_dump($fichiers_detectes);
+    //on regarde pour les nouveaux fichiers s'ils n'ont pas été enregistrés dans la bdd
+    $f=new fichier_info();
+    $fichiers_detectes_tmp = array();
+    foreach ($fichiers_detectes as $f){
+        //on regarde si entre temps, on n'a pas crée une fiche
+        //et si c'est le cas, on enlève des fichiers détectés
+        if (in_array($f->nom, $noms_fichiers)) {
+            //on ne fait rien car on reconstruit le tableau temporaire
+        }else{
+            array_push($fichiers_detectes_tmp, $f);
+        }
+    }
+    $fichiers_detectes=$fichiers_detectes_tmp;
+    
+    //on actualise la Liste des fiches orphelines si ca n'a pas été supprmé entre temps
+    //var_dump($fichiers_detectes);
+    $f=new MyVOD_Details(); $detail=new MyVOD_Details();
+    $liste_fiches_tmp=array();
+    //var_dump($liste_fiches);
+    foreach ($liste_fiches as $key => $f) {
+        //var_dump($key);
+        if(  $MyVOD_DB->fiche_get_details($f->Filename, $detail, FALSE)){
+            $liste_fiches_tmp[$key]=$detail;
+            //var_dump($key);
+        }
+        
+    }
+    $liste_fiches=$liste_fiches_tmp;
+    //var_dump($liste_fiches);
+    /*
     $fichiers_disque_tmp = Helper_var::session_var('fichiers_disque', $fichiers_disque);
 
-    //var_dump($fichiers_disque_tmp);
+    var_dump($fichiers_disque_tmp);
     //on fait le traitement avec les fichiers issus de la session
     $fich_info = new fichier_info(); //autocomplétion NetBeans
     //la fonction traitement_fichier_trouve ajoute des éléments dans $fichiers_disque on le rince en amont
@@ -303,13 +338,17 @@ if ($fichiers_disque === false || $force_recherche_disk == true) {
         //var_dump($fich_info);
         //fait le traitement fictif et on remet en session
         traitement_fichier_trouve($fich_info->nom, $fich_info->path);
-    }
+    }*/
 }
 
 //var_dump('$fichiers_disque ' . count($fichiers_disque));
-//var_dump($fichiers_disque);
+//var_dump($liste_fiches);
 //mise en session des résultats
 Helper_var::set_session('fichiers_disque', $fichiers_disque);
+
+Helper_var::set_session('fichiers_detectes', $fichiers_detectes);
+Helper_var::set_session('liste_fiches', $liste_fiches);
+Helper_var::set_session('fichiers_doublons_ou_deplaces', $fichiers_doublons_ou_deplaces);
 
 //tri par ordre alphabétique du nom de fichier
 
@@ -319,7 +358,6 @@ usort($fichiers_detectes, 'comparer_fichier_info');
 function comparer_fichier_info($a, $b) {
   return strcmp($a->nom, $b->nom);
 }
-//var_dump($fichiers_detectes);
 
 //Helper_var::set_session('liste_fiches', $liste_fiches);
 

@@ -305,8 +305,9 @@ ORDER By  d.Titre
         return $myvod_liste;
     }
 
+    
     //returne true si la fiche existe
-    function fiche_get_details($filename_OR_ID, MyVOD_Details &$detail) {
+    function fiche_get_details($filename_OR_ID, MyVOD_Details &$detail, $infos_completes = TRUE) {
 
 
         $champ_where = "";
@@ -341,19 +342,21 @@ WHERE $champ_where=" . sql::chaine_vers_sql($filename_OR_ID)."
             $detail = new MyVOD_Details();
             $detail->InitFromStdClass($detailtmp);
 
-            //on récupère les fiches liées (table liaison)
-            $fichiers_liees = array();
-            self::liaison_get_liste_from_filename($detail->Filename, $fichiers_liees);
+            if($infos_completes){
+                //on récupère les fiches liées (table liaison)
+                $fichiers_liees = array();
+                self::liaison_get_liste_from_filename($detail->Filename, $fichiers_liees);
 
-            foreach ($fichiers_liees as $f) {
-                array_push($detail->t_liaisons, $f->Filename2);
+                foreach ($fichiers_liees as $f) {
+                    array_push($detail->t_liaisons, $f->Filename2);
+                }
+
+                //récupération des bandes annonces
+                $detail->BandesAnnonces = array();
+                $this->bande_annonce_get_liste_from_filename($detail->Filename, $detail->BandesAnnonces);
+                $detail->TrierBandesAnnonces();
+                //var_dump($detail->BandesAnnonces);
             }
-
-            //récupération des bandes annonces
-            $detail->BandesAnnonces = array();
-            $this->bande_annonce_get_liste_from_filename($detail->Filename, $detail->BandesAnnonces);
-            $detail->TrierBandesAnnonces();
-            //var_dump($detail->BandesAnnonces);
         }
 
 
