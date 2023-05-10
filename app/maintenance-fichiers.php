@@ -276,6 +276,7 @@ $fichiers_disque = Helper_var::session_var('fichiers_disque', false);
 
 //recherche de fichiers sur le disque si pas en session (ou si on force)
 if ($fichiers_disque === false || $force_recherche_disk == true) {
+//   var_dump($liste_fiches);
 //    $fichiers_disque = array();
 //
 //    //réinit en tableau
@@ -286,6 +287,7 @@ if ($fichiers_disque === false || $force_recherche_disk == true) {
     //var_dump($t,$fichiers_detectes);
     message::ajouter_alerte_info('Recherche sur le disque. ' . count($fichiers_detectes).' fichier(s) trouvé(s) sur '. count($fichiers_disque) . ' fichiers scannés.');
     //var_dump($fichiers_detectes);   //pour débug
+//    var_dump($liste_fiches);
 } else {
     //on restaure ceux de la session
     //$fichiers_detectes = Helper_var::session_var('fichiers_detectes', $fichiers_detectes);

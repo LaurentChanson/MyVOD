@@ -1,4 +1,4 @@
-<small> <b>A FAIRE :  </b>
+<small><small> <b>A FAIRE :  </b>
     - TODO : api sens critique en php : on verra plus tard quand il y aura une API.
     - TODO : remettre bouton recherche tmdb( avec gestion tmdb dedans)
     - TODO : Marlowe & tmdb : apercu youtube ne nfonctionne pas (ca viens de chez google)
@@ -8,11 +8,12 @@
 https://community.synology.com/enu/forum/1/post/132609)
 
 
-Choisir un nouvel épisode à relier : prévoir option filter que serie car la liste peut être longue
-Tester avec un & dans le nom de répertoire
-Noms de répertoires à ignorer en option pour la recherche
+    - TODO : Choisir un nouvel épisode à relier : prévoir option filter que serie car la liste peut être longue
+    - TODO : Tester avec un & dans le nom de répertoire
+    - TODO : Noms de répertoires à ignorer en option pour la recherche
+    - TODO : maintenance-fichiers.php à optimiser
 
-</small>
+</small></small>
 
 ========================================================================
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
@@ -30,6 +31,7 @@ Noms de répertoires à ignorer en option pour la recherche
  + Fix : fichiers avec accents et serveur Linux, le m3u n'était pas généré.
  + Fix : Ordre des derniers ajoutés qui était confondus avec les derniers lus.
  + Fix : Ordre des fichiers dans une série sans tenir compte de la casse.
+ + Fix : maintenance-fichiers.php : Liste des fiches orphelines : Trop de fichiers détectés à cause de la case sensitive dans les noms de fichiers.
 
 
  <b>version V.2.6.0, 2023/05/05 (Joyeux anniv Laurent)</b>

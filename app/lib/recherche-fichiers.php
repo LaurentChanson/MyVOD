@@ -55,8 +55,8 @@ function init_listes_fichiers_pour_tri(){
     //extrait des nom de fichiers à partie de la liste
     $noms_fichiers = array();
     refresh_noms_fichiers($noms_fichiers);
-
-
+    //var_dump($noms_fichiers);
+    
 }
 
 
@@ -74,8 +74,8 @@ function traitement_fichier_trouve($fichier, $full_path) {
     
     
     //on sort si le fichier est dans la blacklist
-    $fichier = mb_convert_case(($fichier), MB_CASE_LOWER, "UTF-8");
-    
+    //$fichier = mb_convert_case(($fichier), MB_CASE_LOWER, "UTF-8");
+    //var_dump($fichier);
 
     //renomme le fichier s'il contient des "+". Car ils posent problèmes avec les "urlencode"
     if (strpos($fichier, "+") !== false && file_exists_utf8($full_path)) {
@@ -87,13 +87,20 @@ function traitement_fichier_trouve($fichier, $full_path) {
         $full_path = $new_path;
         //var_dump($fichier,$new_path);
     }
-
+    $fichier = mb_convert_case(($fichier), MB_CASE_LOWER, "UTF-8");
+    
     $existe_dans_bdd = false;
 
     if (in_array($fichier, $noms_fichiers)) {
         //var_dump($fichier);
+        //var_dump($liste_fiches[$fichier]);
         $existe_dans_bdd = true;
-        unset($liste_fiches[$fichier]);
+        
+        //récupère l'élément à supprimer (peut être en majuscule)
+        $key_a_suppr = array_search($fichier, $liste_fiches); 
+        //var_dump($key_a_suppr);
+        unset($liste_fiches[$key_a_suppr]);
+        //exit();
     /*
      * 
      * 
