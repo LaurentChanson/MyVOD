@@ -12,7 +12,7 @@ class config_db_MAJ extends sqlite_db {
 
         
         
-        if ($version > 11)
+        if ($version > 12)
             return;
 
         /*
@@ -151,6 +151,18 @@ class config_db_MAJ extends sqlite_db {
             $this->maj_begin();
 
             $this->execute('ALTER TABLE config ADD COLUMN tri_par_ip_derniers_lus INT DEFAULT (1);');
+
+            $this->maj_commit($version);
+        }
+        
+        /*
+         * Ajout de la colonne 'tmdb_api_key' dans la table 'config'
+         */
+        if ($version == 12) {
+
+            $this->maj_begin();
+
+            $this->execute("ALTER TABLE config ADD COLUMN lst_rep_ignore_scan TEXT DEFAULT '#recycle';");
 
             $this->maj_commit($version);
         }
