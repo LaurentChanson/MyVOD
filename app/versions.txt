@@ -29,6 +29,7 @@ Noms de répertoires à ignorer en option pour la recherche
  + Fix : media info sur un serveur Linux et fichiers avec accents. On ne pouvait pas récupérer les infos dessus. 
  + Fix : fichiers avec accents et serveur Linux, le m3u n'était pas généré.
  + Fix : Ordre des derniers ajoutés qui était confondus avec les derniers lus.
+ + Fix : Ordre des fichiers dans une série sans tenir compte de la casse.
 
 
  <b>version V.2.6.0, 2023/05/05 (Joyeux anniv Laurent)</b>

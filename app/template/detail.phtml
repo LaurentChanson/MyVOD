@@ -153,6 +153,7 @@ if ($detail != false) {
 
 
                 <?php
+                //var_dump($file_info);
                 if ($file_info->file_exists()) {
                     ?>
                     <!--résolution-->
@@ -527,7 +528,7 @@ function render_titre(MyVOD_Details $detail) {
                   <?= $detail->is_fiche_non_renseignee() ? '<br><br>(Fiche non renseignée)' : '(' . $detail->TitreOriginal . ')'; ?>
             <?php
                 //nombre de saisons et d'épisodes
-                $detail_serie_str=$detail->get_infos_details_serie();
+                $detail_serie_str=$detail->get_infos_details_serie_long();
                 if(strlen($detail_serie_str)>0){
                     echo ('<br><br> ' . $detail_serie_str );
                 }

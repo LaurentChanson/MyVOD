@@ -465,6 +465,20 @@ class MyVOD_Details {
         return $txt_creation_modif;
     }
     
+    
+    
+    public function get_infos_details_serie_long(){
+        $detail_nb_serie='';
+        if($this->NbSaisons>1){
+            $detail_nb_serie =  $this->NbSaisons . ' Saison' . ($this->NbSaisons==1 ? '' : 's');
+        }
+        if($this->NbEpisodes>0){
+            if(strlen($detail_nb_serie)>0)$detail_nb_serie.=' - ';
+            $detail_nb_serie.= $this->NbEpisodes . ' Epsode' . ($this->NbEpisodes==1 ? '' : 's');
+        }
+        return $detail_nb_serie;
+    }
+    
     public function get_infos_details_serie(){
         $detail_nb_serie='';
         if($this->NbSaisons>1){

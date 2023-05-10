@@ -1233,8 +1233,8 @@ ORDER BY UPPER(i.Filename)';
 
         $sql = "SELECT l.Filename2 FROM Liaison l 
             WHERE l.Filename1 like " . sql::chaine_vers_sql($filename) . "
-            ORDER BY  l.Filename2";
-
+            ORDER BY  l.Filename2 COLLATE NOCASE";
+        //var_dump($sql);
 
         $liaisons = $this->get_array_obj($sql);
     }
