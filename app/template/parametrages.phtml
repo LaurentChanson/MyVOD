@@ -68,6 +68,20 @@ onglets_render_code_js_persistant_tabs();
                         </div>
                     </div>
 
+                    
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" >Répertoires à ignorer pour le scan de nouveaux fichiers :</label> 
+                        <div class="col-sm-6">
+                            <input id="lst_rep_ignore_scan" name="lst_rep_ignore_scan"  
+                                   class="form-control input-sm" required="" type="text"
+                                   value="<?= config::lst_rep_ignore_scan() ?>" >
+                            <small>
+                                Vous pouvez mettre une virgule (,), point virgule (;) ou deux points (:) comme séparateur.<br>
+                                Par défaut un NAS Synology crée un répertoire '#recycle' à la racine. C'est pour cette raison qu'il est recommandé de le mettre ici. 
+                            </small>
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
                         <label class="col-sm-4 control-label" >Alias Web du répertoire des films :</label> 
                         <div class="col-sm-6">

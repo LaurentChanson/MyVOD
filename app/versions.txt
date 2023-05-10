@@ -8,10 +8,11 @@
 https://community.synology.com/enu/forum/1/post/132609)
 
 
-    - TODO : Choisir un nouvel épisode à relier : prévoir option filter que serie car la liste peut être longue
+    - TODO : Choisir un nouvel épisode à relier : prévoir option filtrer que série car la liste peut être longue
     - TODO : Tester avec un & dans le nom de répertoire
     - TODO : Noms de répertoires à ignorer en option pour la recherche
     - TODO : maintenance-fichiers.php à optimiser
+
 
 </small></small>
 
@@ -24,8 +25,9 @@ https://community.synology.com/enu/forum/1/post/132609)
 
  + Possibilité de relier le contenu d'un répertoire à une fiche (+pratique pour les séries).
  + Quand on ajoute un épisode d'une série, la fiche est remontée dans les derniers ajouts.
- + Actualise les fichiers issues d'une série grace à média info.
- + Fix : plusieurs-fichiers.php : fiches liés n'était pas dans l'ordre alphabetique.
+ + Noms de répertoires à ignorer en option pour le scan de nouveaux fichiers.
+ + Actualise les fichiers issues d'une série grâce à média info.
+ + Fix : plusieurs-fichiers.php : fiches liés n'était pas dans l'ordre alphabétique.
  + Fix : plusieurs-fichiers.php : Fatal error: Uncaught PDOException: SQLSTATE[HY000]: General error: 1 near... avec Synology NAS.
  + Fix : media info sur un serveur Linux et fichiers avec accents. On ne pouvait pas récupérer les infos dessus. 
  + Fix : fichiers avec accents et serveur Linux, le m3u n'était pas généré.
@@ -41,7 +43,7 @@ https://community.synology.com/enu/forum/1/post/132609)
  + Ajout <b>Nombre épisode et nombre saisons</b> pour les séries.
  + Possibilité ajouter un épisode sur une fiche existante depuis la recherche de fichier.
  + Ajout option "Type de recherche par défaut" qui permet de choisir son moteur autre que Allociné par défaut.
- + Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un meme lan). 
+ + Ajout option pour ne plus regrouper par IP les derniers films visionnés (pour un même lan). 
  + Ajout de la compatibilité de mediaInfo avec un OS type Linux.
  + Ignore la recherche dans '#recycle' pour les corbeilles synology. 
  + Meilleure compatibilité pour la génération des m3u avec un NAS et Android.
@@ -72,7 +74,7 @@ https://community.synology.com/enu/forum/1/post/132609)
  + Ajout Filtre <b>recherche sur le réalisateur</b>.
  + Petits changements dans le panel d'export.
  + Ajout infobulle dans le texte de recherche.
- x Fix : Recherche dans TMDB dans la liste des acteur dont le role est vide.
+ x Fix : Recherche dans TMDB dans la liste des acteur dont le rôle est vide.
 
 
  <b>version V.2.5.0, 2023/04/06</b>
@@ -118,7 +120,7 @@ https://community.synology.com/enu/forum/1/post/132609)
 
  + Ajout Filtrer uniquement les films pas encore visionnés.
  + Ajout lien de la page de MediaInfo dans la page de détails.
- + Ajout thème de noel si on est au mois de décembre (avec effet de neige qui tombe).
+ + Ajout thème de noël si on est au mois de décembre (avec effet de neige qui tombe).
  + Page gerer-affiches.php : Optimisation de l'algo.
  x Page maintenance-fichiers.php : Fix nom de fichier s'il contient un "&" dans le nom. Il était tronqué lors d'une recherche.
  x CheckBox & Radios : Le texte associé est cliquable.
@@ -129,7 +131,7 @@ https://community.synology.com/enu/forum/1/post/132609)
  <b>version V.2.4.2, 2018/11/17 (Bon anniv Papa)</b>
 --------------------
 
- + Ajout <b>option de validation automatique</b> si le nombre de resultat de <b>recherche est de 1</b>.
+ + Ajout <b>option de validation automatique</b> si le nombre de résultat de <b>recherche est de 1</b>.
  + Quand on se <b>connecte en mode admin</b>, on revient maintenant sur la <b>dernière page consultée</b>.
  + Ajout <b>ToolTip quand le champ a le focus</b>.
  + Page detail.php, quand on supprime une fiche on est redirigé vers la page index.
@@ -166,7 +168,7 @@ https://community.synology.com/enu/forum/1/post/132609)
 <b>version V.2.4.0, 2018/10/09 (Bon anniv Charline (4 ans))</b>
 --------------------
 
- + <b>Meuilleure compatibilité avec PHP7</b>.
+ + <b>Meilleure compatibilité avec PHP7</b>.
  + <b>Ajout d'index</b> dans les liaisons.
  + Vues (dans la base de données) 'Detail', 'DetailSansDoublon' et 'DetailSansDoublonFiltre' réécrites pour de meilleurs performances (<b>gain x3 en tant qu'admin sur la page d'index</b>).
  + Ajout d'un paramètre pour des mots clés supplémentaires lors des recherches google.
@@ -217,7 +219,7 @@ https://community.synology.com/enu/forum/1/post/132609)
  + Pages index.php & details.php : <b>Ajout du logo "VFF"</b> pour dire qu'un fichier est en TrueFrench ou VFI(considéré comme VFF).
  + Pages index.php & details.php : <b>Ajout du logo "MKV"</b> pour dire qu'un fichier est en mkv.
  x Page recherche-web.php : Fix erreur PHP quand il y avait seulement le mot "mi" ou "my" car Allociné envoyait des des éléments incomplets.
- x Page detail.php : Fix onglet "Informations sur le media" inaxessible.
+ x Page detail.php : Fix onglet "Informations sur le media" inaccessible.
 
 
 <b>version V.2.3.1, 2018/07/06</b>
@@ -264,7 +266,7 @@ https://community.synology.com/enu/forum/1/post/132609)
 --------------------
 
  + Passage de DVDFr en https pour son API.
- x Page admin.php : Fix si le dossier des films est innexistant pour le calcul de la place restante.
+ x Page admin.php : Fix si le dossier des films est inexistant pour le calcul de la place restante.
 
 
 <b>version V.2.2.7, 2018/05/24</b>

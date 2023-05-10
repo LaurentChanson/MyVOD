@@ -48,9 +48,11 @@ if ($action != false) {
             
             $tri_par_ip_derniers_lus=Helper_var::post_var('tri_par_ip_derniers_lus','0');
             
+            $lst_rep_ignore_scan=Helper_var::post_var('lst_rep_ignore_scan','');
             config::set_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms,$affichage_gallerie,$controle_parental,
                     $code_parental,$nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,$taille_fichiers_64_bits,
-                    $mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key, $type_recherche_def, $tri_par_ip_derniers_lus  );
+                    $mots_cles_suppl_google_search,$affichage_liste_tablette, $tri_recherche_def, $tmdb_api_key, $type_recherche_def, 
+                    $tri_par_ip_derniers_lus, $lst_rep_ignore_scan  );
             message::ajouter_alerte_ok("Paramètres enregistrés.");
             
             break;

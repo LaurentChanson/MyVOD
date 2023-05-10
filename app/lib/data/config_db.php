@@ -25,6 +25,7 @@ class config_data {
     public $tmdb_api_key = '';
     public $type_recherche_def = 2;
     public $tri_par_ip_derniers_lus = 1;
+    public $lst_rep_ignore_scan = '#recycle';
 }
 
 class mot_cle {
@@ -55,7 +56,8 @@ class config_db extends config_db_MAJ {
     public function update_parametres($repertoireFilmsLocal, $repertoireWebPartage, $repertoireWebFilms, $affichage_gallerie,$controle_parental,$code_parental,
             $nb_visu_histo,$nb_visu_ajouts,$affichage_visionnes_apres_ajouts,
             $taille_fichiers_64_bits,$mots_cles_suppl_google_search,$affichage_liste_tablette,
-            $tri_recherche_def,$tmdb_api_key, $type_recherche_def, $tri_par_ip_derniers_lus) {
+            $tri_recherche_def,$tmdb_api_key, $type_recherche_def, 
+            $tri_par_ip_derniers_lus, $lst_rep_ignore_scan) {
         $sql = sprintf("UPDATE config 
                 SET rep_films_local=%s,
                 rep_films_lan=%s,
@@ -72,6 +74,7 @@ class config_db extends config_db_MAJ {
                 tri_recherche_def=%s,
                 tmdb_api_key=%s,
                 tri_par_ip_derniers_lus=%s,
+                lst_rep_ignore_scan=%s,
                 type_recherche_def=%s", 
                 sql::chaine_vers_sql($repertoireFilmsLocal), 
                 sql::chaine_vers_sql($repertoireWebPartage), 
@@ -86,6 +89,7 @@ class config_db extends config_db_MAJ {
                 sql::entier_vers_sql($tri_recherche_def),
                 sql::chaine_vers_sql($tmdb_api_key),
                 sql::chaine_vers_sql($tri_par_ip_derniers_lus),
+                sql::chaine_vers_sql($lst_rep_ignore_scan),
                 sql::entier_vers_sql($type_recherche_def)
         );
 

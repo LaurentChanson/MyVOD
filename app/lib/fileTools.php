@@ -196,6 +196,10 @@ function get_extension($filename) {
     return $extension;
 }
 
+function in_arrayi($needle, $haystack) {
+    return in_array(strtolower($needle), array_map('strtolower', $haystack));
+}
+
 function recherche_fichiers_avec_fonction_de_rappel($chemin_repertoire, $callable_function_avec_2_parametres, $filtre_extensions = array('.wpl', '.avi', '.mpeg', '.mpg', '.mov', '.mp4', '.mkv', '.wmv', '.iso', '.nrg', '.m2ts', '.dvd', '.bluray')) {
     //var_dump(is_php7());
     
@@ -204,12 +208,18 @@ function recherche_fichiers_avec_fonction_de_rappel($chemin_repertoire, $callabl
     if (!$dossier) {
         return ''; //oups , impossible d'ouvrir le repertoire
     }
+    //récupère de la liste des répertoires à ignorer
+    $sep=";";
+    $rep_a_ignore = strtolower(str_replace(array(',',';',':'),$sep, config::lst_rep_ignore_scan()));
+    $lst_rep_a_ignore = explode($sep, $rep_a_ignore);
+    
+    //var_dump($lst_rep_a_ignore);
+    
+    
     while ($entree = readdir($dossier)) {
         
-        
-        
-        
-        if ($entree == "." || $entree == ".." || $entree == "#recycle") { // on ne regarde pas . ( lien vers le dossier courant ) et .. ( lien vers le dossier parent )
+        //var_dump( in_array(strtolower($entree), $lst_rep_a_ignore));
+        if ($entree == "." || $entree == ".." || in_array(strtolower($entree), $lst_rep_a_ignore) == true) { // on ne regarde pas . ( lien vers le dossier courant ) et .. ( lien vers le dossier parent )
             continue;
         }
         $cheminEntree = $chemin_repertoire . DIRECTORY_SEPARATOR . $entree;
