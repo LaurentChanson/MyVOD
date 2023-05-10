@@ -67,8 +67,11 @@ if ($detail->ID != null) {
     }
     //liste des fichiers (en 1 ou plusieurs fichiers)
     foreach ($detail->t_liaisons as $f) {
+        //var_dump($f);
         $file_info = new FileInfos;
         gerer_cache($f, $file_info);
+        
+        gerer_media_info($file_info);
         //met dans la liste si le fichier existe
         if (strlen($file_info->full_path)) {
             array_push($lst_fichiers_pour_m3u, $file_info->full_path);
