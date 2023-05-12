@@ -418,7 +418,10 @@ class MyVOD_Details {
         if($datecourte_str!=null){
             setlocale (LC_TIME, 'fr-FR','fra');
             $trad=strftime("%A %d %B %Y",strtotime($datecourte_str));
-            return utf8_encode(ucwords($trad));
+            if(Helper_system::serv_OS_is_windows()){
+                return utf8_encode(ucwords($trad));
+            }
+            return ucwords($trad);
         }
         return "";
 /*

@@ -34,7 +34,8 @@ https://community.synology.com/enu/forum/1/post/132609)
  + Fix : Ordre des derniers ajoutés qui était confondus avec les derniers lus.
  + Fix : Ordre des fichiers dans une série sans tenir compte de la casse.
  + Fix : maintenance-fichiers.php : Liste des fiches orphelines : Trop de fichiers détectés à cause de la case sensitive dans les noms de fichiers.
- + Fix : Langue par défaut pour TMDB.
+ + Fix : Langue par défaut pour TMDB en fr-FR.
+ + Fix : detail.php : date de sortie avec les caractères spéciaux. 
 
 
  <b>version V.2.6.0, 2023/05/05 (Joyeux anniv Laurent)</b>
