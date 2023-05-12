@@ -753,7 +753,7 @@ label input[type="checkbox"],label input[type="radio"] {
     /*background-color: silver;*/ /* show me! */
     width : 100%;  
     height: 100% !important; 
-    padding: 3px;
+    padding: 2px;
 }
 /*effet de zoom quand on survole l'image en galerie'*/
 .gallerie:hover>img {
