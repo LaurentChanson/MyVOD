@@ -168,7 +168,7 @@ class TMDBWrapper{
             //Utilise l'API partie Film
             //Get Movie with other return format than the default and with an IMDb-id
             $movie_result = (object)self::$tmdb->getMovie($code);
-                            
+            //var_dump($movie_result);            
             $image_url = self::get_poster_path_Url($movie_result->poster_path);
             $movie_result->poster_url=$image_url;
             //var_dump($movie_result);
@@ -240,7 +240,7 @@ class TMDBWrapper{
             if (!isset(self::$tmdb) || (self::$tmdb == null)) {
                 // Créer un objet $tmdb.
 
-                self::$tmdb = new TMDb(tmdb_key, 'fr', TRUE);
+                self::$tmdb = new TMDb(tmdb_key, 'fr-FR', TRUE);
                 $token = self::$tmdb->getAuthToken();
                 //on verra plus tard pour le token
                 //peut être pour rediriger l'utilisateur avec identification
