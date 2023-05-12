@@ -19,7 +19,7 @@ https://community.synology.com/enu/forum/1/post/132609)
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
 ========================================================================
 
- <b>version V.2.6.1, beta </b>
+ <b>version V.2.6.1, 2023/05/12 </b>
 --------------------
 
  + Possibilité de <b>relier le contenu d'un répertoire à une fiche</b> (+pratique pour les séries).
