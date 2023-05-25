@@ -69,8 +69,9 @@ if ($detail->ID != null) {
     foreach ($detail->t_liaisons as $f) {
         //var_dump($f);
         $file_info = new FileInfos;
+        //a optimiser ici
         gerer_cache($f, $file_info);
-        
+        //a optimiser ici
         gerer_media_info($file_info);
         //met dans la liste si le fichier existe
         if (strlen($file_info->full_path)) {

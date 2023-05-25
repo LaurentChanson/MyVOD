@@ -10,7 +10,9 @@ https://community.synology.com/enu/forum/1/post/132609)
 
     - TODO : Choisir un nouvel épisode à relier : prévoir option filtrer que série car la liste peut être longue
     - TODO : Tester avec un & dans le nom de répertoire
-    - TODO : Noms de répertoires à ignorer en option pour la recherche
+    - TODO : pouvoir mettre lu X fois
+
+- trop lent quand on ajoute plusieurs fichiers pour une serie
 
 
 </small></small>
@@ -18,6 +20,9 @@ https://community.synology.com/enu/forum/1/post/132609)
 ========================================================================
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
 ========================================================================
+
+ + Fix : maintenance-fichiers.php : Ajout filtre sur les extentions de fichiers
+
 
  <b>version V.2.6.1, 2023/05/12 </b>
 --------------------

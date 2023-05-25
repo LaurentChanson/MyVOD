@@ -141,17 +141,23 @@ if ($action != false && $param != false) {
                     $dir=dirname($s0);
                     $files1 = scandir($dir);
                     $files2 = array();
+                    $filtre_extensions = array('.wpl', '.avi', '.mpeg', '.mpg', '.mov', '.mp4', '.mkv', '.wmv', '.iso', '.nrg', '.m2ts', '.dvd', '.bluray');
                     foreach ($files1 as $f) {
                         //var_dump($dir.DIRECTORY_SEPARATOR.$f);
-                        if( $f!=='.' && $f!=='..' && file_exists_utf8($dir.DIRECTORY_SEPARATOR.$f)){
-                            //on a la liste des fichiers , on filtre ceux qui sont déjà en bdd
-                            $d=new MyVOD_Details();
-                            $exists = $MyVOD_DB->fiche_get_details($f, $d);
-                            if($exists==false){
-                                //var_dump($exists,$f);
-                                //on vérifie aussi dans les fichers liés s'il n'est pas dedans 
-                                if($MyVOD_DB->liaison_exists($f) == false){
-                                    array_push($files2, $f);
+                        $path = $dir.DIRECTORY_SEPARATOR.$f;
+                        if( $f!=='.' && $f!=='..' && file_exists_utf8($path)){
+                            //filtre sur l'extension
+                            $ext = get_extension(strtolower($path));
+                            if (in_array($ext, $filtre_extensions)) {
+                                //on a la liste des fichiers , on filtre ceux qui sont déjà en bdd
+                                $d=new MyVOD_Details();
+                                $exists = $MyVOD_DB->fiche_get_details($f, $d);
+                                if($exists==false){
+                                    //var_dump($exists,$f);
+                                    //on vérifie aussi dans les fichers liés s'il n'est pas dedans 
+                                    if($MyVOD_DB->liaison_exists($f) == false){
+                                        array_push($files2, $f);
+                                    }
                                 }
                             }
                         }
