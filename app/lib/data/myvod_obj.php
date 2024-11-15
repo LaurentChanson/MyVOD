@@ -249,6 +249,7 @@ class MyVOD_Details {
     }
     
     
+    
     public function is_vff(){
         if(stripos($this->Filename, 'truefrench')!==FALSE){
             return true;
@@ -257,6 +258,9 @@ class MyVOD_Details {
             return true;
         }
         if(stripos($this->Filename, 'vfi')!==FALSE){
+            return true;
+        }
+        if(stripos($this->Filename, 'vf2')!==FALSE){
             return true;
         }
         return false;
