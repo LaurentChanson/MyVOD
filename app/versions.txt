@@ -21,6 +21,9 @@ https://community.synology.com/enu/forum/1/post/132609)
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
 ========================================================================
 
+ <b>version V.2.6.2, 2024/11/15 (10 ans) </b>
+--------------------
+
  + Detection "VFQ" quand le nom de fichier contient "vfq".
  + Detection "VFF" quand le nom de fichier contient "vf2".
  + Fix : maintenance-fichiers.php : Ajout filtre sur les extentions de fichiers.
