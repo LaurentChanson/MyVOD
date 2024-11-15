@@ -948,6 +948,11 @@ function AfficherDetailsFiche($film, $flag_ordre_derniers_ajouts) {
                 <?php
             }
 
+            if($film->is_vfq()){
+                ?>
+                <span class="label label-danger">VFQ</span>
+                <?php
+            }
 
             if ($film->is_mkv()) {
                 ?>
