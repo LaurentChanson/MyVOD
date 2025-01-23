@@ -21,12 +21,16 @@ https://community.synology.com/enu/forum/1/post/132609)
 &nbsp;&nbsp;&nbsp;&nbsp;VERSION 2.6.x (Support API TMDB Séries et Meilleure compatibilité OS Linux) - Version actuelle
 ========================================================================
 
+
+ x Fix : Faute ortographe : 'Epsode' - > 'Episode'
+
+
  <b>version V.2.6.2, 2024/11/15 (10 ans) </b>
 --------------------
 
  + Detection "VFQ" quand le nom de fichier contient "vfq".
  + Detection "VFF" quand le nom de fichier contient "vf2".
- + Fix : maintenance-fichiers.php : Ajout filtre sur les extentions de fichiers.
+ x Fix : maintenance-fichiers.php : Ajout filtre sur les extentions de fichiers.
 
 
  <b>version V.2.6.1, 2023/05/12 </b>
@@ -37,15 +41,15 @@ https://community.synology.com/enu/forum/1/post/132609)
  + <b>Noms de répertoires à ignorer</b> en option pour le scan de nouveaux fichiers.
  + <b>maintenance-fichiers.php optimisée</b> (peut aller jusqu'à un facteur de 20 quand il y a environ 1200 fichiers).
  + Actualise les fichiers issues d'une série grâce à média info.
- + Fix : plusieurs-fichiers.php : fiches liés n'était pas dans l'ordre alphabétique.
- + Fix : plusieurs-fichiers.php : Fatal error: Uncaught PDOException: SQLSTATE[HY000]: General error: 1 near... avec Synology NAS.
- + Fix : media info sur un serveur Linux et fichiers avec accents. On ne pouvait pas récupérer les infos dessus. 
- + Fix : fichiers avec accents et serveur Linux, le m3u n'était pas généré.
- + Fix : Ordre des derniers ajoutés qui était confondus avec les derniers lus.
- + Fix : Ordre des fichiers dans une série sans tenir compte de la casse.
- + Fix : maintenance-fichiers.php : Liste des fiches orphelines : Trop de fichiers détectés à cause de la case sensitive dans les noms de fichiers.
- + Fix : Langue par défaut pour TMDB en fr-FR.
- + Fix : detail.php : date de sortie avec les caractères spéciaux. 
+ x Fix : plusieurs-fichiers.php : fiches liés n'était pas dans l'ordre alphabétique.
+ x Fix : plusieurs-fichiers.php : Fatal error: Uncaught PDOException: SQLSTATE[HY000]: General error: 1 near... avec Synology NAS.
+ x Fix : media info sur un serveur Linux et fichiers avec accents. On ne pouvait pas récupérer les infos dessus. 
+ x Fix : fichiers avec accents et serveur Linux, le m3u n'était pas généré.
+ x Fix : Ordre des derniers ajoutés qui était confondus avec les derniers lus.
+ x Fix : Ordre des fichiers dans une série sans tenir compte de la casse.
+ x Fix : maintenance-fichiers.php : Liste des fiches orphelines : Trop de fichiers détectés à cause de la case sensitive dans les noms de fichiers.
+ x Fix : Langue par défaut pour TMDB en fr-FR.
+ x Fix : detail.php : date de sortie avec les caractères spéciaux. 
 
 
  <b>version V.2.6.0, 2023/05/05 (Joyeux anniv Laurent)</b>

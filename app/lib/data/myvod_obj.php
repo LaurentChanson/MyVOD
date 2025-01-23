@@ -485,7 +485,7 @@ class MyVOD_Details {
         }
         if($this->NbEpisodes>0){
             if(strlen($detail_nb_serie)>0)$detail_nb_serie.=' - ';
-            $detail_nb_serie.= $this->NbEpisodes . ' Epsode' . ($this->NbEpisodes==1 ? '' : 's');
+            $detail_nb_serie.= $this->NbEpisodes . ' Episode' . ($this->NbEpisodes==1 ? '' : 's');
         }
         return $detail_nb_serie;
     }
