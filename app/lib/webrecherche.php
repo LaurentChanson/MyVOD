@@ -276,7 +276,7 @@ class WebGetFilmData {
         $nb_saisons = $nb_saisons . ' saison' . ($res->number_of_seasons==1 ? '' : 's');
         
         $nb_episodes =  $res->number_of_episodes;
-        $nb_episodes = $nb_episodes . ' épsode' . ($res->number_of_episodes==1 ? '' : 's');
+        $nb_episodes = $nb_episodes . ' épisode' . ($res->number_of_episodes==1 ? '' : 's');
         
         $this->movieType = $this->movieType . ' (' . $nb_saisons . ' - ' . $nb_episodes.')';
         
